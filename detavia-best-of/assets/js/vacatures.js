@@ -17,24 +17,26 @@ const VAKGEBIEDEN = {
 };
 
 const VACATURES = [
-  {titel:'Wmo-consulent',                 vakgebied:'wmo',          plaats:'Almere',     uren:[32,36], schaal:'Schaal 9',  type:'Detachering', top:true,  datum:'2026-06-12', omschrijving:'Je voert keukentafelgesprekken en organiseert passende ondersteuning, zodat inwoners zo zelfstandig mogelijk blijven.'},
-  {titel:'Wmo-consulent complexe casuïstiek', vakgebied:'wmo',      plaats:'Utrecht',    uren:[36,40], schaal:'Schaal 10', type:'Detachering', top:false, datum:'2026-06-08', omschrijving:'Voor de zwaardere casuïstiek zoek je samen met inwoner en netwerk naar een duurzame oplossing.'},
-  {titel:'Jeugdconsulent',                vakgebied:'jeugd',        plaats:'Amsterdam',  uren:[28,36], schaal:'Schaal 9',  type:'Detachering', top:true,  datum:'2026-06-11', omschrijving:'Je begeleidt gezinnen naar passende jeugdhulp en houdt regie op het ondersteuningsplan.'},
-  {titel:'Gezinscoach',                   vakgebied:'jeugd',        plaats:'Rotterdam',  uren:[24,32], schaal:'Schaal 8',  type:'Detachering', top:false, datum:'2026-06-03', omschrijving:'Als gezinscoach werk je outreachend en versterk je de eigen kracht van het gezin.'},
-  {titel:'Klantmanager Participatie',     vakgebied:'participatie', plaats:'Den Haag',   uren:[32,40], schaal:'Schaal 9',  type:'Detachering', top:true,  datum:'2026-06-10', omschrijving:'Je begeleidt inwoners naar werk en meedoen, met aandacht voor wat iemand wél kan.'},
-  {titel:'Klantmanager Werk & Inkomen',   vakgebied:'participatie', plaats:'Eindhoven',  uren:[36,40], schaal:'Schaal 9',  type:'ZZP',        top:false, datum:'2026-05-28', omschrijving:'Een brede caseload op het snijvlak van werk, inkomen en participatie.'},
-  {titel:'Schuldhulpverlener',            vakgebied:'schuld',       plaats:'Groningen',  uren:[24,36], schaal:'Schaal 8',  type:'Detachering', top:false, datum:'2026-06-06', omschrijving:'Je brengt financiële rust en grip terug en stelt samen een haalbaar plan op.'},
-  {titel:'Budgetcoach',                   vakgebied:'schuld',       plaats:'Tilburg',    uren:[16,24], schaal:'Schaal 7',  type:'Detachering', top:false, datum:'2026-05-30', omschrijving:'Je coacht inwoners naar financiële zelfredzaamheid en voorkomt nieuwe schulden.'},
-  {titel:'Inkomensconsulent',             vakgebied:'inkomen',      plaats:'Zwolle',     uren:[32,36], schaal:'Schaal 8',  type:'Detachering', top:true,  datum:'2026-06-09', omschrijving:'Je beoordeelt aanvragen rechtmatig en menselijk, met oog voor de mens achter de aanvraag.'},
-  {titel:'Medewerker Terugvordering',     vakgebied:'inkomen',      plaats:'Breda',      uren:[32,40], schaal:'Schaal 8',  type:'Detachering', top:false, datum:'2026-05-26', omschrijving:'Je handelt terugvorderingen en verhaal zorgvuldig en oplossingsgericht af.'},
-  {titel:'Adviseur Sociaal Domein',       vakgebied:'beleid',       plaats:'Amersfoort', uren:[32,40], schaal:'Schaal 11', type:'Detachering', top:true,  datum:'2026-06-07', omschrijving:'Je vertaalt ontwikkelingen naar beleid en adviseert het management van uitvoering tot strategie.'},
-  {titel:'Beleidsmedewerker Wmo & Jeugd', vakgebied:'beleid',       plaats:'Nijmegen',   uren:[28,36], schaal:'Schaal 10', type:'Detachering', top:false, datum:'2026-05-22', omschrijving:'Je ontwikkelt en evalueert beleid op het brede sociaal domein.'}
+  {titel:'Wmo-consulent',                 vakgebied:'wmo',          plaats:'Almere',     uren:[32,36], salaris:[3300,4600], type:'Detachering', top:true,  datum:'2026-06-12', omschrijving:'Je voert keukentafelgesprekken en organiseert passende ondersteuning, zodat inwoners zo zelfstandig mogelijk blijven.'},
+  {titel:'Wmo-consulent complexe casuïstiek', vakgebied:'wmo',      plaats:'Utrecht',    uren:[36,40], salaris:[3700,5300], type:'Detachering', top:false, datum:'2026-06-08', omschrijving:'Voor de zwaardere casuïstiek zoek je samen met inwoner en netwerk naar een duurzame oplossing.'},
+  {titel:'Jeugdconsulent',                vakgebied:'jeugd',        plaats:'Amsterdam',  uren:[28,36], salaris:[3300,4600], type:'Detachering', top:true,  datum:'2026-06-11', omschrijving:'Je begeleidt gezinnen naar passende jeugdhulp en houdt regie op het ondersteuningsplan.'},
+  {titel:'Gezinscoach',                   vakgebied:'jeugd',        plaats:'Rotterdam',  uren:[24,32], salaris:[3000,4000], type:'Detachering', top:false, datum:'2026-06-03', omschrijving:'Als gezinscoach werk je outreachend en versterk je de eigen kracht van het gezin.'},
+  {titel:'Klantmanager Participatie',     vakgebied:'participatie', plaats:'Den Haag',   uren:[32,40], salaris:[3300,4600], type:'Detachering', top:true,  datum:'2026-06-10', omschrijving:'Je begeleidt inwoners naar werk en meedoen, met aandacht voor wat iemand wél kan.'},
+  {titel:'Klantmanager Werk & Inkomen',   vakgebied:'participatie', plaats:'Eindhoven',  uren:[36,40], salaris:[3300,4600], type:'ZZP',        top:false, datum:'2026-05-28', omschrijving:'Een brede caseload op het snijvlak van werk, inkomen en participatie.'},
+  {titel:'Schuldhulpverlener',            vakgebied:'schuld',       plaats:'Groningen',  uren:[24,36], salaris:[3000,4000], type:'Detachering', top:false, datum:'2026-06-06', omschrijving:'Je brengt financiële rust en grip terug en stelt samen een haalbaar plan op.'},
+  {titel:'Budgetcoach',                   vakgebied:'schuld',       plaats:'Tilburg',    uren:[16,24], salaris:[2700,3700], type:'Detachering', top:false, datum:'2026-05-30', omschrijving:'Je coacht inwoners naar financiële zelfredzaamheid en voorkomt nieuwe schulden.'},
+  {titel:'Inkomensconsulent',             vakgebied:'inkomen',      plaats:'Zwolle',     uren:[32,36], salaris:[3000,4000], type:'Detachering', top:true,  datum:'2026-06-09', omschrijving:'Je beoordeelt aanvragen rechtmatig en menselijk, met oog voor de mens achter de aanvraag.'},
+  {titel:'Medewerker Terugvordering',     vakgebied:'inkomen',      plaats:'Breda',      uren:[32,40], salaris:[3000,4000], type:'Detachering', top:false, datum:'2026-05-26', omschrijving:'Je handelt terugvorderingen en verhaal zorgvuldig en oplossingsgericht af.'},
+  {titel:'Adviseur Sociaal Domein',       vakgebied:'beleid',       plaats:'Amersfoort', uren:[32,40], salaris:[4000,5800], type:'Detachering', top:true,  datum:'2026-06-07', omschrijving:'Je vertaalt ontwikkelingen naar beleid en adviseert het management van uitvoering tot strategie.'},
+  {titel:'Beleidsmedewerker Wmo & Jeugd', vakgebied:'beleid',       plaats:'Nijmegen',   uren:[28,36], salaris:[3700,5300], type:'Detachering', top:false, datum:'2026-05-22', omschrijving:'Je ontwikkelt en evalueert beleid op het brede sociaal domein.'}
 ];
 
 /* ---------- helpers ---------- */
 const $  = (s,el=document)=>el.querySelector(s);
 const $$ = (s,el=document)=>[...el.querySelectorAll(s)];
 const fmtUren = u => `${u[0]}-${u[1]} uur`;
+const euro = n => '€ ' + n.toLocaleString('nl-NL');
+const fmtSalaris = s => `${euro(s[0])} - ${euro(s[1])} p/m`;
 const state = { tekst:'', plaats:'', vak:new Set(), urenMin:null, urenMax:null, sort:'nieuwste' };
 
 /* ---------- branches (checkboxes met aantallen) ---------- */
@@ -89,7 +91,7 @@ function render(){
         <h3>${v.titel}</h3>
         <div class="vmeta">
           <span>📍 ${v.plaats}</span><span>🕒 ${fmtUren(v.uren)}</span>
-          <span>💶 ${v.schaal}</span><span>📄 ${v.type}</span>
+          <span>💶 ${fmtSalaris(v.salaris)}</span><span>📄 ${v.type}</span>
         </div>
         <p class="desc">${v.omschrijving}</p>
       </div>

@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-17 - Salarisrange i.p.v. schaal bij vacatures
+- **Wat is gebouwd/gewijzigd:**
+  - In de vacaturedata `schaal` vervangen door een `salaris`-bereik [min,max] en in de kaarten getoond als bv. "€ 3.300 - € 4.600 p/m" (nl-opmaak via helper fmtSalaris).
+- **Waarom:**
+  - Gebruiker wil een concreet salarisbereik in plaats van een schaalnummer; spreekt kandidaten meer aan.
+- **Geraakte bestanden:**
+  - `detavia-best-of/assets/js/vacatures.js` (data + render)
+
 ## 2026-06-16 - Filter-sidebar exact volgens joinuz-opbouw
 - **Wat is gebouwd/gewijzigd:**
   - Filter-sidebar herzien naar exact de joinuz-structuur en -volgorde: Filter + "Verwijder filters" (prullenbak-icoon), Locatie (stad/postcode), Afstand (slider 0-50km), Vakgebied (dropdown "Sociaal Domein"), Branches (checkboxes met live aantallen), Uren per week (min/max velden), en een volledige Zoeken-knop.
