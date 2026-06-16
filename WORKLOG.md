@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-16 - Filter-sidebar exact volgens joinuz-opbouw
+- **Wat is gebouwd/gewijzigd:**
+  - Filter-sidebar herzien naar exact de joinuz-structuur en -volgorde: Filter + "Verwijder filters" (prullenbak-icoon), Locatie (stad/postcode), Afstand (slider 0-50km), Vakgebied (dropdown "Sociaal Domein"), Branches (checkboxes met live aantallen), Uren per week (min/max velden), en een volledige Zoeken-knop.
+  - JS aangepast: uren-filter via min/max in plaats van checkboxes; afstand-slider toont waarde (geo-filtering volgt bij koppeling echte locaties); branches met live aantallen behouden.
+- **Waarom:**
+  - Gebruiker leverde een screenshot van het joinuz-filtersysteem aan dat exact aangehouden moet worden, aangepast naar Detavia (alleen sociaal domein).
+- **Geraakte bestanden:**
+  - `detavia-best-of/vacatures.html` (filter-sidebar herzien)
+  - `detavia-best-of/assets/js/vacatures.js` (min/max uren, afstand, reset)
+  - `detavia-best-of/assets/css/style.css` (slider, min/max velden, zoekknop)
+
 ## 2026-06-16 - Vacaturepagina met zoek-/filtersysteem (joinuz-stijl)
 - **Wat is gebouwd/gewijzigd:**
   - Vacaturepagina omgebouwd naar een echt zoek-/filtersysteem in de stijl van joinuz.nl/zoek, maar volledig sociaal domein en in Detavia-huisstijl.

@@ -53,21 +53,35 @@
       <aside class="filter-panel" id="filters">
         <div class="fp-head">
           <h2>Filter</h2>
-          <button class="reset" id="reset">Wis filters</button>
+          <button class="reset" id="reset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>Verwijder filters</button>
         </div>
         <div class="filter-body">
           <div class="filter-group">
-            <h4>Plaats</h4>
-            <input id="zoek-plaats" type="text" placeholder="Stad of gemeente">
+            <h4>Locatie</h4>
+            <input id="zoek-plaats" type="text" placeholder="Stad / postcode">
+          </div>
+          <div class="filter-group">
+            <h4>Afstand</h4>
+            <input id="afstand" type="range" min="0" max="50" step="5" value="50" aria-label="Afstand in km">
+            <div class="afstand-labels"><span>0 km</span><span id="afstand-val">50 km</span></div>
           </div>
           <div class="filter-group">
             <h4>Vakgebied</h4>
+            <select id="vakgebied-select" class="vakgebied-select"><option>Sociaal Domein</option></select>
+          </div>
+          <div class="filter-group">
+            <h4>Branches</h4>
             <div id="facet-vak"></div>
           </div>
           <div class="filter-group">
             <h4>Uren per week</h4>
-            <div id="facet-uren"></div>
+            <div class="uren-range">
+              <span class="uren-field"><input id="uren-min" type="number" min="0" max="40" placeholder="min" aria-label="Minimaal uur"><span class="suf">uur</span></span>
+              <span class="dash">–</span>
+              <span class="uren-field"><input id="uren-max" type="number" min="0" max="40" placeholder="max" aria-label="Maximaal uur"><span class="suf">uur</span></span>
+            </div>
           </div>
+          <button class="btn btn-primary zoek-btn" id="zoek-knop">Zoeken</button>
         </div>
       </aside>
 

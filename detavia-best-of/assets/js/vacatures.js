@@ -1,9 +1,11 @@
 /* ============================================================
-   DetaVia - vacature-zoeksysteem (joinuz-stijl, sociaal domein)
+   DetaVia - vacature-zoeksysteem (filterstructuur joinuz-stijl)
+   Volgorde: Locatie -> Afstand -> Vakgebied -> Branches ->
+   Uren per week (min/max) -> Zoeken.
    Voorbeelddata: vervang door echte vacatures of koppel later
-   aan jullie flexportaal/CMS. De velden:
-     titel, vakgebied(sleutel), plaats, uren[min,max], schaal,
-     type, top(bool), datum, omschrijving
+   aan het flexportaal/CMS. Velden:
+     titel, vakgebied(branche-sleutel), plaats, uren[min,max],
+     schaal, type, top(bool), datum, omschrijving
    ============================================================ */
 const VAKGEBIEDEN = {
   wmo:          'Wmo',
@@ -33,33 +35,24 @@ const VACATURES = [
 const $  = (s,el=document)=>el.querySelector(s);
 const $$ = (s,el=document)=>[...el.querySelectorAll(s)];
 const fmtUren = u => `${u[0]}-${u[1]} uur`;
-const state = { tekst:'', plaats:'', vak:new Set(), uren:new Set(), sort:'nieuwste' };
+const state = { tekst:'', plaats:'', vak:new Set(), urenMin:null, urenMax:null, sort:'nieuwste' };
 
-/* ---------- render facetten met aantallen ---------- */
+/* ---------- branches (checkboxes met aantallen) ---------- */
 function buildFacets(){
-  const vakBox = $('#facet-vak');
-  vakBox.innerHTML = Object.entries(VAKGEBIEDEN).map(([k,label])=>`
+  $('#facet-vak').innerHTML = Object.entries(VAKGEBIEDEN).map(([k,label])=>`
     <label class="facet" data-vak="${k}">
       <input type="checkbox" value="${k}">
       <span>${label}</span><span class="fc" data-count="${k}">0</span>
-    </label>`).join('');
-
-  const urenOpties = [[16,24],[24,32],[32,36],[36,40]];
-  $('#facet-uren').innerHTML = urenOpties.map(u=>`
-    <label class="facet" data-uren="${u[0]}-${u[1]}">
-      <input type="checkbox" value="${u[0]}-${u[1]}">
-      <span>${u[0]} tot ${u[1]} uur</span><span class="fc" data-ucount="${u[0]}-${u[1]}">0</span>
     </label>`).join('');
 }
 
 /* ---------- filter-logica ---------- */
 function matchUren(v){
-  if(state.uren.size===0) return true;
-  for(const r of state.uren){
-    const [a,b]=r.split('-').map(Number);
-    if(v.uren[0] < b && v.uren[1] > a) return true; // overlap
-  }
-  return false;
+  const min = state.urenMin, max = state.urenMax;
+  if(min==null && max==null) return true;
+  const lo = min==null ? 0  : min;
+  const hi = max==null ? 99 : max;
+  return v.uren[0] <= hi && v.uren[1] >= lo; // overlap met [lo,hi]
 }
 function passes(v, ignore){
   if(state.tekst){
@@ -67,22 +60,16 @@ function passes(v, ignore){
     if(!(v.titel.toLowerCase().includes(q) || v.omschrijving.toLowerCase().includes(q) || VAKGEBIEDEN[v.vakgebied].toLowerCase().includes(q))) return false;
   }
   if(state.plaats && !v.plaats.toLowerCase().includes(state.plaats.toLowerCase())) return false;
-  if(ignore!=='vak'  && state.vak.size  && !state.vak.has(v.vakgebied)) return false;
-  if(ignore!=='uren' && !matchUren(v)) return false;
+  if(ignore!=='vak' && state.vak.size && !state.vak.has(v.vakgebied)) return false;
+  if(!matchUren(v)) return false;
   return true;
 }
 
 function counts(){
-  // tel per vakgebied (met overige filters toegepast behalve vak zelf)
   Object.keys(VAKGEBIEDEN).forEach(k=>{
     const n = VACATURES.filter(v=>v.vakgebied===k && passes(v,'vak')).length;
     const el=$(`[data-count="${k}"]`); el.textContent=n;
     el.closest('.facet').classList.toggle('off', n===0 && !state.vak.has(k));
-  });
-  ['16-24','24-32','32-36','36-40'].forEach(r=>{
-    const [a,b]=r.split('-').map(Number);
-    const n = VACATURES.filter(v=> v.uren[0]<b && v.uren[1]>a && passes(v,'uren')).length;
-    $(`[data-ucount="${r}"]`).textContent=n;
   });
 }
 
@@ -91,10 +78,8 @@ function render(){
   if(state.sort==='nieuwste') list.sort((a,b)=>b.datum.localeCompare(a.datum));
   if(state.sort==='uren')     list.sort((a,b)=>b.uren[1]-a.uren[1]);
 
-  const box=$('#results');
   $('#result-count').innerHTML = `<b>${list.length}</b> ${list.length===1?'vacature':'vacatures'} gevonden`;
-
-  box.innerHTML = list.length ? list.map(v=>`
+  $('#results').innerHTML = list.length ? list.map(v=>`
     <article class="vcard">
       <div>
         <div class="vtop">
@@ -111,7 +96,6 @@ function render(){
       <div class="vcta"><a class="btn btn-primary" href="contact.html">Bekijk vacature</a></div>
     </article>`).join('')
     : `<div class="no-results"><strong>Geen vacatures gevonden.</strong><br>Pas je filters aan of zet een vacaturemelding aan.</div>`;
-
   counts();
 }
 
@@ -122,24 +106,41 @@ function init(){
   $('#zoek-plaats').addEventListener('input', e=>{ state.plaats=e.target.value; render(); });
   $('#sorteer').addEventListener('change', e=>{ state.sort=e.target.value; render(); });
 
+  // Afstand-slider: toont de waarde (geo-filtering volgt bij koppeling met echte locaties)
+  const afstand=$('#afstand');
+  if(afstand) afstand.addEventListener('input', e=>{ $('#afstand-val').textContent = e.target.value+' km'; });
+
+  // Branches
   $('#facet-vak').addEventListener('change', e=>{
     const k=e.target.value; e.target.checked?state.vak.add(k):state.vak.delete(k); render();
   });
-  $('#facet-uren').addEventListener('change', e=>{
-    const k=e.target.value; e.target.checked?state.uren.add(k):state.uren.delete(k); render();
+
+  // Uren per week (min/max)
+  $('#uren-min').addEventListener('input', e=>{ state.urenMin = e.target.value===''?null:Number(e.target.value); render(); });
+  $('#uren-max').addEventListener('input', e=>{ state.urenMax = e.target.value===''?null:Number(e.target.value); render(); });
+
+  // Zoeken-knop (filtert al live; knop scrollt naar de resultaten)
+  $('#zoek-knop').addEventListener('click', ()=>{
+    render();
+    $('#results').scrollIntoView({behavior:'smooth', block:'start'});
   });
+
+  // Verwijder filters
   $('#reset').addEventListener('click', ()=>{
-    state.tekst=state.plaats=''; state.vak.clear(); state.uren.clear(); state.sort='nieuwste';
+    state.tekst=state.plaats=''; state.vak.clear(); state.urenMin=state.urenMax=null; state.sort='nieuwste';
     $('#zoek-tekst').value=''; $('#zoek-plaats').value=''; $('#sorteer').value='nieuwste';
-    $$('#filters input[type=checkbox]').forEach(c=>c.checked=false);
+    $('#uren-min').value=''; $('#uren-max').value='';
+    if(afstand){ afstand.value=50; $('#afstand-val').textContent='50 km'; }
+    $$('#facet-vak input[type=checkbox]').forEach(c=>c.checked=false);
     render();
   });
-  // weergave lijst/grid
+
+  // Weergave lijst/raster
   $$('.viewtoggle button').forEach(b=>b.addEventListener('click',()=>{
     $$('.viewtoggle button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
     $('#results').classList.toggle('grid', b.dataset.view==='grid');
   }));
-  // mobiel filterpaneel
+  // Mobiel filterpaneel
   $('#filter-toggle')?.addEventListener('click',()=> $('#filters').classList.toggle('collapsed'));
 
   render();
