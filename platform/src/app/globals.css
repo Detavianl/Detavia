@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/* ---------- Fonts (Plus Jakarta Sans) ---------- */
+@font-face{font-family:'Jakarta';src:url('/fonts/plus-jakarta-sans-400-normal.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Jakarta';src:url('/fonts/plus-jakarta-sans-500-normal.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Jakarta';src:url('/fonts/plus-jakarta-sans-600-normal.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Jakarta';src:url('/fonts/plus-jakarta-sans-700-normal.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Jakarta';src:url('/fonts/plus-jakarta-sans-800-normal.woff2') format('woff2');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'Jakarta';src:url('/fonts/plus-jakarta-sans-600-italic.woff2') format('woff2');font-weight:600;font-style:italic;font-display:swap}
+
+/* ---------- Detavia merk-tokens (brandbook) ---------- */
+@theme {
+  --color-yellow: #FFEA4B;
+  --color-arctic: #5DE2FF;
+  --color-cobalt: #0047FF;
+  --color-ink: #0b0b0c;
+  --color-muted: #3a3a3e;
+  --font-sans: 'Jakarta', system-ui, sans-serif;
+}
+
+html { -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font-sans); color: var(--color-ink); }
+
+/* Display-koppen = Plus Jakarta Sans Medium Italic, -3% (brandbook) */
+.display { font-weight: 600; font-style: italic; letter-spacing: -.03em; line-height: 1.04; }
+
+/* blog (TipTap) content styling */
+.prose-detavia h2 { font-size:1.6rem; font-weight:700; margin:1.4em 0 .5em; }
+.prose-detavia h3 { font-size:1.25rem; font-weight:700; margin:1.2em 0 .4em; }
+.prose-detavia p { margin:.8em 0; line-height:1.7; }
+.prose-detavia a { color: var(--color-cobalt); text-decoration: underline; }
+.prose-detavia ul { list-style: disc; padding-left:1.4em; margin:.8em 0; }
+.prose-detavia img { border-radius: 14px; margin:1em 0; }

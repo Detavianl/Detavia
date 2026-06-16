@@ -1,0 +1,78 @@
+import Link from "next/link";
+
+const featured = [
+  { tag: "Wmo", titel: "Wmo-consulent", meta: "Almere · 32-36 uur", tekst: "Help inwoners zo zelfstandig mogelijk te blijven en zorg op maat te organiseren." },
+  { tag: "Jeugd", titel: "Jeugdconsulent", meta: "Amsterdam · 28-36 uur", tekst: "Begeleid gezinnen naar passende jeugdhulp en werk aan perspectief voor kinderen." },
+  { tag: "Participatie", titel: "Klantmanager Participatie", meta: "Den Haag · 32-40 uur", tekst: "Begeleid inwoners naar werk en meedoen, met aandacht voor wat iemand wél kan." },
+];
+
+export default function Home() {
+  return (
+    <>
+      {/* HERO */}
+      <section className="bg-yellow">
+        <div className="mx-auto grid max-w-[1180px] grid-cols-1 items-center gap-10 px-5 py-16 sm:px-10 md:grid-cols-[1.15fr_.85fr]">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[.16em] opacity-60">Specialist in het sociaal domein</p>
+            <h1 className="display mt-3 text-4xl sm:text-6xl">De betrouwbare partner in jouw carrièregroei</h1>
+            <p className="mt-6 max-w-[42ch] text-lg font-medium">Werken waar het écht telt. DetaVia verbindt professionals in het sociaal domein met opdrachten die passen bij wie je bent, en bij wie je wilt worden.</p>
+            <div className="mt-8 flex flex-wrap gap-3.5">
+              <Link href="/vacatures" className="rounded-full bg-black px-6 py-3.5 font-bold text-white">Bekijk vacatures</Link>
+              <Link href="/contact" className="rounded-full border-2 border-black px-6 py-3.5 font-bold">Plan een kennismaking</Link>
+            </div>
+          </div>
+          <div className="order-first md:order-none">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/img/smiling-woman-600x600.jpg" alt="Professional in het sociaal domein"
+                 className="aspect-[4/5] w-full rounded-[22px] object-cover shadow-2xl" />
+          </div>
+        </div>
+      </section>
+
+      {/* STATS */}
+      <section className="bg-black text-white">
+        <div className="mx-auto grid max-w-[1180px] grid-cols-2 gap-6 px-5 py-12 text-center sm:px-10 md:grid-cols-4">
+          {[["100%", "Focus op het sociaal domein", false], ["100+", "Professionals geplaatst", true], ["50+", "Gemeenten & organisaties", false], ["9,5", "Gemiddelde beoordeling", true]].map(([n, l, blue]) => (
+            <div key={l as string}>
+              <div className={`text-4xl font-extrabold ${blue ? "text-arctic" : "text-yellow"}`}>{n}</div>
+              <div className="mt-2 text-sm opacity-85">{l}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* UITGELICHTE VACATURES */}
+      <section className="mx-auto max-w-[1180px] px-5 py-20 sm:px-10">
+        <div className="mb-11 flex flex-wrap items-end justify-between gap-5">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[.16em] opacity-60">Uitgelichte vacatures</p>
+            <h2 className="display text-3xl sm:text-4xl">Opdrachten met impact</h2>
+          </div>
+          <Link href="/vacatures" className="rounded-full bg-cobalt px-6 py-3.5 font-bold text-white">Bekijk alle vacatures</Link>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {featured.map((v) => (
+            <Link key={v.titel} href="/vacatures" className="flex min-h-[210px] flex-col gap-2.5 rounded-[22px] border-[1.5px] border-neutral-200 p-7 transition hover:-translate-y-1 hover:border-cobalt">
+              <span className="self-start rounded-full bg-yellow px-3 py-1 text-xs font-bold">{v.tag}</span>
+              <h3 className="mt-1.5 text-xl font-bold">{v.titel}</h3>
+              <p className="text-sm font-semibold text-muted">{v.meta}</p>
+              <p className="flex-1 text-[.96rem] text-muted">{v.tekst}</p>
+              <span className="font-bold text-cobalt">Bekijk vacature →</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* STATEMENT */}
+      <section className="relative overflow-hidden bg-cobalt py-24 text-center text-white">
+        <span className="pointer-events-none absolute inset-0 flex items-center justify-center text-[22vw] font-semibold italic tracking-tighter text-white/[.07]">DetaVia</span>
+        <div className="relative mx-auto max-w-[1180px] px-5 sm:px-10">
+          <p className="text-3xl font-bold leading-tight sm:text-6xl">
+            Jouw <span className="italic text-yellow">vaardigheden</span> maken het verschil,<br />
+            <span className="italic text-yellow">niet</span> je achtergrond.
+          </p>
+        </div>
+      </section>
+    </>
+  );
+}

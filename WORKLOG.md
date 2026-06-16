@@ -1,5 +1,18 @@
 # Worklog
 
+## 2026-06-17 - Start platform: Next.js + Supabase app (fundament + publieke site)
+- **Wat is gebouwd/gewijzigd:**
+  - Nieuwe app `platform/` opgezet: Next.js 16 + React 19 + Tailwind 4 + Supabase (zelfde stack als Workster2.0). Eén app voor publieke site + intern beheer. Geen jobboard.
+  - Databaseschema + RLS geschreven (`supabase/migrations/`): admin_users (rollen super_admin/admin/recruiter), vacatures, candidates, cvs, applications (ATS-pijplijn met stages), blog_posts, contact_messages + storage-buckets (cvs privé, blog publiek).
+  - Supabase-clients (browser/server/service-role), admin-context (requireAdmin/requireRole), sessie-middleware (hardened: rendert zonder Supabase).
+  - Publieke site geport naar React/Tailwind in Detavia-huisstijl: home, vacatures (met filtersysteem als client-component), over-ons, verhalen, contact. DRAAIT LOKAAL op http://localhost:3000.
+- **Waarom:**
+  - Gebruiker wil een backend met ATS, blogbeheer, cv-opslag en adminrechten (à la Workster2.0). Keuzes: één Next.js+Supabase app, alleen intern team, formulier+cv-upload instroom, lokaal opzetten.
+- **Status / nog te doen:**
+  - Admin/ATS/blog/cv vereisen gekoppelde Supabase (Docker ontbreekt lokaal -> Docker installeren of gratis cloud-project). Daarna: auth/login, admin-shell, ATS-board, blogeditor, sollicitatieformulier+cv-upload, seed super-admin.
+- **Geraakte bestanden:**
+  - `platform/` (nieuw): package.json, configs, `src/app/(public)/*`, `src/components/*`, `src/lib/*`, `supabase/migrations/0001_init.sql` + `0002_storage.sql`, README.
+
 ## 2026-06-17 - Salarisrange i.p.v. schaal bij vacatures
 - **Wat is gebouwd/gewijzigd:**
   - In de vacaturedata `schaal` vervangen door een `salaris`-bereik [min,max] en in de kaarten getoond als bv. "€ 3.300 - € 4.600 p/m" (nl-opmaak via helper fmtSalaris).
