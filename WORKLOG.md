@@ -1,5 +1,19 @@
 # Worklog
 
+## 2026-06-16 - Vacaturepagina met zoek-/filtersysteem (joinuz-stijl)
+- **Wat is gebouwd/gewijzigd:**
+  - Vacaturepagina omgebouwd naar een echt zoek-/filtersysteem in de stijl van joinuz.nl/zoek, maar volledig sociaal domein en in Detavia-huisstijl.
+  - Zoek-hero met zoekbalk; filter-sidebar met Plaats (tekst), Vakgebied (checkboxes met live aantallen) en Uren per week (checkboxes met live aantallen); resultaatteller; sorteren (nieuwste/meeste uren); lijst-/rasterweergave; "wis filters" en mobiel filterpaneel.
+  - JS-gedreven met voorbeelddata (12 vacatures) die makkelijk te vervangen is of later aan het flexportaal/CMS te koppelen.
+  - "Home" toegevoegd als eerste item in het hoofdmenu op alle pagina's, zodat men makkelijk terug naar de startpagina kan.
+- **Waarom:**
+  - Gebruiker wil de vacatures als de zoekpagina van joinuz, inclusief filtersysteem, en een duidelijke Home-link in het menu.
+- **Geraakte bestanden:**
+  - `detavia-best-of/vacatures.html` (herzien naar zoek/filter)
+  - `detavia-best-of/assets/js/vacatures.js` (nieuw: data + filterlogica)
+  - `detavia-best-of/assets/css/style.css` (zoek/filter-componenten toegevoegd)
+  - alle `detavia-best-of/*.html` (Home-link in het menu)
+
 ## 2026-06-16 - Meerpaginasite van de best-of pagina
 - **Wat is gebouwd/gewijzigd:**
   - De one-page best-of omgebouwd naar een meerpaginasite met gedeelde CSS/JS:

@@ -234,3 +234,62 @@ footer a:hover{color:var(--cobalt)}
 .note{font-size:.78rem;color:var(--muted);opacity:.8}
 .center{text-align:center}
 .mt{margin-top:30px}
+
+/* ===================== ZOEK / VACATURE-SEARCH (joinuz-stijl) ===================== */
+.search-hero{background:var(--cobalt);color:#fff;position:relative;overflow:hidden}
+.search-hero .wrap{padding-block:clamp(40px,6vw,68px);position:relative;z-index:2}
+.search-hero h1{max-width:20ch}
+.search-hero p{margin-top:12px;opacity:.95;font-size:1.1rem}
+.search-hero .wm{position:absolute;right:-1%;bottom:-30%;font-style:italic;font-weight:600;font-size:clamp(7rem,20vw,16rem);color:rgba(255,255,255,.08);letter-spacing:-.04em;pointer-events:none;z-index:1}
+.searchbar{margin-top:26px;display:flex;gap:10px;flex-wrap:wrap;max-width:680px}
+.searchbar input{flex:1;min-width:220px;border:0;border-radius:14px;padding:1em 1.2em;font:inherit;font-size:1.05rem}
+.searchbar .btn{padding-inline:1.6em}
+
+.results-layout{display:grid;grid-template-columns:290px 1fr;gap:34px;align-items:start}
+.filter-panel{border:1.5px solid #ececef;border-radius:var(--radius);padding:24px;position:sticky;top:96px}
+.filter-panel .fp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.filter-panel .fp-head h2{font-size:1.15rem;font-weight:700}
+.filter-panel .reset{font-weight:700;font-size:.85rem;color:var(--cobalt);background:none;border:0;cursor:pointer}
+.filter-group{border-top:1px solid #eee;padding:18px 0}
+.filter-group:first-of-type{border-top:0}
+.filter-group h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;opacity:.6;margin-bottom:12px}
+.filter-group input[type=text]{width:100%;border:2px solid #e0e0e6;border-radius:10px;padding:.6em .8em;font:inherit}
+.facet{display:flex;align-items:center;gap:10px;padding:5px 0;cursor:pointer;font-weight:500}
+.facet input{width:18px;height:18px;accent-color:var(--cobalt);cursor:pointer}
+.facet .fc{margin-left:auto;font-size:.82rem;color:var(--muted);background:#f1f2f5;border-radius:999px;padding:.1em .6em;font-weight:700}
+.facet.off{opacity:.4}
+input[type=range]{width:100%;accent-color:var(--cobalt)}
+.range-val{font-weight:700;font-size:.9rem;margin-top:6px}
+
+.results-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.results-top .count{font-weight:700}
+.results-top .count b{color:var(--cobalt)}
+.results-tools{display:flex;gap:14px;align-items:center}
+.results-tools select{border:2px solid #e0e0e6;border-radius:10px;padding:.5em .7em;font:inherit;font-weight:600}
+.viewtoggle{display:flex;border:1.5px solid #e0e0e6;border-radius:10px;overflow:hidden}
+.viewtoggle button{border:0;background:#fff;padding:.5em .7em;cursor:pointer;color:#999;display:flex}
+.viewtoggle button.on{background:var(--cobalt);color:#fff}
+.viewtoggle svg{width:18px;height:18px}
+
+.vac-results{display:grid;gap:16px}
+.vac-results.grid{grid-template-columns:1fr 1fr}
+.vcard{border:1.5px solid #ececef;border-radius:18px;padding:24px 26px;transition:.18s;display:grid;grid-template-columns:1fr auto;gap:14px 18px;align-items:start}
+.vac-results.grid .vcard{grid-template-columns:1fr}
+.vcard:hover{border-color:var(--cobalt);box-shadow:0 14px 34px rgba(0,71,255,.07)}
+.vcard .vtop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.vcard .badge{background:var(--yellow);color:#000;font-weight:700;font-size:.72rem;padding:.25em .7em;border-radius:999px}
+.vcard .vakgebied{color:var(--cobalt);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em}
+.vcard h3{font-size:1.25rem;font-weight:700}
+.vcard .vmeta{margin-top:8px;display:flex;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.9rem;font-weight:600}
+.vcard p.desc{margin-top:10px;color:var(--muted);font-size:.95rem;grid-column:1/-1}
+.vcard .vcta{display:flex;align-items:center}
+.no-results{border:1.5px dashed #ddd;border-radius:18px;padding:40px;text-align:center;color:var(--muted)}
+
+.filter-toggle{display:none}
+@media(max-width:880px){
+  .results-layout{grid-template-columns:1fr}
+  .filter-panel{position:static}
+  .filter-toggle{display:inline-flex;margin-bottom:16px}
+  .filter-panel.collapsed .filter-body{display:none}
+  .vac-results.grid{grid-template-columns:1fr}
+}

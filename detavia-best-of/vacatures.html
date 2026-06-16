@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vacatures in het sociaal domein | DetaVia</title>
-<meta name="description" content="Alle vacatures in het sociaal domein bij DetaVia: Wmo, Jeugd, Participatie, Schuldhulpverlening, Inkomen en Beleid &amp; Advies.">
+<meta name="description" content="Zoek en filter vacatures in het sociaal domein bij DetaVia: Wmo, Jeugd, Participatie, Schuldhulpverlening, Inkomen en Beleid &amp; Advies.">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -13,6 +13,7 @@
   <div class="wrap nav-inner">
     <a href="index.html" aria-label="DetaVia"><img class="logo" src="assets/img/logo_blue.svg" alt="DetaVia"></a>
     <nav><ul>
+      <li><a href="index.html">Home</a></li>
       <li><a href="vacatures.html" class="active">Vacatures</a></li>
       <li><a href="over-ons.html">Over ons</a></li>
       <li><a href="verhalen.html">Verhalen</a></li>
@@ -28,67 +29,77 @@
   </div>
 </header>
 
-<section class="pagehead">
+<!-- ZOEK-HERO -->
+<section class="search-hero">
   <div class="wrap">
     <div class="crumb"><a href="index.html">Home</a> / Vacatures</div>
-    <h1 class="display">Vacatures in het sociaal domein</h1>
-    <p>Alle openstaande opdrachten op één plek. Filter op jouw vakgebied en vind de opdracht die bij je past.</p>
+    <h1 class="display">Vind jouw opdracht in het sociaal domein</h1>
+    <p>Doorzoek alle openstaande vacatures en filter op vakgebied, plaats en uren.</p>
+    <form class="searchbar" onsubmit="return false">
+      <input id="zoek-tekst" type="search" placeholder="Zoek op functie of trefwoord" aria-label="Zoekterm">
+      <button class="btn btn-yellow" type="submit">Zoeken</button>
+    </form>
   </div>
   <span class="wm">Vacatures</span>
 </section>
 
+<!-- RESULTATEN + FILTERS -->
 <section class="section">
   <div class="wrap">
-    <div class="filters">
-      <button class="chip on" data-filter="all">Alle vakgebieden</button>
-      <button class="chip" data-filter="wmo">Wmo</button>
-      <button class="chip" data-filter="jeugd">Jeugd</button>
-      <button class="chip" data-filter="participatie">Participatie</button>
-      <button class="chip" data-filter="schuld">Schuldhulpverlening</button>
-      <button class="chip" data-filter="inkomen">Inkomen</button>
-      <button class="chip" data-filter="beleid">Beleid &amp; Advies</button>
-    </div>
+    <button id="filter-toggle" class="btn btn-ghost filter-toggle">Filters tonen / verbergen</button>
+    <div class="results-layout">
 
-    <div class="vac-list">
-      <!-- Vul per vacature de echte gegevens in. data-cat koppelt aan de filter. -->
-      <article class="vac" data-cat="wmo">
-        <div><h3>Wmo-consulent</h3>
-          <div class="vmeta"><span>📍 [ Gemeente ]</span><span>🕒 [ 32-36 uur ]</span><span>💶 [ Schaal 9 ]</span></div></div>
-        <a class="btn btn-primary" href="contact.html">Solliciteer</a>
-      </article>
-      <article class="vac" data-cat="jeugd">
-        <div><h3>Jeugdconsulent</h3>
-          <div class="vmeta"><span>📍 [ Gemeente ]</span><span>🕒 [ 28-36 uur ]</span><span>💶 [ Schaal 9 ]</span></div></div>
-        <a class="btn btn-primary" href="contact.html">Solliciteer</a>
-      </article>
-      <article class="vac" data-cat="participatie">
-        <div><h3>Klantmanager Participatie</h3>
-          <div class="vmeta"><span>📍 [ Gemeente ]</span><span>🕒 [ 32-40 uur ]</span><span>💶 [ Schaal 9 ]</span></div></div>
-        <a class="btn btn-primary" href="contact.html">Solliciteer</a>
-      </article>
-      <article class="vac" data-cat="schuld">
-        <div><h3>Schuldhulpverlener</h3>
-          <div class="vmeta"><span>📍 [ Gemeente ]</span><span>🕒 [ 24-36 uur ]</span><span>💶 [ Schaal 8 ]</span></div></div>
-        <a class="btn btn-primary" href="contact.html">Solliciteer</a>
-      </article>
-      <article class="vac" data-cat="inkomen">
-        <div><h3>Inkomensconsulent</h3>
-          <div class="vmeta"><span>📍 [ Gemeente ]</span><span>🕒 [ 32-36 uur ]</span><span>💶 [ Schaal 8 ]</span></div></div>
-        <a class="btn btn-primary" href="contact.html">Solliciteer</a>
-      </article>
-      <article class="vac" data-cat="beleid">
-        <div><h3>Adviseur Sociaal Domein</h3>
-          <div class="vmeta"><span>📍 [ Gemeente ]</span><span>🕒 [ 32-40 uur ]</span><span>💶 [ Schaal 11 ]</span></div></div>
-        <a class="btn btn-primary" href="contact.html">Solliciteer</a>
-      </article>
-    </div>
+      <!-- FILTER-SIDEBAR -->
+      <aside class="filter-panel" id="filters">
+        <div class="fp-head">
+          <h2>Filter</h2>
+          <button class="reset" id="reset">Wis filters</button>
+        </div>
+        <div class="filter-body">
+          <div class="filter-group">
+            <h4>Plaats</h4>
+            <input id="zoek-plaats" type="text" placeholder="Stad of gemeente">
+          </div>
+          <div class="filter-group">
+            <h4>Vakgebied</h4>
+            <div id="facet-vak"></div>
+          </div>
+          <div class="filter-group">
+            <h4>Uren per week</h4>
+            <div id="facet-uren"></div>
+          </div>
+        </div>
+      </aside>
 
-    <div class="alert mt">
-      <strong>Niet gevonden wat je zoekt? Wij houden je op de hoogte.</strong>
-      <form onsubmit="return demoForm(this)">
-        <input type="email" placeholder="Jouw e-mailadres" required aria-label="E-mail voor vacaturemelding">
-        <button class="btn btn-dark" type="submit">Vacaturemelding aan</button>
-      </form>
+      <!-- RESULTATEN -->
+      <div>
+        <div class="results-top">
+          <span class="count" id="result-count">0 vacatures</span>
+          <div class="results-tools">
+            <label>Sorteer
+              <select id="sorteer">
+                <option value="nieuwste">Nieuwste eerst</option>
+                <option value="uren">Meeste uren</option>
+              </select>
+            </label>
+            <div class="viewtoggle" role="group" aria-label="Weergave">
+              <button data-view="list" class="on" aria-label="Lijst"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="5" width="18" height="3" rx="1"/><rect x="3" y="11" width="18" height="3" rx="1"/><rect x="3" y="17" width="18" height="3" rx="1"/></svg></button>
+              <button data-view="grid" aria-label="Raster"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="vac-results" id="results"></div>
+
+        <div class="alert mt">
+          <strong>Niet gevonden wat je zoekt? Wij houden je op de hoogte.</strong>
+          <form onsubmit="return demoForm(this)">
+            <input type="email" placeholder="Jouw e-mailadres" required aria-label="E-mail voor vacaturemelding">
+            <button class="btn btn-dark" type="submit">Vacaturemelding aan</button>
+          </form>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -105,5 +116,6 @@
   </div>
 </footer>
 <script src="assets/js/main.js"></script>
+<script src="assets/js/vacatures.js"></script>
 </body>
 </html>
