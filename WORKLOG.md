@@ -1,5 +1,19 @@
 # Worklog
 
+## 2026-06-16 - Meerpaginasite van de best-of pagina
+- **Wat is gebouwd/gewijzigd:**
+  - De one-page best-of omgebouwd naar een meerpaginasite met gedeelde CSS/JS:
+    `assets/css/style.css` en `assets/js/main.js` (nav-toggle, demoformulier, vacaturefilter).
+  - Home (`index.html`): vakgebied-kaarten vervangen door "Uitgelichte vacatures" (3 highlights) met knop naar de vacaturepagina; teasers toegevoegd naar Verhalen/Academy/Contact.
+  - Nieuwe pagina's: `vacatures.html` (overzicht met filterchips), `verhalen.html` (blogopzet), `academy.html` (aanbod + stappen), `contact.html` (formulier + directe gegevens + de FAQ/Veelgesteld), `over-ons.html` (nieuw).
+  - Em-dashes vermeden, koppeltekens/komma's gebruikt.
+- **Waarom:**
+  - Gebruiker wil de site opdelen: vacatures, verhalen (blog), academy en contact als aparte pagina's, plus een nieuwe Over ons. Uitgelichte vacatures op de home in plaats van de demo-categorieen.
+- **Geraakte bestanden:**
+  - `detavia-best-of/index.html` (herzien)
+  - `detavia-best-of/vacatures.html`, `verhalen.html`, `academy.html`, `contact.html`, `over-ons.html` (nieuw)
+  - `detavia-best-of/assets/css/style.css`, `detavia-best-of/assets/js/main.js` (nieuw)
+
 ## 2026-06-16 — Concurrentieanalyse + "best-of" Detavia-pagina
 - **Wat is gebouwd/gewijzigd:**
   - 3 concurrenten geanalyseerd (joinuz.nl, daan.eu, wyzer.nl/werken-in/sociaal-domein): positionering, diensten, doelgroep, boodschap en vormgeving + screenshots.
