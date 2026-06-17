@@ -16,6 +16,19 @@ const stappen = [
   { t: "Kennismaking", d: "Je spreekt de kandidaat en bepaalt zelf de klik." },
   { t: "Aan de slag", d: "Wij regelen de rest, de professional begint." },
 ];
+const vakgebieden = [
+  { t: "Wmo", d: "Consulenten en kwaliteitsmedewerkers voor de Wet maatschappelijke ondersteuning." },
+  { t: "Jeugd", d: "Jeugdconsulenten en gedragswetenschappers met oog voor het gezin." },
+  { t: "Participatie", d: "Klantmanagers en re-integratieadviseurs richting werk en meedoen." },
+  { t: "Schuldhulpverlening", d: "Schuldhulpverleners en budgetcoaches voor financiële rust." },
+  { t: "Inkomen", d: "Inkomensconsulenten en handhavers binnen het sociaal domein." },
+  { t: "Beleid & advies", d: "Beleidsadviseurs en projectleiders voor het sociaal domein." },
+];
+const diensten = [
+  { t: "Detachering", d: "Onze professional, jouw opdracht. Wij blijven werkgever en ontzorgen volledig." },
+  { t: "Werving & selectie", d: "Wij vinden de juiste kandidaat voor een vaste plek in jouw team." },
+  { t: "Interim & projecten", d: "Snel ervaren capaciteit bij piek, uitval of een tijdelijk project." },
+];
 
 export default function VoorOpdrachtgevers() {
   return (
@@ -37,9 +50,9 @@ export default function VoorOpdrachtgevers() {
         </div>
       </section>
 
-      {/* WAAROM */}
-      <section className="mx-auto max-w-[1180px] px-5 py-20 sm:px-10">
-        <p className="text-xs font-bold uppercase tracking-[.16em] opacity-60">Waarom DetaVia</p>
+      {/* WAAROM / WAT WE DOEN */}
+      <section id="wat-we-doen" className="mx-auto max-w-[1180px] scroll-mt-24 px-5 py-20 sm:px-10">
+        <p className="text-xs font-bold uppercase tracking-[.16em] opacity-60">Wat we doen</p>
         <h2 className="display mt-2 text-3xl sm:text-4xl">Personeel zonder gedoe</h2>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {redenen.map((r) => (
@@ -64,6 +77,55 @@ export default function VoorOpdrachtgevers() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* VAKGEBIEDEN */}
+      <section id="vakgebieden" className="mx-auto max-w-[1180px] scroll-mt-24 px-5 py-20 sm:px-10">
+        <p className="text-xs font-bold uppercase tracking-[.16em] opacity-60">Vakgebieden</p>
+        <h2 className="display mt-2 text-3xl sm:text-4xl">Specialisten in het hele sociaal domein</h2>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {vakgebieden.map((v) => (
+            <div key={v.t} className="rounded-[22px] border-[1.5px] border-neutral-200 p-7">
+              <h3 className="text-xl font-bold">{v.t}</h3>
+              <p className="mt-2 text-muted">{v.d}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ONZE DIENSTEN */}
+      <section className="bg-neutral-50">
+        <div id="diensten" className="mx-auto max-w-[1180px] scroll-mt-24 px-5 py-20 sm:px-10">
+          <p className="text-xs font-bold uppercase tracking-[.16em] opacity-60">Onze diensten</p>
+          <h2 className="display mt-2 text-3xl sm:text-4xl">Op de manier die jou past</h2>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {diensten.map((d) => (
+              <div key={d.t} className="rounded-[22px] bg-white p-7 shadow-sm">
+                <h3 className="text-xl font-bold">{d.t}</h3>
+                <p className="mt-2 text-muted">{d.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CERTIFICERING & CAO */}
+      <section id="cao" className="mx-auto max-w-[1180px] scroll-mt-24 px-5 py-20 sm:px-10">
+        <div className="grid gap-10 md:grid-cols-2 md:items-center">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[.16em] opacity-60">Certificering &amp; CAO</p>
+            <h2 className="display mt-2 text-3xl sm:text-4xl">Kwaliteit en zekerheid</h2>
+            <p className="mt-4 max-w-[46ch] text-lg text-muted">Werken met DetaVia betekent werken volgens de regels van het vak. Onze professionals worden netjes en volgens cao beloond, en jij weet zeker dat alles goed geregeld is.</p>
+          </div>
+          <ul className="grid gap-3">
+            {["Beloning volgens de geldende cao", "Correcte contracten en verzekeringen", "Aandacht voor begeleiding en ontwikkeling", "Transparante tarieven, geen verrassingen"].map((p) => (
+              <li key={p} className="flex items-start gap-3 rounded-[18px] border-[1.5px] border-neutral-200 p-4">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-yellow text-sm font-extrabold">✓</span>
+                <span className="font-semibold">{p}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

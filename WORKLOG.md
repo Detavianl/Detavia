@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-18 - Mega-menu (Professionals + Opdrachtgevers) in DetaVia-stijl
+- **Wat is gebouwd/gewijzigd:**
+  - SiteHeader omgebouwd naar client-component met twee uitklapbare mega-menu's (hover/klik), geinspireerd op JoinUz maar in DetaVia-stijl: linker cobalt feature-blok met gele CTA + rechter lijst met omschrijvingen.
+  - "Professionals": Vacatures, Open sollicitatie, Verhalen & kennis, Over DetaVia.
+  - "Opdrachtgevers": Wat we doen, Vakgebieden, Onze diensten, Certificering & CAO, Contact (anchors naar /voor-opdrachtgevers + /contact).
+  - `/voor-opdrachtgevers` uitgebreid met secties + anchors: #wat-we-doen, #vakgebieden (6 vakgebieden), #diensten (detachering/werving/interim), #cao (certificering & cao met checklist). `scroll-mt-24` tegen de sticky header.
+- **Waarom:**
+  - Klant wil een uitklapmenu zoals JoinUz, met dezelfde soort secties maar op de DetaVia-manier, voor zowel professionals als opdrachtgevers.
+- **Geraakte bestanden:**
+  - `platform/src/components/SiteHeader.tsx` (herschreven), `platform/src/app/(public)/voor-opdrachtgevers/page.tsx` (nieuwe secties + anchors).
+
 ## 2026-06-18 - Live gezet op eigen Supabase + Vercel, stats-kleur aangepast
 - **Wat is gebouwd/gewijzigd:**
   - Supabase-project "Detavianl's Project" (EU) ingericht via de Management API: 13 migraties gedraaid (16 tabellen + storage-buckets blog/cvs), keys opgehaald, super-admin geseed (badr@workster.nl, super_admin).
