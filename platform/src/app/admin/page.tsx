@@ -34,6 +34,27 @@ export default async function Dashboard() {
         count("vacatures", (q) => q.eq("status", "open")),
       ]).catch(() => [0, 0, 0, 0, 0, 0, 0, 0]);
 
+  // Taken / opvolging: kandidaten met een volgende actie
+  let taken: { id: string; naam: string; actie: string; datum: string | null }[] = [];
+  if (isDemo()) {
+    taken = demoCandidates()
+      .filter((c: any) => c.volgende_actie)
+      .map((c: any) => ({ id: c.id, naam: c.naam, actie: c.volgende_actie, datum: c.volgende_actie_datum ?? null }));
+  } else {
+    try {
+      const supabase = await createClient();
+      const { data } = await supabase
+        .from("candidates")
+        .select("id, naam, volgende_actie, volgende_actie_datum")
+        .not("volgende_actie", "is", null)
+        .order("volgende_actie_datum", { ascending: true })
+        .limit(20);
+      taken = (data ?? []).map((c: any) => ({ id: c.id, naam: c.naam, actie: c.volgende_actie, datum: c.volgende_actie_datum }));
+    } catch { taken = []; }
+  }
+  taken.sort((a, b) => (a.datum ?? "9999").localeCompare(b.datum ?? "9999"));
+  const vandaag = new Date().toISOString().slice(0, 10);
+
   const cards = [
     { label: "Kandidaten", value: kandidaten, href: "/admin/kandidaten" },
     { label: "Nieuw in ATS", value: nieuw, href: "/admin/ats" },
@@ -57,6 +78,36 @@ export default async function Dashboard() {
           </Link>
         ))}
       </div>
+
+      <section className="mt-8 rounded-2xl border border-neutral-200 bg-white p-6">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-bold">Taken &amp; opvolging</h2>
+          <span className="rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-bold text-muted">{taken.length}</span>
+        </div>
+        {taken.length === 0 ? (
+          <p className="text-sm text-muted">Geen openstaande acties. Stel een volgende actie in op een kandidaat (Eigenaar &amp; opvolging).</p>
+        ) : (
+          <ul className="grid gap-2">
+            {taken.map((t) => {
+              const overdue = t.datum && t.datum < vandaag;
+              const today = t.datum === vandaag;
+              return (
+                <li key={t.id}>
+                  <Link href={`/admin/kandidaten/${t.id}`} className="flex items-center justify-between gap-4 rounded-xl border border-neutral-200 px-4 py-3 hover:border-cobalt">
+                    <span className="min-w-0">
+                      <span className="font-semibold">{t.actie}</span>
+                      <span className="ml-2 text-sm text-muted">· {t.naam}</span>
+                    </span>
+                    <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-bold ${overdue ? "bg-red-100 text-red-700" : today ? "bg-yellow text-black" : "bg-neutral-100 text-muted"}`}>
+                      {t.datum ?? "geen datum"}{overdue ? " · te laat" : today ? " · vandaag" : ""}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

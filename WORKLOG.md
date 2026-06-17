@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-17 - Taken/opvolging op dashboard, documenten-upload, layout-fix
+- **Wat is gebouwd/gewijzigd:**
+  - Documenten-sectie bij kandidaat: "CV's" -> "Documenten (cv's en meer)" met soort-keuze + uploadknop (server-action uploadDocument; demo onthoudt in geheugen). Migratie 0008 (soort op cvs).
+  - Dashboard "Taken & opvolging": lijst van kandidaten met een volgende actie, gesorteerd op datum, met "te laat" (rood) en "vandaag" (geel) markering en link naar de kandidaat. Maakt van Eigenaar & opvolging een echte to-do.
+  - Layout-fix: kandidaatdetail-raster van `1fr 340px` naar `minmax(0,1fr) 320px` + min-w-0, zodat de rechterkolom (Eigenaar & opvolging / Documenten) niet meer buiten het scherm valt.
+- **Waarom:**
+  - Gebruiker vroeg om documenten te kunnen toevoegen, of opvolging een to-do op het dashboard is, en of alles op het scherm past.
+- **Geraakte bestanden:**
+  - `platform/supabase/migrations/0008_documents.sql` (nieuw), `src/lib/demo-store.ts`, `src/app/admin/kandidaten/{actions.ts,[id]/page.tsx}`, `src/app/admin/page.tsx`, `src/lib/demo.ts`.
+
 ## 2026-06-17 - Splitsing: Activiteiten (wijzigingslog) / Contactmomenten / Notities
 - **Wat is gebouwd/gewijzigd:**
   - Bij zowel kandidaten als bedrijven de tracking opgesplitst in drie losse onderdelen:

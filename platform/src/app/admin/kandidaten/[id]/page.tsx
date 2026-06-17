@@ -71,8 +71,8 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
         <p className="mt-1 text-muted">{[c.huidige_functie, c.huidige_werkgever].filter(Boolean).join(" · ")}</p>
       )}
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_340px]">
-        <div className="grid gap-6">
+      <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="grid min-w-0 gap-6">
           <Section title="Profiel">
             <dl className="grid grid-cols-2 gap-3 text-sm">
               <Info label="E-mail" value={c.email} />
@@ -118,7 +118,7 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
           </Section>
         </div>
 
-        <div className="grid gap-6">
+        <div className="grid min-w-0 gap-6">
           <Section title="Eigenaar & opvolging">
             <FollowupForm id={c.id} eigenaar={c.eigenaar ?? ""} actie={c.volgende_actie ?? ""} datum={c.volgende_actie_datum ?? ""} team={team} demo={demo} />
           </Section>
