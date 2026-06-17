@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-17 - Layout-fix admin: rechterkolom past nu binnen het scherm
+- **Wat is gebouwd/gewijzigd:**
+  - Echte oorzaak van de overlopende rechterkolom verholpen: `min-w-0` toegevoegd aan de content-kolom (`flex-1`) van de admin-layout, zodat die kan krimpen en het binnenliggende raster niet naar rechts buiten beeld duwt. Aangevuld met `break-words`/`break-all` op profielwaarden (lange e-mail/LinkedIn-URL) en `minmax(0,1fr)` op het kandidaatdetail-raster.
+  - Geverifieerd met een ingelogde (demo-cookie via Chrome DevTools) screenshot op 1440px: rechterkolom (Eigenaar & opvolging / Documenten) valt nu volledig binnen beeld.
+- **Waarom:**
+  - Gebruiker meldde dat de rechterkolom nog steeds te ver naar rechts liep, en vroeg om het op te lossen en visueel te controleren.
+- **Geraakte bestanden:**
+  - `platform/src/app/admin/layout.tsx`, `src/app/admin/kandidaten/[id]/page.tsx`.
+
 ## 2026-06-17 - Contactmomenten: laatste 3 zichtbaar, rest scrollt
 - **Wat is gebouwd/gewijzigd:**
   - De contactmomenten-lijst krijgt een vaste maximale hoogte (max-h-56) met verticale scroll. Nieuwste staan bovenaan, dus de laatste ~3 zijn zichtbaar en oudere scrollen; de sectie duwt de rest van de pagina niet meer weg.

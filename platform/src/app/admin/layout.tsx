@@ -20,7 +20,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/" className="mt-1 block rounded-lg px-3 py-2 text-left text-sm font-semibold text-muted hover:bg-neutral-100">Naar de site</Link>
         </div>
       </aside>
-      <div className="flex-1 overflow-x-hidden">{children}</div>
+      <div className="min-w-0 flex-1 overflow-x-hidden">{children}</div>
     </div>
   );
 }

@@ -184,8 +184,8 @@ function Info({ label, value, link }: { label: string; value?: string | null; li
   return (
     <div>
       <dt className="text-xs uppercase tracking-wide text-muted">{label}</dt>
-      <dd className="font-semibold">
-        {value ? (link ? <a href={value} target="_blank" rel="noopener noreferrer" className="text-cobalt">{value}</a> : value) : "—"}
+      <dd className="break-words font-semibold">
+        {value ? (link ? <a href={value} target="_blank" rel="noopener noreferrer" className="break-all text-cobalt">{value}</a> : value) : "—"}
       </dd>
     </div>
   );
