@@ -24,7 +24,7 @@ export default async function Verhalen() {
   const posts = await loadPosts();
   return (
     <>
-      <section className="relative overflow-hidden bg-arctic">
+      <section className="relative overflow-hidden bg-cobalt text-white">
         <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-10">
           <p className="text-sm font-semibold opacity-70">Home / Verhalen</p>
           <h1 className="display mt-3 text-4xl sm:text-6xl">Verhalen uit het sociaal domein</h1>

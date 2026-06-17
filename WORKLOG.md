@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-18 - Live gezet op eigen Supabase + Vercel, stats-kleur aangepast
+- **Wat is gebouwd/gewijzigd:**
+  - Supabase-project "Detavianl's Project" (EU) ingericht via de Management API: 13 migraties gedraaid (16 tabellen + storage-buckets blog/cvs), keys opgehaald, super-admin geseed (badr@workster.nl, super_admin).
+  - Auth Site URL + redirect-allowlist gezet op https://detavia.vercel.app.
+  - Site is live op https://detavia.vercel.app (eigen Detavia-Vercel, via GitHub auto-deploy). Geverifieerd: home/voor-opdrachtgevers/vacatures = 200, login toont echt formulier (demo uit).
+  - Home: alle vier de statistiek-cijfers nu lichtblauw (arctic) i.p.v. afwisselend geel/blauw.
+- **Waarom:**
+  - Klant gaat live met eigen infra; gebruiker wilde de cijfers in één kleur (lichtblauw).
+- **Geraakte bestanden:**
+  - `platform/src/app/(public)/page.tsx` (stats-kleur). Infra-config (Supabase migraties/auth, Vercel env) buiten de repo; `platform/.env.local` lokaal gevuld (gitignored).
+
 ## 2026-06-17 - Demo dichtgetimmerd voor go-live
 - **Wat is gebouwd/gewijzigd:**
   - Loginpagina (`src/app/login/page.tsx`): de drie demo-login-knoppen (beheerder/professional/opdrachtgever) verwijderd; toont nu altijd het echte e-mail/wachtwoord-formulier.

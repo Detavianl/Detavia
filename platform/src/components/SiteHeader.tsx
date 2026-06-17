@@ -18,7 +18,7 @@ export default function SiteHeader() {
         </Link>
         <nav className="hidden items-center gap-7 font-semibold md:flex">
           {nav.map((n) => (
-            <Link key={n.href} href={n.href} className="border-b-2 border-transparent py-1.5 hover:border-cobalt">
+            <Link key={n.href} href={n.href} className="whitespace-nowrap border-b-2 border-transparent py-1.5 hover:border-cobalt">
               {n.label}
             </Link>
           ))}

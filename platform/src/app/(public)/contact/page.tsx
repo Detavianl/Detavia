@@ -21,7 +21,7 @@ export default function Contact() {
       </section>
 
       {/* SPLIT-KEUZE */}
-      <section className="mx-auto -mt-10 max-w-[1180px] px-5 sm:px-10">
+      <section className="relative z-10 mx-auto -mt-10 max-w-[1180px] px-5 sm:px-10">
         <div className="grid gap-5 md:grid-cols-2">
           <Link href="/vacatures" className="group flex items-center justify-between gap-4 rounded-[22px] border-[1.5px] border-neutral-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:border-cobalt">
             <div>

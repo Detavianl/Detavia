@@ -1,5 +1,12 @@
 import Link from "next/link";
 
+export const metadata = {
+  title: "Detacheren in het sociaal domein",
+  description:
+    "DetaVia verbindt professionals in Wmo, Jeugd, Participatie en Schuldhulpverlening met opdrachten die passen. Bekijk vacatures of vraag een professional aan.",
+  alternates: { canonical: "/" },
+};
+
 const featured = [
   { tag: "Wmo", titel: "Wmo-consulent", meta: "Almere · 32-36 uur", tekst: "Help inwoners zo zelfstandig mogelijk te blijven en zorg op maat te organiseren." },
   { tag: "Jeugd", titel: "Jeugdconsulent", meta: "Amsterdam · 28-36 uur", tekst: "Begeleid gezinnen naar passende jeugdhulp en werk aan perspectief voor kinderen." },
@@ -54,9 +61,9 @@ export default function Home() {
       {/* STATS */}
       <section className="mt-20 bg-black text-white">
         <div className="mx-auto grid max-w-[1180px] grid-cols-2 gap-6 px-5 py-12 text-center sm:px-10 md:grid-cols-4">
-          {[["100%", "Focus op het sociaal domein", false], ["100+", "Professionals geplaatst", true], ["50+", "Gemeenten & organisaties", false], ["9,5", "Gemiddelde beoordeling", true]].map(([n, l, blue]) => (
-            <div key={l as string}>
-              <div className={`text-4xl font-extrabold ${blue ? "text-arctic" : "text-yellow"}`}>{n}</div>
+          {[["100%", "Focus op het sociaal domein"], ["100+", "Professionals geplaatst"], ["50+", "Gemeenten & organisaties"], ["9,5", "Gemiddelde beoordeling"]].map(([n, l]) => (
+            <div key={l}>
+              <div className="text-4xl font-extrabold text-arctic">{n}</div>
               <div className="mt-2 text-sm opacity-85">{l}</div>
             </div>
           ))}
