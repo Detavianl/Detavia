@@ -5,10 +5,10 @@ import { VAKGEBIEDEN } from "@/lib/ats";
 type V = {
   id?: string; titel?: string; vakgebied?: string; plaats?: string;
   uren_min?: number; uren_max?: number; salaris_min?: number | null; salaris_max?: number | null;
-  type?: string; top?: boolean; omschrijving?: string; status?: string;
+  type?: string; top?: boolean; omschrijving?: string; status?: string; company_id?: string | null;
 };
 
-export default function VacatureForm({ vacature }: { vacature?: V }) {
+export default function VacatureForm({ vacature, companies = [] }: { vacature?: V; companies?: { id: string; naam: string }[] }) {
   const v = vacature ?? {};
   return (
     <div className="p-8">
@@ -24,6 +24,11 @@ export default function VacatureForm({ vacature }: { vacature?: V }) {
             </select></label>
           <Field label="Plaats" name="plaats" defaultValue={v.plaats} />
         </div>
+        <label className="grid gap-1.5"><span className="text-sm font-bold">Bedrijf (opdrachtgever)</span>
+          <select name="company_id" defaultValue={v.company_id ?? ""} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+            <option value="">— geen / nog onbekend —</option>
+            {companies.map((c) => <option key={c.id} value={c.id}>{c.naam}</option>)}
+          </select></label>
         <div className="grid gap-5 sm:grid-cols-4">
           <Field label="Uren min" name="uren_min" type="number" defaultValue={v.uren_min ?? 32} />
           <Field label="Uren max" name="uren_max" type="number" defaultValue={v.uren_max ?? 36} />

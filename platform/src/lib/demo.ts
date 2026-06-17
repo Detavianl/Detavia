@@ -57,9 +57,11 @@ export const DEMO_POSTS = [
 ];
 
 export const DEMO_VACATURES_ADMIN = [
-  { id: "v1", titel: "Wmo-consulent", vakgebied: "wmo", plaats: "Almere", status: "open", top: true, uren_min: 32, uren_max: 36, salaris_min: 3300, salaris_max: 4600, type: "Detachering", omschrijving: "", created_at: "2026-06-12" },
-  { id: "v2", titel: "Jeugdconsulent", vakgebied: "jeugd", plaats: "Amsterdam", status: "open", top: true, uren_min: 28, uren_max: 36, salaris_min: 3300, salaris_max: 4600, type: "Detachering", omschrijving: "", created_at: "2026-06-11" },
-  { id: "v3", titel: "Budgetcoach", vakgebied: "schuld", plaats: "Tilburg", status: "gesloten", top: false, uren_min: 16, uren_max: 24, salaris_min: 2700, salaris_max: 3700, type: "Detachering", omschrijving: "", created_at: "2026-05-30" },
+  { id: "v1", titel: "Wmo-consulent", vakgebied: "wmo", plaats: "Almere", company_id: "co1", status: "open", top: true, uren_min: 32, uren_max: 36, salaris_min: 3300, salaris_max: 4600, type: "Detachering", omschrijving: "", created_at: "2026-06-12" },
+  { id: "v4", titel: "Klantmanager Participatie", vakgebied: "participatie", plaats: "Almere", company_id: "co1", status: "open", top: false, uren_min: 32, uren_max: 40, salaris_min: 3300, salaris_max: 4600, type: "Detachering", omschrijving: "", created_at: "2026-06-09" },
+  { id: "v2", titel: "Jeugdconsulent", vakgebied: "jeugd", plaats: "Utrecht", company_id: "co2", status: "open", top: true, uren_min: 28, uren_max: 36, salaris_min: 3300, salaris_max: 4600, type: "Detachering", omschrijving: "", created_at: "2026-06-11" },
+  { id: "v5", titel: "Adviseur Sociaal Domein", vakgebied: "beleid", plaats: "Rotterdam", company_id: "co3", status: "open", top: false, uren_min: 32, uren_max: 40, salaris_min: 4000, salaris_max: 5800, type: "Detachering", omschrijving: "", created_at: "2026-06-02" },
+  { id: "v3", titel: "Budgetcoach", vakgebied: "schuld", plaats: "Tilburg", company_id: null, status: "gesloten", top: false, uren_min: 16, uren_max: 24, salaris_min: 2700, salaris_max: 3700, type: "Detachering", omschrijving: "", created_at: "2026-05-30" },
 ];
 
 export const DEMO_MESSAGES = [

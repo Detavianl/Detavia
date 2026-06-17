@@ -30,6 +30,7 @@ export async function saveVacature(formData: FormData) {
     top: formData.get("top") === "on",
     omschrijving: String(formData.get("omschrijving") ?? "").trim(),
     status: String(formData.get("status") ?? "open"),
+    company_id: String(formData.get("company_id") ?? "") || null,
   };
 
   if (id) {

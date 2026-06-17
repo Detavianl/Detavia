@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-17 - Bedrijfsdetail als overzichtskaart (contacten + vacatures + deals)
+- **Wat is gebouwd/gewijzigd:**
+  - Vacatures gekoppeld aan een opdrachtgever (bedrijf): kolom `company_id` op vacatures (migratie 0006); bedrijf-keuze toegevoegd aan het vacatureformulier (nieuw + bewerken laden de bedrijven).
+  - Bedrijfsdetail herontworpen tot één overzichtskaart: kop met type/status/plaats/website + kerncijfers (contacten, open vacatures, pipeline-waarde), en secties Contactpersonen, Vacatures (gekoppeld, klikbaar) en Deals.
+  - Demo-vacatures aan demo-bedrijven gekoppeld (en een paar extra zodat bedrijven meerdere vacatures hebben).
+- **Waarom:**
+  - Gebruiker wil bij Bedrijven een overzichtelijke kaart met alle gekoppelde data: contactpersonen én vacatures van dat bedrijf.
+- **Geraakte bestanden:**
+  - `platform/supabase/migrations/0006_vacature_company.sql` (nieuw), `src/app/admin/crm/bedrijven/[id]/page.tsx`, `src/components/VacatureForm.tsx`, `src/app/admin/vacatures/{nieuw,[id]}/page.tsx`, `src/app/admin/vacatures/actions.ts`, `src/lib/demo.ts`.
+
 ## 2026-06-17 - Nieuwe kandidaat komt terug in talentpool (demo-geheugen)
 - **Wat is gebouwd/gewijzigd:**
   - In demo-modus sloeg /admin/kandidaten/nieuw niets op (no-op), waardoor een nieuwe kandidaat niet terugkwam. Nu een in-memory demo-store (`src/lib/demo-store.ts`): createCandidate bewaart alle velden + maakt een ATS-kaart in 'nieuw'. Talentpool, kandidaatdetail, ATS, dashboard en funnel lezen uit die store, dus een nieuwe kandidaat verschijnt overal mét alle ingevulde info.
