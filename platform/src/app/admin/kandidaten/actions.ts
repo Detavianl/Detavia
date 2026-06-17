@@ -3,9 +3,11 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
+import { isDemo } from "@/lib/demo";
 
 export async function createCandidate(formData: FormData) {
   const admin = await requireAdmin();
+  if (isDemo()) redirect("/admin/kandidaten"); // demo: niet opgeslagen
   const supabase = await createClient();
   const naam = String(formData.get("naam") ?? "").trim();
   if (!naam) throw new Error("Naam is verplicht");
@@ -31,6 +33,7 @@ export async function createCandidate(formData: FormData) {
 
 export async function updateCandidateNote(id: string, notitie: string) {
   await requireAdmin();
+  if (isDemo()) return;
   const supabase = await createClient();
   const { error } = await supabase.from("candidates").update({ notitie }).eq("id", id);
   if (error) throw new Error(error.message);
@@ -40,6 +43,7 @@ export async function updateCandidateNote(id: string, notitie: string) {
 /** Tijdelijke (signed) download-URL voor een cv in de privé-bucket. */
 export async function cvSignedUrl(storage_path: string): Promise<string | null> {
   await requireAdmin();
+  if (isDemo()) return null;
   const supabase = await createClient();
   const { data } = await supabase.storage.from("cvs").createSignedUrl(storage_path, 60 * 10);
   return data?.signedUrl ?? null;

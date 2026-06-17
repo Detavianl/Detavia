@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { isDemo, DEMO_CANDIDATES, DEMO_APPLICATIONS, DEMO_POSTS, DEMO_MESSAGES, DEMO_VACATURES_ADMIN } from "@/lib/demo";
 
 async function count(table: string, filter?: (q: any) => any) {
   const supabase = await createClient();
@@ -10,16 +11,27 @@ async function count(table: string, filter?: (q: any) => any) {
 }
 
 export default async function Dashboard() {
-  const [kandidaten, nieuw, gesprek, geplaatst, concepten, gepubliceerd, ongelezen, openVac] = await Promise.all([
-    count("candidates"),
-    count("applications", (q) => q.eq("stage", "nieuw")),
-    count("applications", (q) => q.eq("stage", "gesprek")),
-    count("applications", (q) => q.eq("stage", "geplaatst")),
-    count("blog_posts", (q) => q.eq("status", "concept")),
-    count("blog_posts", (q) => q.eq("status", "gepubliceerd")),
-    count("contact_messages", (q) => q.eq("gelezen", false)),
-    count("vacatures", (q) => q.eq("status", "open")),
-  ]).catch(() => [0, 0, 0, 0, 0, 0, 0, 0]);
+  const [kandidaten, nieuw, gesprek, geplaatst, concepten, gepubliceerd, ongelezen, openVac] = isDemo()
+    ? [
+        DEMO_CANDIDATES.length,
+        DEMO_APPLICATIONS.filter((a) => a.stage === "nieuw").length,
+        DEMO_APPLICATIONS.filter((a) => a.stage === "gesprek").length,
+        DEMO_APPLICATIONS.filter((a) => a.stage === "geplaatst").length,
+        DEMO_POSTS.filter((p) => p.status === "concept").length,
+        DEMO_POSTS.filter((p) => p.status === "gepubliceerd").length,
+        DEMO_MESSAGES.filter((m) => !m.gelezen).length,
+        DEMO_VACATURES_ADMIN.filter((v) => v.status === "open").length,
+      ]
+    : await Promise.all([
+        count("candidates"),
+        count("applications", (q) => q.eq("stage", "nieuw")),
+        count("applications", (q) => q.eq("stage", "gesprek")),
+        count("applications", (q) => q.eq("stage", "geplaatst")),
+        count("blog_posts", (q) => q.eq("status", "concept")),
+        count("blog_posts", (q) => q.eq("status", "gepubliceerd")),
+        count("contact_messages", (q) => q.eq("gelezen", false)),
+        count("vacatures", (q) => q.eq("status", "open")),
+      ]).catch(() => [0, 0, 0, 0, 0, 0, 0, 0]);
 
   const cards = [
     { label: "Kandidaten", value: kandidaten, href: "/admin/kandidaten" },

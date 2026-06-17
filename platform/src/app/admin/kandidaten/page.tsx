@@ -1,16 +1,22 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { VAKGEBIEDEN } from "@/lib/ats";
+import { isDemo, DEMO_CANDIDATES } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
 export default async function KandidatenPage() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("candidates")
-    .select("id, naam, email, woonplaats, vakgebied, bron, created_at")
-    .order("created_at", { ascending: false });
-  const candidates = data ?? [];
+  let candidates: any[];
+  if (isDemo()) {
+    candidates = DEMO_CANDIDATES;
+  } else {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("candidates")
+      .select("id, naam, email, woonplaats, vakgebied, bron, created_at")
+      .order("created_at", { ascending: false });
+    candidates = data ?? [];
+  }
 
   return (
     <div className="p-8">

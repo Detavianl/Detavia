@@ -4,20 +4,30 @@ import { createClient } from "@/lib/supabase/server";
 import { VAKGEBIEDEN, STAGES } from "@/lib/ats";
 import CvButton from "@/components/CvButton";
 import NoteForm from "@/components/NoteForm";
+import { isDemo, DEMO_CANDIDATES, DEMO_APPLICATIONS } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
 export default async function KandidaatDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const supabase = await createClient();
 
-  const { data: c } = await supabase.from("candidates").select("*").eq("id", id).single();
-  if (!c) notFound();
-
-  const [{ data: cvs }, { data: apps }] = await Promise.all([
-    supabase.from("cvs").select("*").eq("candidate_id", id).order("uploaded_at", { ascending: false }),
-    supabase.from("applications").select("id, stage, vacature:vacatures(titel)").eq("candidate_id", id),
-  ]);
+  let c: any, cvs: any[] = [], apps: any[] = [];
+  if (isDemo()) {
+    c = DEMO_CANDIDATES.find((x) => x.id === id);
+    if (!c) notFound();
+    apps = DEMO_APPLICATIONS.filter((a) => a.candidate?.id === id).map((a) => ({ id: a.id, stage: a.stage, vacature: a.vacature }));
+  } else {
+    const supabase = await createClient();
+    const res = await supabase.from("candidates").select("*").eq("id", id).single();
+    c = res.data;
+    if (!c) notFound();
+    const [cvRes, appRes] = await Promise.all([
+      supabase.from("cvs").select("*").eq("candidate_id", id).order("uploaded_at", { ascending: false }),
+      supabase.from("applications").select("id, stage, vacature:vacatures(titel)").eq("candidate_id", id),
+    ]);
+    cvs = cvRes.data ?? [];
+    apps = appRes.data ?? [];
+  }
 
   const stageLabel = (k: string) => STAGES.find((s) => s.key === k)?.label ?? k;
 

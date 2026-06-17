@@ -1,17 +1,22 @@
 import { createClient } from "@/lib/supabase/server";
 import AtsBoard from "@/components/AtsBoard";
 import type { AtsCard } from "@/lib/ats";
+import { isDemo, DEMO_APPLICATIONS } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
 export default async function AtsPage() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("applications")
-    .select("id, stage, positie, notitie, candidate:candidates(id, naam, vakgebied, woonplaats), vacature:vacatures(titel)")
-    .order("positie", { ascending: true });
-
-  const cards = (data ?? []) as unknown as AtsCard[];
+  let cards: AtsCard[];
+  if (isDemo()) {
+    cards = DEMO_APPLICATIONS;
+  } else {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("applications")
+      .select("id, stage, positie, notitie, candidate:candidates(id, naam, vakgebied, woonplaats), vacature:vacatures(titel)")
+      .order("positie", { ascending: true });
+    cards = (data ?? []) as unknown as AtsCard[];
+  }
 
   return (
     <div className="p-8">

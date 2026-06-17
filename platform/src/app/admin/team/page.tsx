@@ -2,14 +2,20 @@ import { requireRole } from "@/lib/admin-context";
 import { createClient } from "@/lib/supabase/server";
 import { inviteTeamMember } from "./actions";
 import RoleSelect from "@/components/RoleSelect";
+import { isDemo, DEMO_TEAM } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
 export default async function TeamPage() {
   await requireRole("super_admin");
-  const supabase = await createClient();
-  const { data } = await supabase.from("admin_users").select("user_id, naam, role, created_at").order("created_at");
-  const leden = data ?? [];
+  let leden: any[];
+  if (isDemo()) {
+    leden = DEMO_TEAM;
+  } else {
+    const supabase = await createClient();
+    const { data } = await supabase.from("admin_users").select("user_id, naam, role, created_at").order("created_at");
+    leden = data ?? [];
+  }
 
   return (
     <div className="p-8">

@@ -1,12 +1,18 @@
 import { createClient } from "@/lib/supabase/server";
 import GelezenToggle from "@/components/GelezenToggle";
+import { isDemo, DEMO_MESSAGES } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
 export default async function Berichten() {
-  const supabase = await createClient();
-  const { data } = await supabase.from("contact_messages").select("*").order("created_at", { ascending: false });
-  const berichten = data ?? [];
+  let berichten: any[];
+  if (isDemo()) {
+    berichten = DEMO_MESSAGES;
+  } else {
+    const supabase = await createClient();
+    const { data } = await supabase.from("contact_messages").select("*").order("created_at", { ascending: false });
+    berichten = data ?? [];
+  }
 
   return (
     <div className="p-8">

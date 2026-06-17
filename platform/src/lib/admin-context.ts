@@ -1,11 +1,19 @@
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { isDemo, DEMO_ADMIN } from "@/lib/demo";
 
 export type AdminRole = "super_admin" | "admin" | "recruiter";
 export type AdminUser = { user_id: string; naam: string; role: AdminRole; email: string };
 
+export const DEMO_COOKIE = "detavia_demo";
+
 /** Haalt de ingelogde admin op, of null. */
 export async function getAdmin(): Promise<AdminUser | null> {
+  if (isDemo()) {
+    const jar = await cookies();
+    return jar.get(DEMO_COOKIE)?.value === "1" ? DEMO_ADMIN : null;
+  }
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
@@ -21,12 +29,11 @@ export async function getAdmin(): Promise<AdminUser | null> {
 /** Vereist een ingelogde admin; redirect naar /login of /geen-toegang. */
 export async function requireAdmin(): Promise<AdminUser> {
   const admin = await getAdmin();
-  if (!admin) {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    redirect(user ? "/geen-toegang" : "/login");
-  }
-  return admin!;
+  if (admin) return admin;
+  if (isDemo()) redirect("/login");
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  redirect(user ? "/geen-toegang" : "/login");
 }
 
 /** Vereist een specifieke rol (super_admin > admin > recruiter). */

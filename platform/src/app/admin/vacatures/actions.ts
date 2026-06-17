@@ -4,9 +4,11 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
 import { slugify } from "@/lib/blog";
+import { isDemo } from "@/lib/demo";
 
 export async function saveVacature(formData: FormData) {
   await requireAdmin();
+  if (isDemo()) redirect("/admin/vacatures");
   const supabase = await createClient();
   const id = String(formData.get("id") ?? "").trim();
   const titel = String(formData.get("titel") ?? "").trim();
@@ -45,6 +47,7 @@ export async function saveVacature(formData: FormData) {
 
 export async function deleteVacature(id: string) {
   await requireAdmin();
+  if (isDemo()) return;
   const supabase = await createClient();
   const { error } = await supabase.from("vacatures").delete().eq("id", id);
   if (error) throw new Error(error.message);

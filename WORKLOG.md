@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-17 - Demo-modus voor het beheer (inloggen zonder Supabase)
+- **Wat is gebouwd/gewijzigd:**
+  - Demo-modus: zolang Supabase niet gekoppeld is (anon key leeg/replace-me), draait het beheer op voorbeelddata. Login toont een knop "Inloggen op demo-account" die een httpOnly demo-cookie zet; `requireAdmin`/`requireRole` herkennen die cookie en geven een demo-super-admin.
+  - Demo-data (`src/lib/demo.ts`): kandidaten, ATS-kaarten over alle stages, blogartikelen, vacatures, contactberichten, team. Alle admin-pagina's tonen die data in demo (dashboard, ats, kandidaten + detail, blog, vacatures, berichten, team).
+  - Alle wijzig-acties zijn demo-veilig gemaakt (no-op): drag in ATS blijft in beeld, maar niets wordt opgeslagen. Logout wist de demo-cookie.
+  - Geverifieerd: /login toont demo, /admin met cookie = 200 (dashboard + alle subpagina's), zonder cookie = redirect naar /login. Typecheck groen.
+- **Waarom:**
+  - Gebruiker wil het beheer eerst bekijken/uitproberen zonder Supabase te koppelen.
+- **Geraakte bestanden:**
+  - `platform/src/lib/demo.ts` (nieuw), `src/lib/admin-context.ts`, `src/app/login/page.tsx` + `login/actions.ts` (nieuw), `src/components/LogoutButton.tsx`, alle `src/app/admin/**/page.tsx` + `**/actions.ts`.
+
 ## 2026-06-17 - Backend afgebouwd: admin, ATS, blog, cv's, publieke formulieren
 - **Wat is gebouwd/gewijzigd:**
   - Auth: login (`/login`), logout, `/geen-toegang`, admin-shell met zijbalk + rolcheck, dashboard met kerncijfers.

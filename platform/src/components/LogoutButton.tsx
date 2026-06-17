@@ -1,10 +1,17 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { logoutDemo } from "@/app/login/actions";
+
+const DEMO = (() => {
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  return !key || key === "replace-me";
+})();
 
 export default function LogoutButton() {
   const router = useRouter();
   async function logout() {
+    if (DEMO) { await logoutDemo(); return; }
     await createClient().auth.signOut();
     router.push("/login");
     router.refresh();

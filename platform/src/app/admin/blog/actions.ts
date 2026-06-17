@@ -4,9 +4,11 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
 import { slugify, sanitizeBlog } from "@/lib/blog";
+import { isDemo } from "@/lib/demo";
 
 export async function savePost(formData: FormData) {
   const admin = await requireAdmin();
+  if (isDemo()) redirect("/admin/blog");
   const supabase = await createClient();
   const id = String(formData.get("id") ?? "").trim();
   const titel = String(formData.get("titel") ?? "").trim();
@@ -44,6 +46,7 @@ export async function savePost(formData: FormData) {
 
 export async function deletePost(id: string) {
   await requireAdmin();
+  if (isDemo()) return;
   const supabase = await createClient();
   const { error } = await supabase.from("blog_posts").delete().eq("id", id);
   if (error) throw new Error(error.message);

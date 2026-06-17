@@ -2,13 +2,19 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { VAKGEBIEDEN } from "@/lib/ats";
 import DeleteVacatureButton from "@/components/DeleteVacatureButton";
+import { isDemo, DEMO_VACATURES_ADMIN } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
 export default async function VacaturesAdmin() {
-  const supabase = await createClient();
-  const { data } = await supabase.from("vacatures").select("id, titel, vakgebied, plaats, status, top").order("created_at", { ascending: false });
-  const vacatures = data ?? [];
+  let vacatures: any[];
+  if (isDemo()) {
+    vacatures = DEMO_VACATURES_ADMIN;
+  } else {
+    const supabase = await createClient();
+    const { data } = await supabase.from("vacatures").select("id, titel, vakgebied, plaats, status, top").order("created_at", { ascending: false });
+    vacatures = data ?? [];
+  }
 
   return (
     <div className="p-8">

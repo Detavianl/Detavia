@@ -1,16 +1,22 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import DeletePostButton from "@/components/DeletePostButton";
+import { isDemo, DEMO_POSTS } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
 export default async function BlogAdmin() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("blog_posts")
-    .select("id, titel, categorie, status, updated_at")
-    .order("updated_at", { ascending: false });
-  const posts = data ?? [];
+  let posts: any[];
+  if (isDemo()) {
+    posts = DEMO_POSTS;
+  } else {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("blog_posts")
+      .select("id, titel, categorie, status, updated_at")
+      .order("updated_at", { ascending: false });
+    posts = data ?? [];
+  }
 
   return (
     <div className="p-8">

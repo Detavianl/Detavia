@@ -3,9 +3,11 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireRole } from "@/lib/admin-context";
+import { isDemo } from "@/lib/demo";
 
 export async function inviteTeamMember(formData: FormData) {
   await requireRole("super_admin");
+  if (isDemo()) return;
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const naam = String(formData.get("naam") ?? "").trim();
   const role = String(formData.get("role") ?? "recruiter");
@@ -28,6 +30,7 @@ export async function inviteTeamMember(formData: FormData) {
 
 export async function updateMemberRole(user_id: string, role: string) {
   await requireRole("super_admin");
+  if (isDemo()) return;
   const supabase = await createClient();
   await supabase.from("admin_users").update({ role }).eq("user_id", user_id);
   revalidatePath("/admin/team");
@@ -35,6 +38,7 @@ export async function updateMemberRole(user_id: string, role: string) {
 
 export async function removeMember(user_id: string) {
   await requireRole("super_admin");
+  if (isDemo()) return;
   const supabase = await createClient();
   await supabase.from("admin_users").delete().eq("user_id", user_id);
   revalidatePath("/admin/team");
