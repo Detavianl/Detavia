@@ -137,16 +137,14 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
               {cvs.length === 0 && <p className="text-sm text-muted">Nog geen documenten.</p>}
             </div>
 
-            <form action={uploadDocument.bind(null, c.id)} className="mt-4 grid gap-2 border-t border-neutral-100 pt-4">
-              <div className="flex flex-wrap gap-2">
-                <select name="soort" className="rounded-lg border-2 border-neutral-200 px-2 py-2 text-sm font-semibold">
-                  <option value="cv">Cv</option><option value="motivatie">Motivatiebrief</option>
-                  <option value="diploma">Diploma</option><option value="referentie">Referentie</option>
-                  <option value="id">ID-bewijs</option><option value="overig">Overig</option>
-                </select>
-                <input name="bestand" type="file" required className="flex-1 rounded-lg border-2 border-neutral-200 px-2 py-1.5 text-sm" />
-              </div>
-              <button className="justify-self-start rounded-full bg-cobalt px-4 py-2 text-sm font-bold text-white">+ Document toevoegen</button>
+            <form action={uploadDocument.bind(null, c.id)} className="mt-4 flex flex-col gap-2 border-t border-neutral-100 pt-4">
+              <select name="soort" className="w-full rounded-lg border-2 border-neutral-200 px-2 py-2 text-sm font-semibold">
+                <option value="cv">Cv</option><option value="motivatie">Motivatiebrief</option>
+                <option value="diploma">Diploma</option><option value="referentie">Referentie</option>
+                <option value="id">ID-bewijs</option><option value="overig">Overig</option>
+              </select>
+              <input name="bestand" type="file" required className="w-full min-w-0 rounded-lg border-2 border-neutral-200 px-2 py-1.5 text-sm file:mr-2 file:rounded file:border-0 file:bg-neutral-100 file:px-2 file:py-1 file:text-xs file:font-semibold" />
+              <button className="mt-1 self-start rounded-full bg-cobalt px-4 py-2 text-sm font-bold text-white">+ Document toevoegen</button>
             </form>
           </Section>
 

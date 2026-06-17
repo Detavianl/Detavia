@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-17 - Documenten-uploadveld past nu binnen de kaart
+- **Wat is gebouwd/gewijzigd:**
+  - De native file-input in de Documenten-sectie stak nog net buiten de kaart (eigen minimale breedte). Formulier op een kolom gezet, input `w-full min-w-0` + nette `file:`-knopstyling. Geverifieerd op 1900px: 0 elementen buiten beeld.
+- **Waarom:**
+  - Gebruiker wees op het "Bestand kiezen"-veld dat nog overliep.
+- **Geraakte bestanden:**
+  - `platform/src/app/admin/kandidaten/[id]/page.tsx`.
+
 ## 2026-06-17 - Echte fix overlopende rechterkolom (grid -> flex-col)
 - **Wat is gebouwd/gewijzigd:**
   - Via Chrome DevTools (ingelogd, 1900px) de exacte oorzaak gemeten: de kolom-stapels van het kandidaatdetail stonden als `grid gap-6` zonder kolomdefinitie, waardoor de impliciete auto-kolom zo breed werd als de inhoud (419px) i.p.v. de container (320px); de sectie liep daardoor buiten beeld (weggeknipt door overflow-x-hidden).
