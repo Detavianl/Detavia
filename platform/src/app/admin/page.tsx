@@ -15,7 +15,7 @@ export default async function Dashboard() {
     ? [
         DEMO_CANDIDATES.length,
         DEMO_APPLICATIONS.filter((a) => a.stage === "nieuw").length,
-        DEMO_APPLICATIONS.filter((a) => a.stage === "gesprek").length,
+        DEMO_APPLICATIONS.filter((a) => a.stage === "kennismaking").length,
         DEMO_APPLICATIONS.filter((a) => a.stage === "geplaatst").length,
         DEMO_POSTS.filter((p) => p.status === "concept").length,
         DEMO_POSTS.filter((p) => p.status === "gepubliceerd").length,
@@ -36,7 +36,7 @@ export default async function Dashboard() {
   const cards = [
     { label: "Kandidaten", value: kandidaten, href: "/admin/kandidaten" },
     { label: "Nieuw in ATS", value: nieuw, href: "/admin/ats" },
-    { label: "Gesprekken", value: gesprek, href: "/admin/ats" },
+    { label: "Kennismaking", value: gesprek, href: "/admin/ats" },
     { label: "Geplaatst", value: geplaatst, href: "/admin/ats" },
     { label: "Open vacatures", value: openVac, href: "/admin/vacatures" },
     { label: "Blog concepten", value: concepten, href: "/admin/blog" },

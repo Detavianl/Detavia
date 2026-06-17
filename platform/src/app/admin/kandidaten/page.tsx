@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { VAKGEBIEDEN } from "@/lib/ats";
+import { VAKGEBIEDEN, KANDIDAAT_STATUS } from "@/lib/ats";
 import { isDemo, DEMO_CANDIDATES } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +13,7 @@ export default async function KandidatenPage() {
     const supabase = await createClient();
     const { data } = await supabase
       .from("candidates")
-      .select("id, naam, email, woonplaats, vakgebied, bron, created_at")
+      .select("id, naam, huidige_functie, vakgebied, niveau, status, tarief_min, tarief_max, rating, bron, created_at")
       .order("created_at", { ascending: false });
     candidates = data ?? [];
   }
@@ -32,22 +32,24 @@ export default async function KandidatenPage() {
         <table className="w-full text-left text-sm">
           <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-muted">
             <tr>
-              <th className="px-5 py-3">Naam</th><th className="px-5 py-3">Vakgebied</th>
-              <th className="px-5 py-3">Woonplaats</th><th className="px-5 py-3">Bron</th>
+              <th className="px-5 py-3">Naam</th><th className="px-5 py-3">Niveau</th><th className="px-5 py-3">Vakgebied</th>
+              <th className="px-5 py-3">Status</th><th className="px-5 py-3">Tarief</th><th className="px-5 py-3">Rating</th>
             </tr>
           </thead>
           <tbody>
             {candidates.map((c) => (
               <tr key={c.id} className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50">
                 <td className="px-5 py-3"><Link href={`/admin/kandidaten/${c.id}`} className="font-bold text-cobalt">{c.naam}</Link>
-                  <div className="text-xs text-muted">{c.email}</div></td>
+                  <div className="text-xs text-muted">{c.huidige_functie || ""}</div></td>
+                <td className="px-5 py-3 capitalize">{c.niveau || "—"}</td>
                 <td className="px-5 py-3">{c.vakgebied ? VAKGEBIEDEN[c.vakgebied] ?? c.vakgebied : "—"}</td>
-                <td className="px-5 py-3">{c.woonplaats || "—"}</td>
-                <td className="px-5 py-3"><span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-semibold">{c.bron}</span></td>
+                <td className="px-5 py-3"><span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-semibold">{KANDIDAAT_STATUS[c.status] ?? c.status ?? "—"}</span></td>
+                <td className="px-5 py-3">{c.tarief_min || c.tarief_max ? `€ ${c.tarief_min ?? "?"}-${c.tarief_max ?? "?"}` : "—"}</td>
+                <td className="px-5 py-3 text-yellow-500">{"★".repeat(c.rating ?? 0)}</td>
               </tr>
             ))}
             {candidates.length === 0 && (
-              <tr><td colSpan={4} className="px-5 py-10 text-center text-muted">Nog geen kandidaten. Voeg er handmatig een toe of wacht op sollicitaties.</td></tr>
+              <tr><td colSpan={6} className="px-5 py-10 text-center text-muted">Nog geen kandidaten. Voeg er handmatig een toe of wacht op sollicitaties.</td></tr>
             )}
           </tbody>
         </table>

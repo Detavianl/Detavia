@@ -1,91 +1,134 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { VAKGEBIEDEN, STAGES } from "@/lib/ats";
+import { VAKGEBIEDEN, STAGES, KANDIDAAT_STATUS } from "@/lib/ats";
 import CvButton from "@/components/CvButton";
 import NoteForm from "@/components/NoteForm";
-import { isDemo, DEMO_CANDIDATES, DEMO_APPLICATIONS } from "@/lib/demo";
+import ActivityTimeline from "@/components/ActivityTimeline";
+import { isDemo, DEMO_CANDIDATES, DEMO_APPLICATIONS, DEMO_ACTIVITIES } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
 export default async function KandidaatDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const demo = isDemo();
 
-  let c: any, cvs: any[] = [], apps: any[] = [];
-  if (isDemo()) {
+  let c: any, cvs: any[] = [], apps: any[] = [], activities: any[] = [];
+  if (demo) {
     c = DEMO_CANDIDATES.find((x) => x.id === id);
     if (!c) notFound();
     apps = DEMO_APPLICATIONS.filter((a) => a.candidate?.id === id).map((a) => ({ id: a.id, stage: a.stage, vacature: a.vacature }));
+    activities = DEMO_ACTIVITIES[id] ?? [];
   } else {
     const supabase = await createClient();
     const res = await supabase.from("candidates").select("*").eq("id", id).single();
     c = res.data;
     if (!c) notFound();
-    const [cvRes, appRes] = await Promise.all([
+    const [cvRes, appRes, actRes] = await Promise.all([
       supabase.from("cvs").select("*").eq("candidate_id", id).order("uploaded_at", { ascending: false }),
       supabase.from("applications").select("id, stage, vacature:vacatures(titel)").eq("candidate_id", id),
+      supabase.from("candidate_activities").select("type, inhoud, created_at").eq("candidate_id", id).order("created_at", { ascending: false }),
     ]);
-    cvs = cvRes.data ?? [];
-    apps = appRes.data ?? [];
+    cvs = cvRes.data ?? []; apps = appRes.data ?? []; activities = actRes.data ?? [];
   }
 
   const stageLabel = (k: string) => STAGES.find((s) => s.key === k)?.label ?? k;
+  const tarief = c.tarief_min || c.tarief_max ? `€ ${c.tarief_min ?? "?"} - € ${c.tarief_max ?? "?"} p/u` : "—";
 
   return (
     <div className="p-8">
       <Link href="/admin/kandidaten" className="text-sm font-semibold text-cobalt">← Kandidaten</Link>
       <div className="mt-2 flex flex-wrap items-center gap-3">
         <h1 className="display text-3xl">{c.naam}</h1>
+        {c.niveau && <span className="rounded-full bg-black px-3 py-1 text-sm font-bold capitalize text-white">{c.niveau}</span>}
         {c.vakgebied && <span className="rounded-full bg-arctic px-3 py-1 text-sm font-bold">{VAKGEBIEDEN[c.vakgebied] ?? c.vakgebied}</span>}
+        <span className="rounded-full bg-yellow px-3 py-1 text-sm font-bold">{KANDIDAAT_STATUS[c.status] ?? c.status}</span>
+        <Stars rating={c.rating ?? 0} />
       </div>
+      {(c.huidige_functie || c.huidige_werkgever) && (
+        <p className="mt-1 text-muted">{[c.huidige_functie, c.huidige_werkgever].filter(Boolean).join(" · ")}</p>
+      )}
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
+      <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_340px]">
         <div className="grid gap-6">
-          <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-            <h2 className="mb-3 text-lg font-bold">Gegevens</h2>
+          <Section title="Profiel">
             <dl className="grid grid-cols-2 gap-3 text-sm">
               <Info label="E-mail" value={c.email} />
               <Info label="Telefoon" value={c.telefoon} />
               <Info label="Woonplaats" value={c.woonplaats} />
+              <Info label="Regio / mobiliteit" value={c.regio} />
+              <Info label="Opleidingsniveau" value={c.opleidingsniveau} />
+              <Info label="Talen" value={c.talen} />
+              <Info label="Rijbewijs" value={c.rijbewijs ? "Ja" : "Nee"} />
               <Info label="LinkedIn" value={c.linkedin} link />
               <Info label="Bron" value={c.bron} />
             </dl>
-          </section>
+          </Section>
 
-          <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-            <h2 className="mb-3 text-lg font-bold">Notitie</h2>
+          <Section title="Beschikbaarheid & tarief">
+            <dl className="grid grid-cols-2 gap-3 text-sm">
+              <Info label="Beschikbaar per" value={c.beschikbaar_per} />
+              <Info label="Uren per week" value={c.uren_beschikbaar ? `${c.uren_beschikbaar} uur` : null} />
+              <Info label="Uurtarief" value={tarief} />
+              <Info label="Salarisindicatie" value={c.salaris_indicatie} />
+            </dl>
+          </Section>
+
+          <Section title="Expertise">
+            <div className="flex flex-wrap gap-2">
+              {(c.expertise ?? []).length > 0 ? (c.expertise as string[]).map((t) => (
+                <span key={t} className="rounded-full bg-neutral-100 px-3 py-1 text-sm font-semibold">{t}</span>
+              )) : <span className="text-sm text-muted">—</span>}
+            </div>
+          </Section>
+
+          <Section title="Activiteiten & contactmomenten">
+            <ActivityTimeline candidateId={c.id} items={activities} demo={demo} />
+          </Section>
+
+          <Section title="Notitie">
             <NoteForm id={c.id} initial={c.notitie ?? ""} />
-          </section>
+          </Section>
         </div>
 
         <div className="grid gap-6">
-          <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-            <h2 className="mb-3 text-lg font-bold">CV&apos;s</h2>
+          <Section title="CV's">
             <div className="grid gap-2">
-              {(cvs ?? []).map((cv) => <CvButton key={cv.id} path={cv.storage_path} filename={cv.filename} />)}
-              {(!cvs || cvs.length === 0) && <p className="text-sm text-muted">Nog geen cv geüpload.</p>}
+              {cvs.map((cv) => <CvButton key={cv.id} path={cv.storage_path} filename={cv.filename} />)}
+              {cvs.length === 0 && <p className="text-sm text-muted">Nog geen cv geüpload.</p>}
             </div>
-          </section>
+          </Section>
 
-          <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-            <h2 className="mb-3 text-lg font-bold">In de ATS</h2>
+          <Section title="In de funnel">
             <div className="grid gap-2">
-              {(apps ?? []).map((a: any) => (
+              {apps.map((a: any) => (
                 <div key={a.id} className="flex items-center justify-between rounded-lg bg-neutral-50 px-3 py-2 text-sm">
-                  <span>{a.vacature?.titel ?? "Open sollicitatie"}</span>
+                  <span>{a.vacature?.titel ?? "Open"}</span>
                   <span className="rounded-full bg-cobalt px-2 py-0.5 text-xs font-bold text-white">{stageLabel(a.stage)}</span>
                 </div>
               ))}
-              {(!apps || apps.length === 0) && <p className="text-sm text-muted">Geen ATS-kaart.</p>}
+              {apps.length === 0 && <p className="text-sm text-muted">Geen funnel-kaart.</p>}
               <Link href="/admin/ats" className="mt-1 text-sm font-bold text-cobalt">Naar het ATS-board →</Link>
             </div>
-          </section>
+          </Section>
+
+          <Section title="Laatste contact">
+            <p className="text-sm">{c.laatste_contact ?? "—"}</p>
+          </Section>
         </div>
       </div>
     </div>
   );
 }
 
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+      <h2 className="mb-3 text-lg font-bold">{title}</h2>
+      {children}
+    </section>
+  );
+}
 function Info({ label, value, link }: { label: string; value?: string | null; link?: boolean }) {
   return (
     <div>
@@ -95,4 +138,7 @@ function Info({ label, value, link }: { label: string; value?: string | null; li
       </dd>
     </div>
   );
+}
+function Stars({ rating }: { rating: number }) {
+  return <span className="text-lg" title={`${rating}/5`}>{"★".repeat(rating)}<span className="text-neutral-300">{"★".repeat(5 - rating)}</span></span>;
 }

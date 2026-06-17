@@ -1,5 +1,17 @@
 # Worklog
 
+## 2026-06-17 - ATS-kandidaat uitgebreid (CRM-stijl) + funnel-audit
+- **Wat is gebouwd/gewijzigd:**
+  - Funnel-audit uitgevoerd; aanbevelingen verwerkt.
+  - Rijk kandidaatprofiel (CRM, hoger segment): niveau, huidige functie/werkgever, beschikbaarheid (datum + uren), tarief-range, opleiding, regio, talen, rijbewijs, expertise-tags, rating, status (talentpool/actief/bemiddeld/niet beschikbaar), eigenaar, laatste contact, AVG-toestemming.
+  - Activiteiten-tijdlijn (contactmomenten: notitie/telefoon/e-mail/gesprek/voorstel) met toevoeg-actie.
+  - Verbeterde funnel-stages: Nieuw -> Kwalificatie -> Kennismaking -> Voorgesteld -> Aanbieding -> Geplaatst, plus Afgewezen en Talentpool; afwijs-reden op application.
+  - Rijker aanmaakformulier, talentpool-lijst (niveau/status/tarief/rating), rijk detail met secties + tijdlijn. Demo-data verrijkt. Typecheck groen; demo-pagina's 200.
+- **Waarom:**
+  - Gebruiker richt zich op kandidaten in het hogere segment (senior/interim) en wil het kandidaatdeel uitbreiden (à la MySolution: ATS + CRM) en de funnel aanscherpen.
+- **Geraakte bestanden:**
+  - `platform/supabase/migrations/0003_candidate_crm.sql` (nieuw), `src/lib/ats.ts`, `src/lib/demo.ts`, `src/components/ActivityTimeline.tsx` (nieuw), `src/app/admin/kandidaten/*` (page, [id], nieuw, actions), `src/app/admin/page.tsx`.
+
 ## 2026-06-17 - Demo-modus voor het beheer (inloggen zonder Supabase)
 - **Wat is gebouwd/gewijzigd:**
   - Demo-modus: zolang Supabase niet gekoppeld is (anon key leeg/replace-me), draait het beheer op voorbeelddata. Login toont een knop "Inloggen op demo-account" die een httpOnly demo-cookie zet; `requireAdmin`/`requireRole` herkennen die cookie en geven een demo-super-admin.

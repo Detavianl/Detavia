@@ -1,11 +1,34 @@
 export const STAGES = [
   { key: "nieuw", label: "Nieuw" },
-  { key: "screening", label: "Screening" },
-  { key: "gesprek", label: "Gesprek" },
+  { key: "kwalificatie", label: "Kwalificatie" },
+  { key: "kennismaking", label: "Kennismaking" },
   { key: "voorgesteld", label: "Voorgesteld" },
+  { key: "aanbieding", label: "Aanbieding" },
   { key: "geplaatst", label: "Geplaatst" },
   { key: "afgewezen", label: "Afgewezen" },
+  { key: "talentpool", label: "Talentpool" },
 ] as const;
+
+export const KANDIDAAT_STATUS: Record<string, string> = {
+  talentpool: "Talentpool",
+  actief: "Actief",
+  bemiddeld: "Bemiddeld",
+  niet_beschikbaar: "Niet beschikbaar",
+};
+
+export const NIVEAUS = ["medior", "senior", "lead", "interim", "executive"];
+
+export type CandidateFull = {
+  id: string; naam: string; email: string | null; telefoon: string | null;
+  woonplaats: string | null; vakgebied: string | null; linkedin: string | null;
+  bron: string; notitie: string; status: string; niveau: string | null;
+  huidige_functie: string | null; huidige_werkgever: string | null;
+  beschikbaar_per: string | null; uren_beschikbaar: number | null;
+  tarief_min: number | null; tarief_max: number | null; salaris_indicatie: string | null;
+  opleidingsniveau: string | null; regio: string | null; talen: string | null;
+  rijbewijs: boolean; expertise: string[]; rating: number;
+  laatste_contact: string | null; created_at: string;
+};
 
 export type StageKey = (typeof STAGES)[number]["key"];
 
