@@ -65,7 +65,6 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
         {c.niveau && <span className="rounded-full bg-black px-3 py-1 text-sm font-bold capitalize text-white">{c.niveau}</span>}
         {c.vakgebied && <span className="rounded-full bg-arctic px-3 py-1 text-sm font-bold">{VAKGEBIEDEN[c.vakgebied] ?? c.vakgebied}</span>}
         <span className="rounded-full bg-yellow px-3 py-1 text-sm font-bold">{KANDIDAAT_STATUS[c.status] ?? c.status}</span>
-        <Stars rating={c.rating ?? 0} />
       </div>
       {(c.huidige_functie || c.huidige_werkgever) && (
         <p className="mt-1 text-muted">{[c.huidige_functie, c.huidige_werkgever].filter(Boolean).join(" · ")}</p>
@@ -187,7 +186,4 @@ function Info({ label, value, link }: { label: string; value?: string | null; li
       </dd>
     </div>
   );
-}
-function Stars({ rating }: { rating: number }) {
-  return <span className="text-lg" title={`${rating}/5`}>{"★".repeat(rating)}<span className="text-neutral-300">{"★".repeat(5 - rating)}</span></span>;
 }

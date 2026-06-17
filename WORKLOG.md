@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-17 - Sterren-rating verwijderd uit de UI
+- **Wat is gebouwd/gewijzigd:**
+  - De ★-rating weggehaald uit het kandidaatdetail (kop + Stars-helper) en uit de Talentpool-lijst (kolom + cel, colspan bijgewerkt). DB-kolom blijft bestaan maar wordt nergens meer getoond.
+- **Waarom:**
+  - Gebruiker vond de sterren niet wenselijk en wilde ze weg.
+- **Geraakte bestanden:**
+  - `platform/src/app/admin/kandidaten/[id]/page.tsx`, `src/components/TalentpoolTable.tsx`.
+
 ## 2026-06-17 - Documenten-uploadveld past nu binnen de kaart
 - **Wat is gebouwd/gewijzigd:**
   - De native file-input in de Documenten-sectie stak nog net buiten de kaart (eigen minimale breedte). Formulier op een kolom gezet, input `w-full min-w-0` + nette `file:`-knopstyling. Geverifieerd op 1900px: 0 elementen buiten beeld.

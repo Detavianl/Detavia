@@ -43,7 +43,7 @@ export default function TalentpoolTable({ candidates }: { candidates: C[] }) {
         <table className="w-full text-left text-sm">
           <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-muted">
             <tr><th className="px-5 py-3">Naam</th><th className="px-5 py-3">Niveau</th><th className="px-5 py-3">Vakgebied</th>
-              <th className="px-5 py-3">Status</th><th className="px-5 py-3">Tarief</th><th className="px-5 py-3">Rating</th></tr>
+              <th className="px-5 py-3">Status</th><th className="px-5 py-3">Tarief</th></tr>
           </thead>
           <tbody>
             {list.map((c) => (
@@ -54,10 +54,9 @@ export default function TalentpoolTable({ candidates }: { candidates: C[] }) {
                 <td className="px-5 py-3">{c.vakgebied ? VAKGEBIEDEN[c.vakgebied] ?? c.vakgebied : "—"}</td>
                 <td className="px-5 py-3"><span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-semibold">{KANDIDAAT_STATUS[c.status ?? ""] ?? c.status ?? "—"}</span></td>
                 <td className="px-5 py-3">{c.tarief_min || c.tarief_max ? `€ ${c.tarief_min ?? "?"}-${c.tarief_max ?? "?"}` : "—"}</td>
-                <td className="px-5 py-3 text-yellow-500">{"★".repeat(c.rating ?? 0)}</td>
               </tr>
             ))}
-            {list.length === 0 && <tr><td colSpan={6} className="px-5 py-10 text-center text-muted">Geen kandidaten gevonden.</td></tr>}
+            {list.length === 0 && <tr><td colSpan={5} className="px-5 py-10 text-center text-muted">Geen kandidaten gevonden.</td></tr>}
           </tbody>
         </table>
       </div>
