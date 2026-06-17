@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-17 - Echt Detavia-logo in de factuur-PDF
+- **Wat is gebouwd/gewijzigd:**
+  - Het echte Detavia-logo (transparante PNG uit het merkpakket) ingesloten in de kop van de factuur-PDF i.p.v. de tekst "DetaVia". Logo ingelezen van `public/img/logo.png` en via pdf-lib `embedPng` geplaatst; terugval op tekst als het bestand ontbreekt.
+- **Waarom:**
+  - Gebruiker wil het echte logo op de facturen.
+- **Geraakte bestanden:**
+  - `platform/src/lib/invoice-pdf.ts`, `platform/public/img/logo.png` (nieuw).
+
 ## 2026-06-17 - Facturatiemodule: PDF-factuur bij gewonnen deal + verzendomgeving
 - **Wat is gebouwd/gewijzigd:**
   - Bij een deal die op "Gewonnen" wordt gezet, wordt automatisch een conceptfactuur aangemaakt (idempotent) met factuurnummer (DETA-jaar-volgnr), bedrag uit de deal, btw 21%, vervaldatum.

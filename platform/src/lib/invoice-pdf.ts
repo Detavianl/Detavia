@@ -1,4 +1,6 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ISSUER, euro, totalen, type Invoice } from "@/lib/invoice";
 
 const COBALT = rgb(0, 71 / 255, 255 / 255);
@@ -26,8 +28,17 @@ export async function buildInvoicePdf(inv: Invoice): Promise<Uint8Array> {
 
   // ---- kop: cobalt balk ----
   page.drawRectangle({ x: 0, y: H - 8, width: W, height: 8, color: COBALT });
-  text("DetaVia", M, 70, { size: 26, f: bold, color: COBALT });
-  text("FACTUUR", W - M, 60, { size: 22, f: bold, right: W - M });
+  // echt DetaVia-logo (PNG) insluiten; terugval op tekst als het bestand ontbreekt
+  try {
+    const bytes = await readFile(join(process.cwd(), "public", "img", "logo.png"));
+    const logo = await pdf.embedPng(bytes);
+    const logoW = 118;
+    const logoH = (logo.height / logo.width) * logoW;
+    page.drawImage(logo, { x: M, y: H - 34 - logoH, width: logoW, height: logoH });
+  } catch {
+    text("DetaVia", M, 70, { size: 26, f: bold, color: COBALT });
+  }
+  text("FACTUUR", W - M, 62, { size: 22, f: bold, right: W - M });
 
   // ---- factuurmeta (rechts) ----
   let ty = 90;
