@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-17 - CRM-module (ZOHO-stijl) + professioneler kandidaatformulier
+- **Wat is gebouwd/gewijzigd:**
+  - Kandidaatformulier (/admin/kandidaten/nieuw) opnieuw ingedeeld in nette secties (Persoonlijk / Professioneel / Beschikbaarheid & tarief / Status & notitie) met sticky opslaan-balk en bredere velden.
+  - Nieuwe CRM-module (commerciële kant): Bedrijven/Accounts, Contactpersonen, Deals-pijplijn (kanban met DragOverlay + KPI's: pipeline-/gewogen waarde), en bedrijfsdetail met contacten + deals. Menu opgedeeld in Werving / CRM / Content.
+  - DB: `companies`, `contacts`, `deals` (stages lead..gewonnen/verloren), `crm_activities` + RLS (migratie 0005). Demo-data voor alle CRM-entiteiten; acties demo-veilig.
+- **Waarom:**
+  - Gebruiker wil het kandidaatformulier professioneler, en naast Talentpool + ATS ook een CRM zoals ZOHO.
+- **Geraakte bestanden:**
+  - `platform/supabase/migrations/0005_crm.sql`, `src/lib/crm.ts`, `src/components/DealBoard.tsx` (nieuw), `src/app/admin/crm/*` (deals, bedrijven, contacten + actions), `src/components/AdminNav.tsx`, `src/lib/demo.ts`, `src/app/admin/kandidaten/nieuw/page.tsx`.
+
 ## 2026-06-17 - Fix: hydration-mismatch in ATS-board (dnd-kit)
 - **Wat is gebouwd/gewijzigd:**
   - Vaste `id="ats-board"` op de dnd-kit `DndContext` gezet. dnd-kit genereerde anders interne accessibility-id's (`aria-describedby`) met een teller die server- en client-side kon verschillen, wat een React hydration-error gaf.

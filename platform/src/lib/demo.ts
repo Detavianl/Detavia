@@ -71,3 +71,33 @@ export const DEMO_TEAM = [
   { user_id: "demo-user", naam: "Demo-beheerder", role: "super_admin", created_at: "2026-01-01" },
   { user_id: "u2", naam: "Recruiter Noord", role: "recruiter", created_at: "2026-02-01" },
 ];
+
+// ---------- CRM demo-data ----------
+import type { DealCard } from "@/lib/crm";
+
+export const DEMO_COMPANIES = [
+  { id: "co1", naam: "Gemeente Almere", type: "gemeente", plaats: "Almere", website: "https://almere.nl", branche: "Lokale overheid", status: "klant", notitie: "Vaste opdrachtgever Wmo & Jeugd.", created_at: "2026-03-01" },
+  { id: "co2", naam: "Gemeente Utrecht", type: "gemeente", plaats: "Utrecht", website: "https://utrecht.nl", branche: "Lokale overheid", status: "klant", notitie: "", created_at: "2026-04-10" },
+  { id: "co3", naam: "Werk & Inkomen Rijnmond", type: "organisatie", plaats: "Rotterdam", website: "", branche: "Sociaal domein", status: "prospect", notitie: "Eerste kennismaking gehad.", created_at: "2026-05-20" },
+  { id: "co4", naam: "Gemeente Zwolle", type: "gemeente", plaats: "Zwolle", website: "https://zwolle.nl", branche: "Lokale overheid", status: "prospect", notitie: "", created_at: "2026-06-01" },
+];
+
+export const DEMO_CONTACTS = [
+  { id: "ct1", company_id: "co1", naam: "Karin Bos", functie: "Teammanager Wmo", email: "k.bos@almere.nl", telefoon: "036-1112233", linkedin: "" },
+  { id: "ct2", company_id: "co1", naam: "Rik van Dijk", functie: "HR-adviseur", email: "r.vandijk@almere.nl", telefoon: "036-1112244", linkedin: "" },
+  { id: "ct3", company_id: "co2", naam: "Fatima Haddad", functie: "Manager Sociaal Domein", email: "f.haddad@utrecht.nl", telefoon: "030-2223344", linkedin: "" },
+  { id: "ct4", company_id: "co3", naam: "Peter Klein", functie: "Inkoop", email: "p.klein@wir.nl", telefoon: "010-3334455", linkedin: "" },
+];
+
+export const DEMO_DEALS: DealCard[] = [
+  { id: "d1", stage: "lead", titel: "2 Wmo-consulenten Q3", waarde: 96000, kans: 20, vakgebied: "wmo", company: { naam: "Gemeente Almere" } },
+  { id: "d2", stage: "gekwalificeerd", titel: "Jeugdconsulent interim", waarde: 78000, kans: 40, vakgebied: "jeugd", company: { naam: "Gemeente Utrecht" } },
+  { id: "d3", stage: "voorstel", titel: "Adviseur Sociaal Domein", waarde: 120000, kans: 60, vakgebied: "beleid", company: { naam: "Werk & Inkomen Rijnmond" } },
+  { id: "d4", stage: "onderhandeling", titel: "Klantmanager Participatie", waarde: 88000, kans: 75, vakgebied: "participatie", company: { naam: "Gemeente Utrecht" } },
+  { id: "d5", stage: "gewonnen", titel: "Inkomensconsulent", waarde: 72000, kans: 100, vakgebied: "inkomen", company: { naam: "Gemeente Zwolle" } },
+];
+
+export const DEMO_DEALS_FULL: Record<string, { contact: string | null; verwachte_sluiting: string | null; notitie: string }> = {
+  d1: { contact: "Karin Bos", verwachte_sluiting: "2026-07-15", notitie: "Wacht op formele aanvraag." },
+  d3: { contact: "Peter Klein", verwachte_sluiting: "2026-07-01", notitie: "Voorstel verstuurd, follow-up nodig." },
+};
