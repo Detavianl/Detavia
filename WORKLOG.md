@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-17 - Contactmomenten: laatste 3 zichtbaar, rest scrollt
+- **Wat is gebouwd/gewijzigd:**
+  - De contactmomenten-lijst krijgt een vaste maximale hoogte (max-h-56) met verticale scroll. Nieuwste staan bovenaan, dus de laatste ~3 zijn zichtbaar en oudere scrollen; de sectie duwt de rest van de pagina niet meer weg.
+- **Waarom:**
+  - Gebruiker wil dat bij veel contactmomenten alleen de laatste paar zichtbaar zijn en de rest scrollt.
+- **Geraakte bestanden:**
+  - `platform/src/components/ContactMoments.tsx`.
+
 ## 2026-06-17 - Taken/opvolging op dashboard, documenten-upload, layout-fix
 - **Wat is gebouwd/gewijzigd:**
   - Documenten-sectie bij kandidaat: "CV's" -> "Documenten (cv's en meer)" met soort-keuze + uploadknop (server-action uploadDocument; demo onthoudt in geheugen). Migratie 0008 (soort op cvs).

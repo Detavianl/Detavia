@@ -52,7 +52,7 @@ export default function ContactMoments({ entity, entityId, contacts, items, curr
           <button onClick={add} disabled={bezig} className="rounded-full bg-cobalt px-4 py-2 text-sm font-bold text-white disabled:opacity-60">Vastleggen</button>
         </div>
       </div>
-      <ol className="mt-5 grid gap-3 border-l-2 border-neutral-100 pl-4">
+      <ol className="mt-5 grid max-h-56 gap-3 overflow-y-auto border-l-2 border-neutral-100 pl-4 pr-1">
         {list.map((a, i) => (
           <li key={i} className="relative">
             <span className="absolute -left-[21px] top-1 h-2.5 w-2.5 rounded-full bg-cobalt" />
