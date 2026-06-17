@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-18 - Commit-auteur omgezet naar Detavianl (Vercel-deploy gefixt)
+- **Wat is gebouwd/gewijzigd:**
+  - Alle commits in de historie herschreven van `Badr <badr@workster.nl>` naar `Detavianl <294629694+Detavianl@users.noreply.github.com>` via git filter-branch, en git config (lokaal) op die identiteit gezet voor toekomstige commits. Daarna force-push naar Detavianl/Detavia.
+- **Waarom:**
+  - Vercel (Hobby) blokkeerde de deploy omdat de commit-auteur (badr@workster.nl, gekoppeld aan het Workster/badr-png-account) geen lid is van het Detavia-Vercel-project. Met de Detavianl-identiteit is de deploy geautoriseerd.
+- **Geraakte bestanden:**
+  - Geen code; alleen git-historie (auteur/committer) en lokale git-config.
+
 ## 2026-06-18 - Mega-menu (Professionals + Opdrachtgevers) in DetaVia-stijl
 - **Wat is gebouwd/gewijzigd:**
   - SiteHeader omgebouwd naar client-component met twee uitklapbare mega-menu's (hover/klik), geinspireerd op JoinUz maar in DetaVia-stijl: linker cobalt feature-blok met gele CTA + rechter lijst met omschrijvingen.
