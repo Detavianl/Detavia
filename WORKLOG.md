@@ -10,10 +10,11 @@
   - Footer: twee duidelijke kolommen (Voor kandidaten / Voor opdrachtgevers).
   - Nieuwe mobiele sticky CTA-balk (Solliciteer / Personeel nodig?).
   - `submitContact`/`submitSollicitatie`: demo-guard (redirect naar /bedankt) zodat de online demo-formulieren werken; organisatie en terugbel-voorkeur worden in het bericht meegestuurd.
+  - `platform/HANDOVER.md` toegevoegd: go-live stappen voor eigen GitHub, Supabase (migraties 0001-0013 + seed super-admin) en Vercel (Root Directory = platform, 3 env-vars).
 - **Waarom:**
-  - Klant wil de site toegankelijker maken voor opdrachtgevers (meer "contact opnemen") en kandidaten (meer "solliciteren").
+  - Klant wil de site toegankelijker maken voor opdrachtgevers (meer "contact opnemen") en kandidaten (meer "solliciteren"); daarnaast gaat de gebruiker eigen GitHub/Vercel/Supabase opzetten, dus een duidelijke overdrachtshandleiding.
 - **Geraakte bestanden:**
-  - `platform/src/app/(public)/voor-opdrachtgevers/page.tsx` (nieuw), `platform/src/components/MobileCtaBar.tsx` (nieuw), `platform/src/app/(public)/{page,layout,contact/page,vacatures/page,actions}.tsx/ts`, `platform/src/components/{SiteHeader,SiteFooter}.tsx`.
+  - `platform/src/app/(public)/voor-opdrachtgevers/page.tsx` (nieuw), `platform/src/components/MobileCtaBar.tsx` (nieuw), `platform/HANDOVER.md` (nieuw), `platform/src/app/(public)/{page,layout,contact/page,vacatures/page,actions}.tsx/ts`, `platform/src/components/{SiteHeader,SiteFooter}.tsx`.
 
 ## 2026-06-17 - Demo online gezet op Vercel
 - **Wat is gebouwd/gewijzigd:**
