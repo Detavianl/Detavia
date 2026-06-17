@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-17 - AI-mailer: branded HTML-mail + live voorbeeld
+- **Wat is gebouwd/gewijzigd:**
+  - AI-mailer levert nu een echte, mooi vormgegeven HTML-mail in Detavia-huisstijl (cobalt header met DetaVia-wordmark + tagline, witte tekstkaart, optionele gele CTA-knop, footer) i.p.v. platte tekst. E-mailclient-proof (table-based + inline styles) via `src/lib/email-template.ts`.
+  - Mailerpagina: links bewerken (onderwerp/bericht/knoptekst+link), rechts een live voorbeeld (iframe) + HTML-tab om de broncode te zien/kopiëren. AI geeft nu ook een optionele call-to-action terug. Verzend-stub stuurt de HTML (klaar voor Resend).
+- **Waarom:**
+  - Gebruiker wil dezelfde feeling als Workster: een echte, mooie HTML-mail met preview, geen platte tekst.
+- **Geraakte bestanden:**
+  - `platform/src/lib/email-template.ts` (nieuw), `src/lib/ai-mailer.ts`, `src/app/admin/mailer/{page.tsx,actions.ts}`.
+
 ## 2026-06-17 - AI-mailer in Detavia-stijl
 - **Wat is gebouwd/gewijzigd:**
   - AI-mailer (`/admin/mailer`): stelt e-mails op in de DetaVia tone-of-voice via de Anthropic SDK (default Haiku 4.5, instelbaar via DETAVIA_AI_MODEL). Kies type ontvanger + doel (uitnodiging/voorstellen/follow-up/afwijzing/welkom/vrij) + context, genereer een concept, pas aan, en verstuur. Zonder ANTHROPIC_API_KEY valt het terug op nette Detavia-sjablonen.

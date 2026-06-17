@@ -9,7 +9,8 @@ Richtlijnen:
 - Naar opdrachtgevers (gemeenten/organisaties): professioneel en to-the-point, je of u passend bij de context.
 - Bondig, concreet, geen jargon of holle frasen. Geen em-dashes gebruiken.
 - Sluit af namens DetaVia.
-Geef je antwoord ALLEEN als JSON: {"onderwerp": "...", "body": "..."} met \\n voor regeleinden in de body.`;
+- Voeg waar zinvol een duidelijke call-to-action toe (bv. "Plan een afspraak", "Bekijk het profiel").
+Geef je antwoord ALLEEN als JSON: {"onderwerp": "...", "body": "...", "cta_label": "...", "cta_url": "..."} met \\n voor regeleinden in de body. cta_label/cta_url mogen leeg zijn als een knop niet past.`;
 
 export const MAIL_DOELEN: Record<string, string> = {
   uitnodiging: "Uitnodiging voor een (kennismakings)gesprek",
@@ -27,7 +28,7 @@ export const MAIL_TYPES: Record<string, string> = {
 };
 
 export type MailInput = { type: string; doel: string; ontvanger?: string; context?: string; afzender?: string };
-export type MailOutput = { onderwerp: string; body: string; bron: "ai" | "sjabloon" };
+export type MailOutput = { onderwerp: string; body: string; cta_label?: string; cta_url?: string; bron: "ai" | "sjabloon" };
 
 export async function genereerMail(input: MailInput): Promise<MailOutput> {
   const key = process.env.ANTHROPIC_API_KEY;
@@ -52,14 +53,20 @@ export async function genereerMail(input: MailInput): Promise<MailOutput> {
     });
     const txt = msg.content.map((b) => (b.type === "text" ? b.text : "")).join("").trim();
     const parsed = JSON.parse(txt.slice(txt.indexOf("{"), txt.lastIndexOf("}") + 1));
-    return { onderwerp: String(parsed.onderwerp ?? ""), body: String(parsed.body ?? ""), bron: "ai" };
+    return {
+      onderwerp: String(parsed.onderwerp ?? ""),
+      body: String(parsed.body ?? ""),
+      cta_label: parsed.cta_label ? String(parsed.cta_label) : undefined,
+      cta_url: parsed.cta_url ? String(parsed.cta_url) : undefined,
+      bron: "ai",
+    };
   } catch {
     return { ...sjabloon(input), bron: "sjabloon" };
   }
 }
 
 // Terugval zonder API-key: nette Detavia-sjablonen per doel.
-function sjabloon(input: MailInput): { onderwerp: string; body: string } {
+function sjabloon(input: MailInput): { onderwerp: string; body: string; cta_label?: string } {
   const naam = input.ontvanger?.trim() || "daar";
   const ctx = input.context?.trim();
   const groet = input.type === "opdrachtgever" ? `Beste ${naam},` : `Hoi ${naam},`;
@@ -67,10 +74,10 @@ function sjabloon(input: MailInput): { onderwerp: string; body: string } {
   const C = ctx ? `\n\n${ctx}` : "";
   switch (input.doel) {
     case "uitnodiging":
-      return { onderwerp: "Uitnodiging voor een kennismaking met DetaVia",
+      return { onderwerp: "Uitnodiging voor een kennismaking met DetaVia", cta_label: "Plan een afspraak",
         body: `${groet}\n\nLeuk dat we contact hebben. We zouden graag kennismaken om te ontdekken waar we elkaar kunnen versterken.${C}\n\nKun je laten weten wanneer het jou schikt? Dan plannen we het meteen in.\n\n${ondertekening}` };
     case "voorstellen":
-      return { onderwerp: "Een sterke kandidaat voor jullie opdracht",
+      return { onderwerp: "Een sterke kandidaat voor jullie opdracht", cta_label: "Bekijk het profiel",
         body: `${groet}\n\nGraag stellen we een kandidaat voor die goed past bij jullie vraag in het sociaal domein.${C}\n\nWe lichten het profiel graag persoonlijk toe. Past een korte belafspraak deze week?\n\n${ondertekening}` };
     case "followup":
       return { onderwerp: "Even een korte opvolging",
