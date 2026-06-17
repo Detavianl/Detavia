@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-17 - Echte fix overlopende rechterkolom (grid -> flex-col)
+- **Wat is gebouwd/gewijzigd:**
+  - Via Chrome DevTools (ingelogd, 1900px) de exacte oorzaak gemeten: de kolom-stapels van het kandidaatdetail stonden als `grid gap-6` zonder kolomdefinitie, waardoor de impliciete auto-kolom zo breed werd als de inhoud (419px) i.p.v. de container (320px); de sectie liep daardoor buiten beeld (weggeknipt door overflow-x-hidden).
+  - Twee-kolomslayout en beide kolom-stapels omgezet naar `flex flex-row` / `flex flex-col` (rechts `lg:w-80 lg:shrink-0`, links `min-w-0 flex-1`). Geverifieerd op 1900px: rechterkolom (Eigenaar & opvolging / Documenten / In de funnel) past nu volledig.
+- **Waarom:**
+  - De vorige fix (min-w-0 + minmax) pakte de echte oorzaak niet; op brede schermen liep de rechterkolom nog buiten beeld.
+- **Geraakte bestanden:**
+  - `platform/src/app/admin/kandidaten/[id]/page.tsx`.
+
 ## 2026-06-17 - Layout-fix admin: rechterkolom past nu binnen het scherm
 - **Wat is gebouwd/gewijzigd:**
   - Echte oorzaak van de overlopende rechterkolom verholpen: `min-w-0` toegevoegd aan de content-kolom (`flex-1`) van de admin-layout, zodat die kan krimpen en het binnenliggende raster niet naar rechts buiten beeld duwt. Aangevuld met `break-words`/`break-all` op profielwaarden (lange e-mail/LinkedIn-URL) en `minmax(0,1fr)` op het kandidaatdetail-raster.
