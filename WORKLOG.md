@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-17 - Fix: oneindig doorslepen in ATS-board
+- **Wat is gebouwd/gewijzigd:**
+  - ATS-board herschreven met een dnd-kit DragOverlay. De gesleepte kaart kreeg eerder een transform in de layout-flow, waardoor het board/de pagina meegroeide en je eindeloos naar rechts/onder kon slepen. Nu blijft de originele kaart staan (gedimd) en volgt een zwevende kopie de muis, los van de layout.
+- **Waarom:**
+  - Gebruiker meldde dat je in de ATS-pijplijn oneindig kon doorslepen.
+- **Geraakte bestanden:**
+  - `platform/src/components/AtsBoard.tsx`.
+
 ## 2026-06-17 - Eigenaarschap/opvolging, funnel-metrics en talentpool-filter
 - **Wat is gebouwd/gewijzigd:**
   - (1) Eigenaar + volgende actie/reminder per kandidaat: opvolging-sectie in het detail (eigenaar uit team, actie + datum), opgeslagen op de kandidaat; `laatste_contact` bij activiteit.

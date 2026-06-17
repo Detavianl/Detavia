@@ -1,17 +1,24 @@
 "use client";
 import { useState } from "react";
 import {
-  DndContext, PointerSensor, useSensor, useSensors,
-  useDraggable, useDroppable, type DragEndEvent,
+  DndContext, DragOverlay, PointerSensor, useSensor, useSensors,
+  useDraggable, useDroppable, type DragEndEvent, type DragStartEvent,
 } from "@dnd-kit/core";
 import { STAGES, VAKGEBIEDEN, type AtsCard, type StageKey } from "@/lib/ats";
 import { moveApplication } from "@/app/admin/ats/actions";
 
 export default function AtsBoard({ initial }: { initial: AtsCard[] }) {
   const [cards, setCards] = useState<AtsCard[]>(initial);
+  const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
+  const activeCard = cards.find((c) => c.id === activeId) ?? null;
+
+  function onDragStart(e: DragStartEvent) {
+    setActiveId(String(e.active.id));
+  }
   function onDragEnd(e: DragEndEvent) {
+    setActiveId(null);
     const id = String(e.active.id);
     const newStage = e.over?.id as StageKey | undefined;
     if (!newStage) return;
@@ -19,23 +26,25 @@ export default function AtsBoard({ initial }: { initial: AtsCard[] }) {
     if (!card || card.stage === newStage) return;
     setCards((cs) => cs.map((c) => (c.id === id ? { ...c, stage: newStage } : c)));
     moveApplication(id, newStage).catch(() => {
-      // rollback bij fout
       setCards((cs) => cs.map((c) => (c.id === id ? { ...c, stage: card.stage } : c)));
     });
   }
 
   return (
-    <DndContext sensors={sensors} onDragEnd={onDragEnd}>
+    <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragCancel={() => setActiveId(null)}>
       <div className="flex gap-4 overflow-x-auto pb-4">
         {STAGES.map((s) => (
-          <Column key={s.key} stageKey={s.key} label={s.label} cards={cards.filter((c) => c.stage === s.key)} />
+          <Column key={s.key} stageKey={s.key} label={s.label} cards={cards.filter((c) => c.stage === s.key)} activeId={activeId} />
         ))}
       </div>
+      <DragOverlay dropAnimation={null}>
+        {activeCard ? <CardView card={activeCard} overlay /> : null}
+      </DragOverlay>
     </DndContext>
   );
 }
 
-function Column({ stageKey, label, cards }: { stageKey: StageKey; label: string; cards: AtsCard[] }) {
+function Column({ stageKey, label, cards, activeId }: { stageKey: StageKey; label: string; cards: AtsCard[]; activeId: string | null }) {
   const { setNodeRef, isOver } = useDroppable({ id: stageKey });
   return (
     <div ref={setNodeRef}
@@ -45,19 +54,27 @@ function Column({ stageKey, label, cards }: { stageKey: StageKey; label: string;
         <span className="rounded-full bg-neutral-100 px-2 text-xs font-bold text-muted">{cards.length}</span>
       </div>
       <div className="grid gap-2">
-        {cards.map((c) => <Card key={c.id} card={c} />)}
+        {cards.map((c) => <DraggableCard key={c.id} card={c} hidden={c.id === activeId} />)}
         {cards.length === 0 && <p className="px-1 py-6 text-center text-xs text-muted">Leeg</p>}
       </div>
     </div>
   );
 }
 
-function Card({ card }: { card: AtsCard }) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ id: card.id });
-  const style = transform ? { transform: `translate(${transform.x}px, ${transform.y}px)` } : undefined;
+function DraggableCard({ card, hidden }: { card: AtsCard; hidden: boolean }) {
+  const { attributes, listeners, setNodeRef } = useDraggable({ id: card.id });
+  // Geen transform op de kaart zelf: een DragOverlay volgt de muis, dus de
+  // layout groeit niet mee (geen oneindig doorslepen).
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes}
-      className={`cursor-grab rounded-xl border border-neutral-200 bg-white p-3 shadow-sm active:cursor-grabbing ${isDragging ? "opacity-50" : ""}`}>
+    <div ref={setNodeRef} {...listeners} {...attributes} className={hidden ? "opacity-30" : ""}>
+      <CardView card={card} />
+    </div>
+  );
+}
+
+function CardView({ card, overlay }: { card: AtsCard; overlay?: boolean }) {
+  return (
+    <div className={`rounded-xl border border-neutral-200 bg-white p-3 ${overlay ? "w-64 cursor-grabbing rotate-2 shadow-xl" : "cursor-grab shadow-sm"}`}>
       <p className="font-bold leading-tight">{card.candidate?.naam ?? "Onbekend"}</p>
       <div className="mt-1.5 flex flex-wrap gap-1.5">
         {card.candidate?.vakgebied && (
