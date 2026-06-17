@@ -62,10 +62,10 @@ export default function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/85 backdrop-blur">
-      <div className="mx-auto flex h-[78px] max-w-[1180px] items-center justify-between gap-6 px-5 sm:px-10">
+      <div className="mx-auto flex h-[88px] max-w-[1180px] items-center justify-between gap-6 px-5 sm:px-10">
         <Link href="/" aria-label="DetaVia">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/img/logo_blue.svg" alt="DetaVia" className="h-11" />
+          <img src="/img/logo_blue.svg" alt="DetaVia" className="h-14" />
         </Link>
 
         <nav className="hidden items-center gap-6 font-semibold lg:flex">

@@ -2,7 +2,7 @@
 
 ## 2026-06-18 - Header-logo vergroot
 - **Wat is gebouwd/gewijzigd:**
-  - Header-logo van h-[30px] (minimum) naar h-11 (44px). Past binnen de 78px header. Build geverifieerd.
+  - Header-logo vergroot van h-[30px] (minimum) naar h-14 (56px), en header-hoogte van 78px naar 88px zodat het logo goed past. (Tussenstap h-11/44px stond al live; gebruiker vond dat nog te klein, mogelijk ook browsercache.) Build geverifieerd.
 - **Waarom:**
   - Gebruiker vond het logo te klein.
 - **Geraakte bestanden:**
