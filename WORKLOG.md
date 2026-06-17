@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-18 - Header-logo vergroot
+- **Wat is gebouwd/gewijzigd:**
+  - Header-logo van h-[30px] (minimum) naar h-11 (44px). Past binnen de 78px header. Build geverifieerd.
+- **Waarom:**
+  - Gebruiker vond het logo te klein.
+- **Geraakte bestanden:**
+  - `platform/src/components/SiteHeader.tsx`.
+
 ## 2026-06-18 - Aanscherping "uitsluitend sociaal domein" + CTA-fix
 - **Wat is gebouwd/gewijzigd:**
   - Over-ons: zin verwijderd die DetaVia breder maakte ("specialisten uit andere branches") en herschreven naar volledige focus op uitsluitend het sociaal domein.
