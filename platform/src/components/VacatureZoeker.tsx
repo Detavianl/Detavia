@@ -84,7 +84,7 @@ export default function VacatureZoeker({ vacatures }: { vacatures: Vacature[] })
             </select>
           </Group>
 
-          <Group title="Branches">
+          <Group title="Vakgebied">
             {Object.entries(VAKGEBIEDEN).map(([k, label]) => {
               const n = count(k);
               return (

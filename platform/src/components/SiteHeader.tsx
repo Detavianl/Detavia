@@ -78,7 +78,7 @@ export default function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2.5">
-          <Link href="/voor-opdrachtgevers" className="hidden rounded-full bg-cobalt px-5 py-2.5 font-bold text-white sm:inline-block">
+          <Link href="/voor-opdrachtgevers" className="hidden whitespace-nowrap rounded-full bg-cobalt px-5 py-2.5 font-bold text-white sm:inline-block">
             Personeel nodig?
           </Link>
           <Link href="/vacatures" className="hidden rounded-full border-2 border-cobalt px-5 py-2 font-bold text-cobalt xl:inline-block">

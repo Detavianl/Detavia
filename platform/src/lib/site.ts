@@ -5,4 +5,4 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://detavia.ve
 export const SITE_NAME = "DetaVia";
 export const SITE_TAGLINE = "Specialist in het sociaal domein";
 export const SITE_DESCRIPTION =
-  "DetaVia is de detacheringspartner in het sociaal domein. Wij verbinden professionals in Wmo, Jeugd, Participatie en Schuldhulpverlening met opdrachtgevers, en ontzorgen volledig.";
+  "DetaVia is uitsluitend gespecialiseerd in het sociaal domein. Wij verbinden professionals in Wmo, Jeugd, Participatie en Schuldhulpverlening met opdrachtgevers, en ontzorgen volledig.";

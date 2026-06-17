@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-18 - Aanscherping "uitsluitend sociaal domein" + CTA-fix
+- **Wat is gebouwd/gewijzigd:**
+  - Over-ons: zin verwijderd die DetaVia breder maakte ("specialisten uit andere branches") en herschreven naar volledige focus op uitsluitend het sociaal domein.
+  - SEO-omschrijving (`src/lib/site.ts`) aangescherpt: "uitsluitend gespecialiseerd in het sociaal domein".
+  - Vacaturefilter-label "Branches" hernoemd naar "Vakgebied" (klopt beter, geen suggestie van andere sectoren).
+  - "Personeel nodig?"-CTA (header + mobiele balk) op een regel gezet met whitespace-nowrap; brak eerder over twee regels.
+- **Waarom:**
+  - Klant benadrukt dat DetaVia uitsluitend het sociaal domein doet; site mocht nergens breder ogen. CTA brak lelijk over twee regels.
+- **Geraakte bestanden:**
+  - `platform/src/app/(public)/over-ons/page.tsx`, `platform/src/lib/site.ts`, `platform/src/components/VacatureZoeker.tsx`, `platform/src/components/SiteHeader.tsx`, `platform/src/components/MobileCtaBar.tsx`.
+
 ## 2026-06-18 - Commit-auteur omgezet naar Detavianl (Vercel-deploy gefixt)
 - **Wat is gebouwd/gewijzigd:**
   - Alle commits in de historie herschreven van `Badr <badr@workster.nl>` naar `Detavianl <294629694+Detavianl@users.noreply.github.com>` via git filter-branch, en git config (lokaal) op die identiteit gezet voor toekomstige commits. Daarna force-push naar Detavianl/Detavia.

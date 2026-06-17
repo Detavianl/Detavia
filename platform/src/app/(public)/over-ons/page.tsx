@@ -15,7 +15,7 @@ export default function OverOns() {
           <div>
             <p className="text-xs font-bold uppercase tracking-[.16em] opacity-60">Wie we zijn</p>
             <h2 className="display mt-2 text-3xl sm:text-4xl">Jouw betrouwbare carrièrepartner</h2>
-            <p className="mt-6 text-lg text-muted">Bij DetaVia geloven we dat goed werk in het sociaal domein begint bij de juiste mensen op de juiste plek. We werken met professionals uit het sociaal domein zelf én met specialisten uit andere branches. Juist die combinatie zorgt voor nieuwe inzichten, innovatie en energie.</p>
+            <p className="mt-6 text-lg text-muted">Bij DetaVia geloven we dat goed werk in het sociaal domein begint bij de juiste mensen op de juiste plek. Daarom richten we ons uitsluitend op het sociaal domein, niets anders. Die volledige focus zorgt voor diepe vakkennis, een sterk netwerk en matches die echt kloppen.</p>
             <p className="mt-3.5 text-lg text-muted">We zijn laagdrempelig, betrouwbaar en betrokken. Niet de grootste, wel de partner die je écht kent.</p>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
