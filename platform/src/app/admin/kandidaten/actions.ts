@@ -4,20 +4,21 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
 import { isDemo } from "@/lib/demo";
+import { addDemoCandidate } from "@/lib/demo-store";
 
 export async function createCandidate(formData: FormData) {
   const admin = await requireAdmin();
-  if (isDemo()) redirect("/admin/kandidaten"); // demo: niet opgeslagen
-  const supabase = await createClient();
   const naam = String(formData.get("naam") ?? "").trim();
   if (!naam) throw new Error("Naam is verplicht");
+
   const numOrNull = (k: string) => {
     const v = str(formData, k);
     return v === "" ? null : Number(v);
   };
   const expertise = str(formData, "expertise").split(",").map((s) => s.trim()).filter(Boolean);
 
-  const { data, error } = await supabase.from("candidates").insert({
+  // alle velden uit het formulier, één keer
+  const fields = {
     naam,
     email: str(formData, "email"),
     telefoon: str(formData, "telefoon"),
@@ -26,7 +27,6 @@ export async function createCandidate(formData: FormData) {
     linkedin: str(formData, "linkedin"),
     notitie: str(formData, "notitie") ?? "",
     bron: "handmatig",
-    created_by: admin.user_id,
     status: str(formData, "status") || "actief",
     niveau: str(formData, "niveau") || null,
     huidige_functie: str(formData, "huidige_functie"),
@@ -40,7 +40,19 @@ export async function createCandidate(formData: FormData) {
     talen: str(formData, "talen"),
     rijbewijs: formData.get("rijbewijs") === "on",
     expertise,
-  }).select("id").single();
+  };
+
+  // DEMO: bewaar in het geheugen zodat alles terugkomt in talentpool/detail/ATS
+  if (isDemo()) {
+    const id = "new-" + Math.random().toString(36).slice(2, 9);
+    addDemoCandidate({ id, ...fields, rating: 0, laatste_contact: null, created_at: today() });
+    redirect(`/admin/kandidaten/${id}`);
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("candidates")
+    .insert({ ...fields, created_by: admin.user_id })
+    .select("id").single();
   if (error) throw new Error(error.message);
 
   // direct een ATS-kaart aanmaken in 'nieuw'
@@ -48,6 +60,10 @@ export async function createCandidate(formData: FormData) {
   revalidatePath("/admin/kandidaten");
   revalidatePath("/admin/ats");
   redirect(`/admin/kandidaten/${data.id}`);
+}
+
+function today() {
+  return new Date().toISOString().slice(0, 10);
 }
 
 export async function updateCandidateNote(id: string, notitie: string) {

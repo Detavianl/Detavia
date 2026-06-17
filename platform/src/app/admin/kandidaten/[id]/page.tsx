@@ -6,7 +6,8 @@ import CvButton from "@/components/CvButton";
 import NoteForm from "@/components/NoteForm";
 import ActivityTimeline from "@/components/ActivityTimeline";
 import FollowupForm from "@/components/FollowupForm";
-import { isDemo, DEMO_CANDIDATES, DEMO_APPLICATIONS, DEMO_ACTIVITIES, DEMO_TEAM } from "@/lib/demo";
+import { isDemo, DEMO_ACTIVITIES, DEMO_TEAM } from "@/lib/demo";
+import { demoCandidate, demoApplications } from "@/lib/demo-store";
 
 export const dynamic = "force-dynamic";
 
@@ -16,9 +17,9 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
 
   let c: any, cvs: any[] = [], apps: any[] = [], activities: any[] = [], team: any[] = [];
   if (demo) {
-    c = DEMO_CANDIDATES.find((x) => x.id === id);
+    c = demoCandidate(id);
     if (!c) notFound();
-    apps = DEMO_APPLICATIONS.filter((a) => a.candidate?.id === id).map((a) => ({ id: a.id, stage: a.stage, vacature: a.vacature }));
+    apps = demoApplications().filter((a) => a.candidate?.id === id).map((a) => ({ id: a.id, stage: a.stage, vacature: a.vacature }));
     activities = DEMO_ACTIVITIES[id] ?? [];
     team = DEMO_TEAM;
   } else {

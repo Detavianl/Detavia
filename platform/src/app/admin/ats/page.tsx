@@ -1,14 +1,15 @@
 import { createClient } from "@/lib/supabase/server";
 import AtsBoard from "@/components/AtsBoard";
 import type { AtsCard } from "@/lib/ats";
-import { isDemo, DEMO_APPLICATIONS } from "@/lib/demo";
+import { isDemo } from "@/lib/demo";
+import { demoApplications } from "@/lib/demo-store";
 
 export const dynamic = "force-dynamic";
 
 export default async function AtsPage() {
   let cards: AtsCard[];
   if (isDemo()) {
-    cards = DEMO_APPLICATIONS;
+    cards = demoApplications();
   } else {
     const supabase = await createClient();
     const { data } = await supabase

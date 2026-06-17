@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { STAGES } from "@/lib/ats";
-import { isDemo, DEMO_APPLICATIONS } from "@/lib/demo";
+import { isDemo } from "@/lib/demo";
+import { demoApplications } from "@/lib/demo-store";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ export default async function FunnelPage() {
   let dagenInFase: Record<string, number>;
 
   if (isDemo()) {
-    rows = DEMO_APPLICATIONS.map((a) => ({ stage: a.stage }));
+    rows = demoApplications().map((a) => ({ stage: a.stage }));
     dagenInFase = { nieuw: 2, kwalificatie: 5, kennismaking: 8, voorgesteld: 6, aanbieding: 4, geplaatst: 0 };
   } else {
     const supabase = await createClient();

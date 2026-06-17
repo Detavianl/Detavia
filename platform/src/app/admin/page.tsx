@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { isDemo, DEMO_CANDIDATES, DEMO_APPLICATIONS, DEMO_POSTS, DEMO_MESSAGES, DEMO_VACATURES_ADMIN } from "@/lib/demo";
+import { isDemo, DEMO_POSTS, DEMO_MESSAGES, DEMO_VACATURES_ADMIN } from "@/lib/demo";
+import { demoCandidates, demoApplications } from "@/lib/demo-store";
 
 async function count(table: string, filter?: (q: any) => any) {
   const supabase = await createClient();
@@ -13,10 +14,10 @@ async function count(table: string, filter?: (q: any) => any) {
 export default async function Dashboard() {
   const [kandidaten, nieuw, gesprek, geplaatst, concepten, gepubliceerd, ongelezen, openVac] = isDemo()
     ? [
-        DEMO_CANDIDATES.length,
-        DEMO_APPLICATIONS.filter((a) => a.stage === "nieuw").length,
-        DEMO_APPLICATIONS.filter((a) => a.stage === "kennismaking").length,
-        DEMO_APPLICATIONS.filter((a) => a.stage === "geplaatst").length,
+        demoCandidates().length,
+        demoApplications().filter((a) => a.stage === "nieuw").length,
+        demoApplications().filter((a) => a.stage === "kennismaking").length,
+        demoApplications().filter((a) => a.stage === "geplaatst").length,
         DEMO_POSTS.filter((p) => p.status === "concept").length,
         DEMO_POSTS.filter((p) => p.status === "gepubliceerd").length,
         DEMO_MESSAGES.filter((m) => !m.gelezen).length,

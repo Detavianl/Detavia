@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-17 - Nieuwe kandidaat komt terug in talentpool (demo-geheugen)
+- **Wat is gebouwd/gewijzigd:**
+  - In demo-modus sloeg /admin/kandidaten/nieuw niets op (no-op), waardoor een nieuwe kandidaat niet terugkwam. Nu een in-memory demo-store (`src/lib/demo-store.ts`): createCandidate bewaart alle velden + maakt een ATS-kaart in 'nieuw'. Talentpool, kandidaatdetail, ATS, dashboard en funnel lezen uit die store, dus een nieuwe kandidaat verschijnt overal mét alle ingevulde info.
+  - Veldmapping geverifieerd: elk formulierveld (persoonlijk/professioneel/beschikbaarheid+tarief/expertise/status/notitie) komt terug op het detail en in de lijst.
+- **Waarom:**
+  - Gebruiker wilde dat alle ingevulde info bij het aanmaken terugkomt in de talentpool.
+- **Geraakte bestanden:**
+  - `platform/src/lib/demo-store.ts` (nieuw), `src/app/admin/kandidaten/actions.ts`, `src/app/admin/kandidaten/page.tsx` + `[id]/page.tsx`, `src/app/admin/ats/page.tsx`, `src/app/admin/page.tsx`, `src/app/admin/funnel/page.tsx`.
+
 ## 2026-06-17 - CRM-module (ZOHO-stijl) + professioneler kandidaatformulier
 - **Wat is gebouwd/gewijzigd:**
   - Kandidaatformulier (/admin/kandidaten/nieuw) opnieuw ingedeeld in nette secties (Persoonlijk / Professioneel / Beschikbaarheid & tarief / Status & notitie) met sticky opslaan-balk en bredere velden.

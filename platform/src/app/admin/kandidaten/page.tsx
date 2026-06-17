@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import TalentpoolTable from "@/components/TalentpoolTable";
-import { isDemo, DEMO_CANDIDATES } from "@/lib/demo";
+import { isDemo } from "@/lib/demo";
+import { demoCandidates } from "@/lib/demo-store";
 
 export const dynamic = "force-dynamic";
 
 export default async function KandidatenPage() {
   let candidates: any[];
   if (isDemo()) {
-    candidates = DEMO_CANDIDATES;
+    candidates = demoCandidates();
   } else {
     const supabase = await createClient();
     const { data } = await supabase
