@@ -16,6 +16,7 @@ const items: Item[] = [
   { href: "/admin/crm/contacten", label: "Contactpersonen" },
   { href: "/admin/facturen", label: "Facturen" },
   { header: "Content & overig" },
+  { href: "/admin/mailer", label: "AI-mailer" },
   { href: "/admin/vacatures", label: "Vacatures" },
   { href: "/admin/blog", label: "Blog" },
   { href: "/admin/berichten", label: "Berichten" },

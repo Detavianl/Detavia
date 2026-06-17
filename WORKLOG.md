@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-17 - AI-mailer in Detavia-stijl
+- **Wat is gebouwd/gewijzigd:**
+  - AI-mailer (`/admin/mailer`): stelt e-mails op in de DetaVia tone-of-voice via de Anthropic SDK (default Haiku 4.5, instelbaar via DETAVIA_AI_MODEL). Kies type ontvanger + doel (uitnodiging/voorstellen/follow-up/afwijzing/welkom/vrij) + context, genereer een concept, pas aan, en verstuur. Zonder ANTHROPIC_API_KEY valt het terug op nette Detavia-sjablonen.
+  - Verzenden is een stub die klaarstaat voor Resend (zelfde patroon als facturen). Menu-item onder Content & overig; env.example uitgebreid (ANTHROPIC_API_KEY, RESEND_API_KEY, DETAVIA_AI_MODEL).
+- **Waarom:**
+  - Gebruiker wil een AI-mailer zoals Workster, maar in Detavia-huisstijl.
+- **Geraakte bestanden:**
+  - `platform/src/lib/ai-mailer.ts` (nieuw), `src/app/admin/mailer/{page.tsx,actions.ts}` (nieuw), `src/components/AdminNav.tsx`, `.env.example`, `package.json` (@anthropic-ai/sdk).
+
 ## 2026-06-17 - Echt Detavia-logo in de factuur-PDF
 - **Wat is gebouwd/gewijzigd:**
   - Het echte Detavia-logo (transparante PNG uit het merkpakket) ingesloten in de kop van de factuur-PDF i.p.v. de tekst "DetaVia". Logo ingelezen van `public/img/logo.png` en via pdf-lib `embedPng` geplaatst; terugval op tekst als het bestand ontbreekt.
