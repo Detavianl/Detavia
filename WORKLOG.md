@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-17 - Code naar GitHub gepusht (Detavianl/Detavia)
+- **Wat is gebouwd/gewijzigd:**
+  - Git-remote `origin` gekoppeld aan https://github.com/Detavianl/Detavia (privé) en alle commits gepusht naar `main` (411 bestanden online).
+  - `Detavia Brandbook.pdf` (103 MB, boven GitHub's 100MB-limiet) uit de volledige historie verwijderd via `git filter-branch`, daarna `reflog expire` + `gc`. Bestand toegevoegd aan root `.gitignore` (`*.pdf`). Losse brandbook-PNG-pagina's blijven bewaard.
+  - Remote-URL schoon ingesteld (zonder token in git-config).
+- **Waarom:**
+  - Gebruiker heeft Vercel en Supabase aangemaakt; beide koppelen aan een GitHub-repo, dus de code moest eerst op GitHub. Push werd geweigerd door het te grote PDF, vandaar de historie-opschoning.
+- **Geraakte bestanden:**
+  - `.gitignore` (root; `*.pdf` + Brandbook genegeerd). Git-historie herschreven (PDF verwijderd). Geen app-code gewijzigd.
+
 ## 2026-06-17 - CTA's verbreed: meer routes voor opdrachtgevers en kandidaten
 - **Wat is gebouwd/gewijzigd:**
   - Nieuwe pagina `/voor-opdrachtgevers`: hero, waarom DetaVia, "zo werkt het" (4 stappen) en een aanvraagformulier "Vraag een professional aan" dat als bericht (soort=opdrachtgever) binnenkomt bij beheer.
