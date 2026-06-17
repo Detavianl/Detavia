@@ -10,6 +10,8 @@ const items: Item[] = [
   { href: "/admin/ats", label: "ATS" },
   { href: "/admin/funnel", label: "Funnel" },
   { href: "/admin/kandidaten", label: "Talentpool" },
+  { href: "/admin/plaatsingen", label: "Plaatsingen" },
+  { href: "/admin/uren", label: "Uren" },
   { header: "CRM" },
   { href: "/admin/crm/deals", label: "Deals" },
   { href: "/admin/crm/bedrijven", label: "Bedrijven" },

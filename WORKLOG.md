@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-17 - Uren-portaal: professional-login + dag-urenregistratie + plaatsingen
+- **Wat is gebouwd/gewijzigd:**
+  - Tweezijdig urenportaal voor detachering per uur. DB (migratie 0011): `placements` (kandidaat+bedrijf, uurtarief, kostprijs -> marge, periode), `hours` (dag-urenregistratie met status ingediend/goedgekeurd/afgekeurd), `candidates.professional_user_id` + RLS zodat professionals alleen hun eigen gegevens zien/bewerken.
+  - Professional-portaal `/portaal`: eigen (demo-)login, dashboard met plaatsing(en) + KPI's + dag-urenregistratie + indienen/verwijderen, en `/portaal/profiel` om eigen gegevens en cv/documenten bij te werken (gekoppeld aan de talentpool). Professional ziet geen tarieven/marge.
+  - Admin: `/admin/plaatsingen` (lijst met marge + nieuw) en `/admin/uren` (ingediende uren goedkeuren/afkeuren). Menu-items onder Werving. Tweede demo-login-knop (professional). Middleware beschermt nu ook /portaal.
+- **Waarom:**
+  - Gebruiker wil dat professionals hun uren zelf registreren (eigen login + dashboard + cv), gekoppeld aan tarief x uren + marge voor facturatie, met goedkeuring vooraf.
+- **Geraakte bestanden:**
+  - `platform/supabase/migrations/0011_uren_portaal.sql` (nieuw), `src/lib/professional-context.ts` (nieuw), `src/app/portaal/*` (layout, page, profiel, actions), `src/app/admin/{plaatsingen,uren}/*`, `src/components/{DeleteHoursButton,HoursReviewButtons}.tsx`, `src/app/login/{page.tsx,actions.ts}`, `src/components/AdminNav.tsx`, `src/middleware.ts`, `src/lib/demo.ts`.
+
 ## 2026-06-17 - AI-mailer: branded HTML-mail + live voorbeeld
 - **Wat is gebouwd/gewijzigd:**
   - AI-mailer levert nu een echte, mooi vormgegeven HTML-mail in Detavia-huisstijl (cobalt header met DetaVia-wordmark + tagline, witte tekstkaart, optionele gele CTA-knop, footer) i.p.v. platte tekst. E-mailclient-proof (table-based + inline styles) via `src/lib/email-template.ts`.
