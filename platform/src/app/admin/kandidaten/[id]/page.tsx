@@ -5,8 +5,10 @@ import { VAKGEBIEDEN, STAGES, KANDIDAAT_STATUS } from "@/lib/ats";
 import CvButton from "@/components/CvButton";
 import NoteForm from "@/components/NoteForm";
 import ActivityTimeline from "@/components/ActivityTimeline";
+import AuditLog from "@/components/AuditLog";
 import FollowupForm from "@/components/FollowupForm";
-import { isDemo, DEMO_ACTIVITIES, DEMO_TEAM } from "@/lib/demo";
+import { getAdmin } from "@/lib/admin-context";
+import { isDemo, DEMO_ACTIVITIES, DEMO_TEAM, DEMO_AUDIT } from "@/lib/demo";
 import { demoCandidate, demoApplications } from "@/lib/demo-store";
 
 export const dynamic = "force-dynamic";
@@ -15,25 +17,32 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
   const { id } = await params;
   const demo = isDemo();
 
-  let c: any, cvs: any[] = [], apps: any[] = [], activities: any[] = [], team: any[] = [];
+  const admin = await getAdmin();
+  const adminNaam = admin?.naam || admin?.email || "Beheer";
+
+  let c: any, cvs: any[] = [], apps: any[] = [], activities: any[] = [], team: any[] = [], audit: any[] = [];
   if (demo) {
     c = demoCandidate(id);
     if (!c) notFound();
     apps = demoApplications().filter((a) => a.candidate?.id === id).map((a) => ({ id: a.id, stage: a.stage, vacature: a.vacature }));
     activities = DEMO_ACTIVITIES[id] ?? [];
     team = DEMO_TEAM;
+    audit = DEMO_AUDIT[id] ?? [];
   } else {
     const supabase = await createClient();
     const res = await supabase.from("candidates").select("*").eq("id", id).single();
     c = res.data;
     if (!c) notFound();
-    const [cvRes, appRes, actRes, teamRes] = await Promise.all([
+    const [cvRes, appRes, actRes, teamRes, audRes] = await Promise.all([
       supabase.from("cvs").select("*").eq("candidate_id", id).order("uploaded_at", { ascending: false }),
       supabase.from("applications").select("id, stage, vacature:vacatures(titel)").eq("candidate_id", id),
-      supabase.from("candidate_activities").select("type, inhoud, created_at").eq("candidate_id", id).order("created_at", { ascending: false }),
+      supabase.from("candidate_activities").select("type, inhoud, created_at, created_by").eq("candidate_id", id).order("created_at", { ascending: false }),
       supabase.from("admin_users").select("user_id, naam"),
+      supabase.from("audit_log").select("actie, details, user_naam, created_at").eq("entity", "candidate").eq("entity_id", id).order("created_at", { ascending: false }).limit(20),
     ]);
-    cvs = cvRes.data ?? []; apps = appRes.data ?? []; activities = actRes.data ?? []; team = teamRes.data ?? [];
+    cvs = cvRes.data ?? []; apps = appRes.data ?? []; team = teamRes.data ?? []; audit = audRes.data ?? [];
+    const naam = (uid: string) => team.find((t: any) => t.user_id === uid)?.naam ?? "Beheer";
+    activities = (actRes.data ?? []).map((a: any) => ({ ...a, gebruiker: a.created_by ? naam(a.created_by) : null }));
   }
 
   const stageLabel = (k: string) => STAGES.find((s) => s.key === k)?.label ?? k;
@@ -86,8 +95,8 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
             </div>
           </Section>
 
-          <Section title="Activiteiten & contactmomenten">
-            <ActivityTimeline candidateId={c.id} items={activities} demo={demo} />
+          <Section title="Activiteiten, contactmomenten & notities">
+            <ActivityTimeline entity="candidate" entityId={c.id} items={activities} currentUser={adminNaam} demo={demo} />
           </Section>
 
           <Section title="Notitie">
@@ -122,6 +131,10 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
 
           <Section title="Laatste contact">
             <p className="text-sm">{c.laatste_contact ?? "—"}</p>
+          </Section>
+
+          <Section title="Wijzigingslog">
+            <AuditLog entries={audit} />
           </Section>
         </div>
       </div>

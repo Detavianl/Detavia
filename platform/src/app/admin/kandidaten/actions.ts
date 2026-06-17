@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
 import { isDemo } from "@/lib/demo";
 import { addDemoCandidate } from "@/lib/demo-store";
+import { logAudit } from "@/lib/audit";
 
 export async function createCandidate(formData: FormData) {
   const admin = await requireAdmin();
@@ -54,6 +55,7 @@ export async function createCandidate(formData: FormData) {
     .insert({ ...fields, created_by: admin.user_id })
     .select("id").single();
   if (error) throw new Error(error.message);
+  await logAudit(admin, "candidate", data.id, "aangemaakt", naam);
 
   // direct een ATS-kaart aanmaken in 'nieuw'
   await supabase.from("applications").insert({ candidate_id: data.id, stage: "nieuw" });
@@ -67,16 +69,17 @@ function today() {
 }
 
 export async function updateCandidateNote(id: string, notitie: string) {
-  await requireAdmin();
+  const admin = await requireAdmin();
   if (isDemo()) return;
   const supabase = await createClient();
   const { error } = await supabase.from("candidates").update({ notitie }).eq("id", id);
   if (error) throw new Error(error.message);
+  await logAudit(admin, "candidate", id, "gewijzigd", "notitie");
   revalidatePath(`/admin/kandidaten/${id}`);
 }
 
 export async function updateFollowup(id: string, eigenaar: string, actie: string, datum: string) {
-  await requireAdmin();
+  const admin = await requireAdmin();
   if (isDemo()) return;
   const supabase = await createClient();
   await supabase.from("candidates").update({
@@ -84,6 +87,7 @@ export async function updateFollowup(id: string, eigenaar: string, actie: string
     volgende_actie: actie || null,
     volgende_actie_datum: datum || null,
   }).eq("id", id);
+  await logAudit(admin, "candidate", id, "gewijzigd", "opvolging");
   revalidatePath(`/admin/kandidaten/${id}`);
   revalidatePath("/admin/kandidaten");
 }

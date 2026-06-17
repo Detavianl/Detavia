@@ -1,31 +1,45 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getAdmin } from "@/lib/admin-context";
 import { COMPANY_TYPE, COMPANY_STATUS, euro, DEAL_STAGES, VAKGEBIEDEN } from "@/lib/crm";
-import { isDemo, DEMO_COMPANIES, DEMO_CONTACTS, DEMO_DEALS, DEMO_VACATURES_ADMIN } from "@/lib/demo";
+import ActivityTimeline from "@/components/ActivityTimeline";
+import AuditLog from "@/components/AuditLog";
+import { isDemo, DEMO_COMPANIES, DEMO_CONTACTS, DEMO_DEALS, DEMO_VACATURES_ADMIN, DEMO_COMPANY_ACTIVITIES, DEMO_AUDIT, DEMO_TEAM } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
 export default async function BedrijfDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  let co: any, contacten: any[] = [], deals: any[] = [], vacatures: any[] = [];
+  const demo = isDemo();
+  const admin = await getAdmin();
+  const adminNaam = admin?.naam || admin?.email || "Beheer";
 
-  if (isDemo()) {
+  let co: any, contacten: any[] = [], deals: any[] = [], vacatures: any[] = [], activities: any[] = [], audit: any[] = [];
+
+  if (demo) {
     co = DEMO_COMPANIES.find((x) => x.id === id);
     if (!co) notFound();
     contacten = DEMO_CONTACTS.filter((c) => c.company_id === id);
     deals = DEMO_DEALS.filter((d) => d.company?.naam === co.naam);
     vacatures = DEMO_VACATURES_ADMIN.filter((v) => v.company_id === id);
+    activities = DEMO_COMPANY_ACTIVITIES[id] ?? [];
+    audit = DEMO_AUDIT[id] ?? [];
   } else {
     const supabase = await createClient();
     const res = await supabase.from("companies").select("*").eq("id", id).single();
     co = res.data; if (!co) notFound();
-    const [ct, dl, vc] = await Promise.all([
+    const [ct, dl, vc, act, aud, team] = await Promise.all([
       supabase.from("contacts").select("*").eq("company_id", id),
       supabase.from("deals").select("id, titel, waarde, stage").eq("company_id", id),
       supabase.from("vacatures").select("id, titel, vakgebied, plaats, status").eq("company_id", id),
+      supabase.from("crm_activities").select("type, onderwerp, created_at, created_by").eq("company_id", id).order("created_at", { ascending: false }),
+      supabase.from("audit_log").select("actie, details, user_naam, created_at").eq("entity", "company").eq("entity_id", id).order("created_at", { ascending: false }).limit(20),
+      supabase.from("admin_users").select("user_id, naam"),
     ]);
-    contacten = ct.data ?? []; deals = dl.data ?? []; vacatures = vc.data ?? [];
+    contacten = ct.data ?? []; deals = dl.data ?? []; vacatures = vc.data ?? []; audit = aud.data ?? [];
+    const naam = (uid: string) => (team.data ?? []).find((t: any) => t.user_id === uid)?.naam ?? "Beheer";
+    activities = (act.data ?? []).map((a: any) => ({ type: a.type, inhoud: a.onderwerp, created_at: a.created_at, gebruiker: a.created_by ? naam(a.created_by) : null }));
   }
   const stageLabel = (k: string) => DEAL_STAGES.find((s) => s.key === k)?.label ?? k;
   const openVac = vacatures.filter((v) => v.status === "open").length;
@@ -97,6 +111,14 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
             ))}
             {deals.length === 0 && <p className="text-sm text-muted">Geen deals.</p>}
           </div>
+        </Section>
+
+        <Section title="Activiteiten, contactmomenten & notities">
+          <ActivityTimeline entity="company" entityId={id} items={activities} currentUser={adminNaam} demo={demo} />
+        </Section>
+
+        <Section title="Wijzigingslog">
+          <AuditLog entries={audit} />
         </Section>
       </div>
     </div>

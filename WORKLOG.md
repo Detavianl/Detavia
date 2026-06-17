@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-17 - Activiteiten-tijdlijn bij bedrijven + wijzigingslog (wie/wanneer)
+- **Wat is gebouwd/gewijzigd:**
+  - Activiteiten/contactmomenten/notities-tijdlijn nu ook op het bedrijfsdetail (zoals bij kandidaten), met de gebruiker erbij. Tijdlijn-component generiek gemaakt (kandidaat + bedrijf) en toont datum + wie het deed.
+  - Wijzigingslog (audit): nieuwe tabel `audit_log` (entity, actie, details, user_id, user_naam, created_at) + helper `logAudit`. Vastgelegd bij o.a. kandidaat aanmaken/notitie/opvolging, ATS-fasewissel, en bedrijf/contact/deal aanmaken en deal-fasewissel. "Wijzigingslog"-sectie op kandidaat- én bedrijfsdetail (wat, wanneer, door wie).
+  - Demo-data: gebruiker bij activiteiten, bedrijfsactiviteiten en voorbeeld-wijzigingslogs.
+- **Waarom:**
+  - Gebruiker wil dezelfde tijdlijn bij bedrijven, notities als losse logregels met datum/tijd + gebruiker, en overal een wijzigingslog (wat/wanneer/wie).
+- **Geraakte bestanden:**
+  - `platform/supabase/migrations/0007_audit.sql` (nieuw), `src/lib/audit.ts` + `src/components/AuditLog.tsx` (nieuw), `src/components/ActivityTimeline.tsx`, `src/app/admin/crm/actions.ts` + `bedrijven/[id]/page.tsx`, `src/app/admin/kandidaten/{actions.ts,[id]/page.tsx}`, `src/app/admin/ats/actions.ts`, `src/lib/demo.ts`.
+
 ## 2026-06-17 - Bedrijfsdetail als overzichtskaart (contacten + vacatures + deals)
 - **Wat is gebouwd/gewijzigd:**
   - Vacatures gekoppeld aan een opdrachtgever (bedrijf): kolom `company_id` op vacatures (migratie 0006); bedrijf-keuze toegevoegd aan het vacatureformulier (nieuw + bewerken laden de bedrijven).

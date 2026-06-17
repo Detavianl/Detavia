@@ -38,15 +38,35 @@ export const DEMO_APPLICATIONS: AtsCard[] = [
   { id: "a6", stage: "geplaatst", positie: 0, notitie: "", candidate: { id: "c6", naam: "Daan Visser", vakgebied: "beleid", woonplaats: "Amersfoort" }, vacature: { titel: "Adviseur Sociaal Domein" } },
 ];
 
-export const DEMO_ACTIVITIES: Record<string, { type: string; inhoud: string; created_at: string }[]> = {
+export const DEMO_ACTIVITIES: Record<string, { type: string; inhoud: string; created_at: string; gebruiker?: string }[]> = {
   c1: [
-    { type: "telefoon", inhoud: "Eerste telefonisch contact, enthousiast over interim-opdrachten.", created_at: "2026-06-14" },
-    { type: "gesprek", inhoud: "Kennismakingsgesprek gepland voor volgende week.", created_at: "2026-06-13" },
-    { type: "notitie", inhoud: "Cv ontvangen via website, past goed op Wmo-opdrachten.", created_at: "2026-06-12" },
+    { type: "telefoon", inhoud: "Eerste telefonisch contact, enthousiast over interim-opdrachten.", created_at: "2026-06-14", gebruiker: "Demo-beheerder" },
+    { type: "gesprek", inhoud: "Kennismakingsgesprek gepland voor volgende week.", created_at: "2026-06-13", gebruiker: "Recruiter Noord" },
+    { type: "notitie", inhoud: "Cv ontvangen via website, past goed op Wmo-opdrachten.", created_at: "2026-06-12", gebruiker: "Demo-beheerder" },
   ],
   c3: [
-    { type: "voorstel", inhoud: "Voorgesteld bij Gemeente Den Haag (Adviseur Sociaal Domein).", created_at: "2026-06-15" },
-    { type: "gesprek", inhoud: "Uitgebreid kennismakingsgesprek, sterke indruk.", created_at: "2026-06-11" },
+    { type: "voorstel", inhoud: "Voorgesteld bij Gemeente Den Haag (Adviseur Sociaal Domein).", created_at: "2026-06-15", gebruiker: "Demo-beheerder" },
+    { type: "gesprek", inhoud: "Uitgebreid kennismakingsgesprek, sterke indruk.", created_at: "2026-06-11", gebruiker: "Recruiter Noord" },
+  ],
+};
+
+// CRM: activiteiten per bedrijf + wijzigingslogs (audit)
+export const DEMO_COMPANY_ACTIVITIES: Record<string, { type: string; inhoud: string; created_at: string; gebruiker?: string }[]> = {
+  co1: [
+    { type: "afspraak", inhoud: "Kwartaaloverleg ingepland met Karin Bos.", created_at: "2026-06-14", gebruiker: "Demo-beheerder" },
+    { type: "telefoon", inhoud: "Behoefte aan 2 Wmo-consulenten voor Q3 besproken.", created_at: "2026-06-10", gebruiker: "Recruiter Noord" },
+    { type: "notitie", inhoud: "Vaste opdrachtgever, korte lijnen.", created_at: "2026-05-02", gebruiker: "Demo-beheerder" },
+  ],
+};
+
+export const DEMO_AUDIT: Record<string, { actie: string; details?: string; user_naam: string; created_at: string }[]> = {
+  c1: [
+    { actie: "gewijzigd", details: "opvolging", user_naam: "Demo-beheerder", created_at: "2026-06-14 09:12" },
+    { actie: "aangemaakt", details: "Sanne de Vries", user_naam: "Demo-beheerder", created_at: "2026-06-12 16:40" },
+  ],
+  co1: [
+    { actie: "gewijzigd", details: "status → klant", user_naam: "Demo-beheerder", created_at: "2026-05-02 11:05" },
+    { actie: "aangemaakt", details: "Gemeente Almere", user_naam: "Demo-beheerder", created_at: "2026-03-01 10:00" },
   ],
 };
 
