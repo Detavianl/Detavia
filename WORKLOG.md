@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-17 - Fix: hydration-mismatch in ATS-board (dnd-kit)
+- **Wat is gebouwd/gewijzigd:**
+  - Vaste `id="ats-board"` op de dnd-kit `DndContext` gezet. dnd-kit genereerde anders interne accessibility-id's (`aria-describedby`) met een teller die server- en client-side kon verschillen, wat een React hydration-error gaf.
+- **Waarom:**
+  - Gebruiker zag een hydration-console-error op /admin/ats (DndDescribedBy-0 vs -2).
+- **Geraakte bestanden:**
+  - `platform/src/components/AtsBoard.tsx`.
+
 ## 2026-06-17 - Fix: oneindig doorslepen in ATS-board
 - **Wat is gebouwd/gewijzigd:**
   - ATS-board herschreven met een dnd-kit DragOverlay. De gesleepte kaart kreeg eerder een transform in de layout-flow, waardoor het board/de pagina meegroeide en je eindeloos naar rechts/onder kon slepen. Nu blijft de originele kaart staan (gedimd) en volgt een zwevende kopie de muis, los van de layout.

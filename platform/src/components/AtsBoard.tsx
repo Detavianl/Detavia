@@ -31,7 +31,7 @@ export default function AtsBoard({ initial }: { initial: AtsCard[] }) {
   }
 
   return (
-    <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragCancel={() => setActiveId(null)}>
+    <DndContext id="ats-board" sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragCancel={() => setActiveId(null)}>
       <div className="flex gap-4 overflow-x-auto pb-4">
         {STAGES.map((s) => (
           <Column key={s.key} stageKey={s.key} label={s.label} cards={cards.filter((c) => c.stage === s.key)} activeId={activeId} />
