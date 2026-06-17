@@ -25,8 +25,13 @@ export default async function UrenPage() {
 
   return (
     <div className="p-8">
-      <h1 className="display text-3xl">Uren</h1>
-      <p className="mt-1 text-muted">{open} {open === 1 ? "urenregel" : "urenregels"} te beoordelen.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="display text-3xl">Uren</h1>
+          <p className="mt-1 text-muted">{open} {open === 1 ? "urenregel" : "urenregels"} te beoordelen.</p>
+        </div>
+        <a href="/admin/uren/export" className="rounded-full border-2 border-neutral-200 bg-white px-5 py-2.5 font-bold hover:border-cobalt">⬇ Exporteer (CSV)</a>
+      </div>
       <div className="mt-8 overflow-hidden rounded-2xl border border-neutral-200 bg-white">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-muted">

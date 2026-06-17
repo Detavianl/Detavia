@@ -32,7 +32,7 @@ export default async function PlaatsingenPage() {
           <tbody>
             {rows.map((p) => (
               <tr key={p.id} className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50">
-                <td className="px-5 py-3 font-bold">{p.kandidaat}</td>
+                <td className="px-5 py-3"><Link href={`/admin/plaatsingen/${p.id}`} className="font-bold text-cobalt">{p.kandidaat}</Link></td>
                 <td className="px-5 py-3">{p.functie}</td>
                 <td className="px-5 py-3">{p.company_naam}</td>
                 <td className="px-5 py-3">{euro(p.uurtarief)}/u</td>

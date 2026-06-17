@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-17 - Facturatie uit uren + professional uitnodigen + weekoverzicht/export
+- **Wat is gebouwd/gewijzigd:**
+  - (1) Facturatie uit goedgekeurde uren: op het plaatsing-detail een knop die een conceptfactuur opbouwt uit goedgekeurde, nog niet-gefactureerde uren (aantal x uurtarief), die uren markeert als gefactureerd (hours.invoice_id) en doorlinkt naar de factuur. Migratie 0012 (hours.invoice_id, invoices.placement_id + aantal_uren).
+  - (2) Professional uitnodigen: vanuit het plaatsing-detail een Supabase-invite die een login aanmaakt en koppelt aan de kandidaat (candidates.professional_user_id), zodat de professional kan inloggen op het portaal.
+  - (3) Weekoverzicht + export: plaatsing-detail groepeert uren per week met totalen; CSV-export van uren (`/admin/uren/export`, optioneel per plaatsing) met BOM voor Excel; export-knoppen op urenpagina en plaatsing-detail. KPI's tarief/kostprijs/marge/te-factureren.
+- **Waarom:**
+  - Gebruiker vroeg om alle drie de vervolgstappen: facturatie uit uren, echte professional-login via uitnodiging, en weekoverzicht/export.
+- **Geraakte bestanden:**
+  - `platform/supabase/migrations/0012_uren_facturatie.sql` (nieuw), `src/lib/invoice-create.ts`, `src/app/admin/plaatsingen/{actions.ts,page.tsx,[id]/page.tsx}`, `src/components/PlacementActions.tsx` (nieuw), `src/app/admin/uren/{page.tsx,export/route.ts}`.
+
 ## 2026-06-17 - Uren-portaal: professional-login + dag-urenregistratie + plaatsingen
 - **Wat is gebouwd/gewijzigd:**
   - Tweezijdig urenportaal voor detachering per uur. DB (migratie 0011): `placements` (kandidaat+bedrijf, uurtarief, kostprijs -> marge, periode), `hours` (dag-urenregistratie met status ingediend/goedgekeurd/afgekeurd), `candidates.professional_user_id` + RLS zodat professionals alleen hun eigen gegevens zien/bewerken.
