@@ -1,9 +1,10 @@
 import type { AtsCard } from "@/lib/ats";
 
-// Demo-modus actief zolang Supabase niet gekoppeld is (of expliciet via env).
+// Demo-modus actief zolang Supabase niet gekoppeld is. Puur key-gestuurd:
+// zodra NEXT_PUBLIC_SUPABASE_ANON_KEY in productie staat, kan demo nooit aan.
 export function isDemo(): boolean {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  return !key || key === "replace-me" || process.env.DETAVIA_DEMO === "1";
+  return !key || key === "replace-me";
 }
 
 export const DEMO_ADMIN = {

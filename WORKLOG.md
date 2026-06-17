@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-17 - Demo dichtgetimmerd voor go-live
+- **Wat is gebouwd/gewijzigd:**
+  - Loginpagina (`src/app/login/page.tsx`): de drie demo-login-knoppen (beheerder/professional/opdrachtgever) verwijderd; toont nu altijd het echte e-mail/wachtwoord-formulier.
+  - `isDemo()` (`src/lib/demo.ts`): de `DETAVIA_DEMO=1`-noodschakelaar weggehaald, zodat demo puur key-gestuurd is en nooit in productie kan aanstaan.
+  - `src/app/login/actions.ts`: `loginDemo*` weigeren nu (redirect /login) als Supabase gekoppeld is.
+  - Aanpak "veilig dichttimmeren": demo-data/fallback blijft als vangnet in de code, maar verdwijnt automatisch zodra de Supabase-keys staan; geen 45-bestanden refactor.
+- **Waarom:**
+  - Gebruiker gaat live en wil dat alle demo-data en demo-login weg zijn. Demo-data zit alleen in code (niet in database) en hangt aan `isDemo()`; met echte keys is alles automatisch weg.
+- **Geraakte bestanden:**
+  - `platform/src/app/login/page.tsx`, `platform/src/lib/demo.ts`, `platform/src/app/login/actions.ts`.
+
 ## 2026-06-17 - Code naar GitHub gepusht (Detavianl/Detavia)
 - **Wat is gebouwd/gewijzigd:**
   - Git-remote `origin` gekoppeld aan https://github.com/Detavianl/Detavia (privé) en alle commits gepusht naar `main` (411 bestanden online).
