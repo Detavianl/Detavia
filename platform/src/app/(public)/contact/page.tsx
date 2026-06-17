@@ -1,3 +1,5 @@
+import { submitContact } from "../actions";
+
 export const metadata = { title: "Contact & veelgestelde vragen | DetaVia" };
 
 const faq = [
@@ -21,16 +23,24 @@ export default function Contact() {
         <div className="grid gap-10 md:grid-cols-2">
           <div className="rounded-[22px] bg-neutral-100 p-8 sm:p-11">
             <h2 className="display text-2xl">Stuur ons een bericht</h2>
-            <form className="mt-6 grid gap-4" action="/contact" method="post">
+            <form className="mt-6 grid gap-4" action={submitContact}>
               <Field label="Naam" name="naam" />
               <Field label="E-mail" name="email" type="email" />
               <Field label="Telefoon" name="telefoon" type="tel" />
+              <label className="grid gap-1.5">
+                <span className="text-sm font-bold">Ik ben</span>
+                <select name="soort" className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+                  <option value="professional">Professional, op zoek naar werk</option>
+                  <option value="opdrachtgever">Opdrachtgever</option>
+                  <option value="anders">Anders</option>
+                </select>
+              </label>
               <label className="grid gap-1.5">
                 <span className="text-sm font-bold">Bericht</span>
                 <textarea name="bericht" rows={4} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3" />
               </label>
               <button className="justify-self-start rounded-full bg-black px-6 py-3 font-bold text-white" type="submit">Verstuur</button>
-              <p className="text-xs text-muted">Wordt straks gekoppeld aan het beheer (contactberichten).</p>
+              <p className="text-xs text-muted">Komt binnen bij het beheer (contactberichten) zodra Supabase gekoppeld is.</p>
             </form>
           </div>
           <div>

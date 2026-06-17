@@ -1,5 +1,21 @@
 # Worklog
 
+## 2026-06-17 - Backend afgebouwd: admin, ATS, blog, cv's, publieke formulieren
+- **Wat is gebouwd/gewijzigd:**
+  - Auth: login (`/login`), logout, `/geen-toegang`, admin-shell met zijbalk + rolcheck, dashboard met kerncijfers.
+  - ATS: kandidatenlijst, handmatig kandidaat toevoegen (komt direct in pijplijn), kandidaatdetail met cv-download (signed URL) + notitie, kanban-board met drag-and-drop (dnd-kit) over de stages nieuw/screening/gesprek/voorgesteld/geplaatst/afgewezen.
+  - Blog: TipTap-editor, lijst + nieuw/bewerken/verwijderen, HTML-sanitatie; publieke `/verhalen` + `/verhalen/[slug]` uit de database (met fallback).
+  - Vacatures: CRUD-beheer; publieke `/vacatures` laadt uit DB (fallback naar demo-set).
+  - Contactberichten (lijst + gelezen-toggle) en teambeheer (super-admin: uitnodigen + rollen).
+  - Publieke formulieren via service-role server actions: sollicitatie + cv-upload -> kandidaat + ATS-kaart, en contactformulier -> berichten. `/solliciteren`, `/bedankt`.
+  - Seed-script voor eerste super-admin (`scripts/seed-admin.mjs`). Typecheck groen (tsc, 0 fouten). Publieke routes draaien lokaal (200).
+- **Waarom:**
+  - Vervolg op gekozen aanpak (optie 3): alle admin/ATS/blog/cv-code afbouwen zodat alles klaarstaat zodra Supabase gekoppeld wordt.
+- **Geraakte bestanden:**
+  - `platform/src/app/login`, `geen-toegang`, `admin/*` (layout, dashboard, ats, kandidaten, blog, vacatures, berichten, team + actions), `(public)/solliciteren`, `bedankt`, `actions.ts`, bijgewerkte `verhalen`/`vacatures`/`contact`.
+  - `platform/src/components/*` (AdminNav, AtsBoard, BlogEditor/Form, VacatureForm, CvButton, NoteForm, RoleSelect, toggles, Logout).
+  - `platform/scripts/seed-admin.mjs`.
+
 ## 2026-06-17 - Start platform: Next.js + Supabase app (fundament + publieke site)
 - **Wat is gebouwd/gewijzigd:**
   - Nieuwe app `platform/` opgezet: Next.js 16 + React 19 + Tailwind 4 + Supabase (zelfde stack als Workster2.0). Eén app voor publieke site + intern beheer. Geen jobboard.

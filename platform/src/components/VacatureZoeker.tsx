@@ -142,7 +142,7 @@ export default function VacatureZoeker({ vacatures }: { vacatures: Vacature[] })
                 </div>
                 <p className="mt-2.5 text-[.95rem] text-muted">{v.omschrijving}</p>
                 <div className="mt-4">
-                  <a href={`/contact?vacature=${encodeURIComponent(v.titel)}`} className="inline-block rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Solliciteer</a>
+                  <a href={`/solliciteren?vacature_id=${v.id}&titel=${encodeURIComponent(v.titel)}`} className="inline-block rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Solliciteer</a>
                 </div>
               </article>
             ))}
