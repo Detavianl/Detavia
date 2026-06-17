@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-17 - Demo online gezet op Vercel
+- **Wat is gebouwd/gewijzigd:**
+  - Productie-build geverifieerd en de app gedeployed naar Vercel (account badr-png). Draait in demo-modus (geen Supabase-env), dus volledig publiek deelbaar. Live op https://platform-steel-delta.vercel.app (+ deployment-URL). `.vercel/` toegevoegd aan .gitignore.
+- **Waarom:**
+  - Gebruiker wil de demo online hebben om te delen.
+- **Geraakte bestanden:**
+  - `platform/.gitignore` (.vercel genegeerd). Geen code-wijzigingen; deploy via Vercel CLI.
+
 ## 2026-06-17 - Opdrachtgever-portaal: klant keurt uren van eigen professional goed
 - **Wat is gebouwd/gewijzigd:**
   - Derde rol/portaal: de opdrachtgever (contactpersoon van een bedrijf) logt in op `/opdrachtgever`, ziet de professionals die via DetaVia bij hen geplaatst zijn en keurt hun ingediende uren goed/af. DB (migratie 0013): `contacts.portaal_user_id` + RLS-helpers (client_company, is_client_of_placement) zodat een opdrachtgever alleen plaatsingen en uren van het eigen bedrijf ziet en mag goedkeuren.
