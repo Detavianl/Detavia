@@ -7,6 +7,18 @@ import type { AtsCard } from "./ats";
 const extraCandidates: any[] = [];
 const extraApplications: AtsCard[] = [];
 
+// Documenten per kandidaat (demo). Begint met een voorbeeld-cv voor c1.
+const documents: Record<string, { id: string; filename: string; soort: string; uploaded_at: string }[]> = {
+  c1: [{ id: "doc1", filename: "CV Sanne de Vries.pdf", soort: "cv", uploaded_at: "2026-06-12" }],
+};
+
+export function addDemoDocument(candidateId: string, doc: { id: string; filename: string; soort: string; uploaded_at: string }) {
+  (documents[candidateId] ??= []).unshift(doc);
+}
+export function demoDocuments(candidateId: string) {
+  return documents[candidateId] ?? [];
+}
+
 export function addDemoCandidate(c: any) {
   extraCandidates.unshift(c);
   extraApplications.unshift({

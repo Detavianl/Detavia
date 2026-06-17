@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
 import { isDemo } from "@/lib/demo";
-import { addDemoCandidate } from "@/lib/demo-store";
+import { addDemoCandidate, addDemoDocument } from "@/lib/demo-store";
 import { logAudit } from "@/lib/audit";
 
 export async function createCandidate(formData: FormData) {
@@ -90,6 +90,33 @@ export async function updateFollowup(id: string, eigenaar: string, actie: string
   await logAudit(admin, "candidate", id, "gewijzigd", "opvolging");
   revalidatePath(`/admin/kandidaten/${id}`);
   revalidatePath("/admin/kandidaten");
+}
+
+/** Voegt een document (cv en meer) toe aan een kandidaat. */
+export async function uploadDocument(candidateId: string, formData: FormData) {
+  const admin = await requireAdmin();
+  const soort = String(formData.get("soort") ?? "cv");
+  const file = formData.get("bestand");
+  if (!(file instanceof File) || file.size === 0) return;
+
+  if (isDemo()) {
+    addDemoDocument(candidateId, {
+      id: "doc-" + Math.random().toString(36).slice(2, 8),
+      filename: file.name, soort, uploaded_at: new Date().toISOString().slice(0, 10),
+    });
+    revalidatePath(`/admin/kandidaten/${candidateId}`);
+    return;
+  }
+
+  const supabase = await createClient();
+  const ext = file.name.split(".").pop() ?? "pdf";
+  const path = `${candidateId}/${Date.now()}.${ext}`;
+  const buf = Buffer.from(await file.arrayBuffer());
+  const up = await supabase.storage.from("cvs").upload(path, buf, { contentType: file.type || "application/octet-stream" });
+  if (up.error) throw new Error(up.error.message);
+  await supabase.from("cvs").insert({ candidate_id: candidateId, storage_path: path, filename: file.name, soort });
+  await logAudit(admin, "candidate", candidateId, "Document toegevoegd", file.name);
+  revalidatePath(`/admin/kandidaten/${candidateId}`);
 }
 
 /** Tijdelijke (signed) download-URL voor een cv in de privé-bucket. */

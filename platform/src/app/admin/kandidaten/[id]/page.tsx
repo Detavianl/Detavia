@@ -8,10 +8,15 @@ import QuickNotes from "@/components/QuickNotes";
 import AuditLog from "@/components/AuditLog";
 import FollowupForm from "@/components/FollowupForm";
 import { getAdmin } from "@/lib/admin-context";
+import { uploadDocument } from "../actions";
 import { isDemo, DEMO_TEAM, DEMO_AUDIT, DEMO_CONTACT_MOMENTS, DEMO_NOTES } from "@/lib/demo";
-import { demoCandidate, demoApplications } from "@/lib/demo-store";
+import { demoCandidate, demoApplications, demoDocuments } from "@/lib/demo-store";
 
 export const dynamic = "force-dynamic";
+
+const DOC_SOORT: Record<string, string> = {
+  cv: "Cv", motivatie: "Motivatie", diploma: "Diploma", referentie: "Referentie", id: "ID", overig: "Overig",
+};
 
 export default async function KandidaatDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -29,6 +34,7 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
     audit = DEMO_AUDIT[id] ?? [];
     contactmomenten = DEMO_CONTACT_MOMENTS[id] ?? [];
     notities = DEMO_NOTES[id] ?? [];
+    cvs = demoDocuments(id);
   } else {
     const supabase = await createClient();
     const res = await supabase.from("candidates").select("*").eq("id", id).single();
@@ -117,11 +123,31 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
             <FollowupForm id={c.id} eigenaar={c.eigenaar ?? ""} actie={c.volgende_actie ?? ""} datum={c.volgende_actie_datum ?? ""} team={team} demo={demo} />
           </Section>
 
-          <Section title="CV's">
+          <Section title="Documenten">
+            <p className="-mt-2 mb-3 text-xs text-muted">Cv&apos;s en meer (motivatie, diploma, referentie…).</p>
             <div className="grid gap-2">
-              {cvs.map((cv) => <CvButton key={cv.id} path={cv.storage_path} filename={cv.filename} />)}
-              {cvs.length === 0 && <p className="text-sm text-muted">Nog geen cv geüpload.</p>}
+              {cvs.map((cv: any) => (
+                <div key={cv.id} className="flex items-center gap-2">
+                  <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[.7rem] font-bold capitalize">{DOC_SOORT[cv.soort] ?? cv.soort ?? "cv"}</span>
+                  {cv.storage_path
+                    ? <CvButton path={cv.storage_path} filename={cv.filename} />
+                    : <span className="rounded-lg border border-neutral-200 px-3 py-2 text-sm font-semibold">📄 {cv.filename}</span>}
+                </div>
+              ))}
+              {cvs.length === 0 && <p className="text-sm text-muted">Nog geen documenten.</p>}
             </div>
+
+            <form action={uploadDocument.bind(null, c.id)} className="mt-4 grid gap-2 border-t border-neutral-100 pt-4">
+              <div className="flex flex-wrap gap-2">
+                <select name="soort" className="rounded-lg border-2 border-neutral-200 px-2 py-2 text-sm font-semibold">
+                  <option value="cv">Cv</option><option value="motivatie">Motivatiebrief</option>
+                  <option value="diploma">Diploma</option><option value="referentie">Referentie</option>
+                  <option value="id">ID-bewijs</option><option value="overig">Overig</option>
+                </select>
+                <input name="bestand" type="file" required className="flex-1 rounded-lg border-2 border-neutral-200 px-2 py-1.5 text-sm" />
+              </div>
+              <button className="justify-self-start rounded-full bg-cobalt px-4 py-2 text-sm font-bold text-white">+ Document toevoegen</button>
+            </form>
           </Section>
 
           <Section title="In de funnel">
