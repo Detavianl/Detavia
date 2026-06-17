@@ -5,7 +5,8 @@ import { VAKGEBIEDEN, STAGES, KANDIDAAT_STATUS } from "@/lib/ats";
 import CvButton from "@/components/CvButton";
 import NoteForm from "@/components/NoteForm";
 import ActivityTimeline from "@/components/ActivityTimeline";
-import { isDemo, DEMO_CANDIDATES, DEMO_APPLICATIONS, DEMO_ACTIVITIES } from "@/lib/demo";
+import FollowupForm from "@/components/FollowupForm";
+import { isDemo, DEMO_CANDIDATES, DEMO_APPLICATIONS, DEMO_ACTIVITIES, DEMO_TEAM } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
@@ -13,23 +14,25 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
   const { id } = await params;
   const demo = isDemo();
 
-  let c: any, cvs: any[] = [], apps: any[] = [], activities: any[] = [];
+  let c: any, cvs: any[] = [], apps: any[] = [], activities: any[] = [], team: any[] = [];
   if (demo) {
     c = DEMO_CANDIDATES.find((x) => x.id === id);
     if (!c) notFound();
     apps = DEMO_APPLICATIONS.filter((a) => a.candidate?.id === id).map((a) => ({ id: a.id, stage: a.stage, vacature: a.vacature }));
     activities = DEMO_ACTIVITIES[id] ?? [];
+    team = DEMO_TEAM;
   } else {
     const supabase = await createClient();
     const res = await supabase.from("candidates").select("*").eq("id", id).single();
     c = res.data;
     if (!c) notFound();
-    const [cvRes, appRes, actRes] = await Promise.all([
+    const [cvRes, appRes, actRes, teamRes] = await Promise.all([
       supabase.from("cvs").select("*").eq("candidate_id", id).order("uploaded_at", { ascending: false }),
       supabase.from("applications").select("id, stage, vacature:vacatures(titel)").eq("candidate_id", id),
       supabase.from("candidate_activities").select("type, inhoud, created_at").eq("candidate_id", id).order("created_at", { ascending: false }),
+      supabase.from("admin_users").select("user_id, naam"),
     ]);
-    cvs = cvRes.data ?? []; apps = appRes.data ?? []; activities = actRes.data ?? [];
+    cvs = cvRes.data ?? []; apps = appRes.data ?? []; activities = actRes.data ?? []; team = teamRes.data ?? [];
   }
 
   const stageLabel = (k: string) => STAGES.find((s) => s.key === k)?.label ?? k;
@@ -92,6 +95,10 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
         </div>
 
         <div className="grid gap-6">
+          <Section title="Eigenaar & opvolging">
+            <FollowupForm id={c.id} eigenaar={c.eigenaar ?? ""} actie={c.volgende_actie ?? ""} datum={c.volgende_actie_datum ?? ""} team={team} demo={demo} />
+          </Section>
+
           <Section title="CV's">
             <div className="grid gap-2">
               {cvs.map((cv) => <CvButton key={cv.id} path={cv.storage_path} filename={cv.filename} />)}

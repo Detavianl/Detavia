@@ -59,6 +59,19 @@ export async function updateCandidateNote(id: string, notitie: string) {
   revalidatePath(`/admin/kandidaten/${id}`);
 }
 
+export async function updateFollowup(id: string, eigenaar: string, actie: string, datum: string) {
+  await requireAdmin();
+  if (isDemo()) return;
+  const supabase = await createClient();
+  await supabase.from("candidates").update({
+    eigenaar: eigenaar || null,
+    volgende_actie: actie || null,
+    volgende_actie_datum: datum || null,
+  }).eq("id", id);
+  revalidatePath(`/admin/kandidaten/${id}`);
+  revalidatePath("/admin/kandidaten");
+}
+
 export async function addActivity(candidateId: string, type: string, inhoud: string) {
   const admin = await requireAdmin();
   if (!inhoud.trim()) return;

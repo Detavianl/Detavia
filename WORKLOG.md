@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-17 - Eigenaarschap/opvolging, funnel-metrics en talentpool-filter
+- **Wat is gebouwd/gewijzigd:**
+  - (1) Eigenaar + volgende actie/reminder per kandidaat: opvolging-sectie in het detail (eigenaar uit team, actie + datum), opgeslagen op de kandidaat; `laatste_contact` bij activiteit.
+  - (3) Funnel-metrics (`/admin/funnel`): KPI's (in funnel, geplaatst, conversie %, talentpool), funnel-per-fase met staafjes + stap-conversie + gemiddelde dagen in fase (uit `stage_changed_at`-trigger). In menu opgenomen.
+  - (4) Talentpool-filter: kandidatenlijst omgebouwd naar filterbare client-tabel (zoeken op naam/functie/expertise + filters niveau/status/vakgebied). "Kandidaten" hernoemd naar "Talentpool".
+- **Waarom:**
+  - Vervolg op de funnel-audit; gebruiker koos 1, 3 en 4 (2 = geanonimiseerd profiel niet).
+- **Geraakte bestanden:**
+  - `platform/supabase/migrations/0004_ownership_metrics.sql` (nieuw), `src/app/admin/funnel/page.tsx` (nieuw), `src/components/FollowupForm.tsx` + `TalentpoolTable.tsx` (nieuw), `src/components/AdminNav.tsx`, `src/app/admin/kandidaten/*` (page, [id], actions), `src/lib/demo.ts`.
+
 ## 2026-06-17 - ATS-kandidaat uitgebreid (CRM-stijl) + funnel-audit
 - **Wat is gebouwd/gewijzigd:**
   - Funnel-audit uitgevoerd; aanbevelingen verwerkt.
