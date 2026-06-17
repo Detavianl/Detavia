@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
 import { isDemo } from "@/lib/demo";
 import { logAudit } from "@/lib/audit";
+import { createInvoiceForWonDeal } from "@/lib/invoice-create";
 import { DEAL_EVENT, type DealStage } from "@/lib/crm";
 
 const s = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
@@ -20,6 +21,13 @@ export async function moveDeal(id: string, stage: DealStage) {
   await logAudit(admin, "deal", id, "fase gewijzigd", event);
   // herkent automatisch de klant-gebeurtenis en plaatst die in de wijzigingslog van het bedrijf
   if (data?.company_id) await logAudit(admin, "company", data.company_id, event, data.titel ?? "");
+
+  // Bij gewonnen: automatisch een conceptfactuur aanmaken
+  if (stage === "gewonnen") {
+    await createInvoiceForWonDeal(supabase, id);
+    if (data?.company_id) await logAudit(admin, "company", data.company_id, "Factuur aangemaakt", data.titel ?? "");
+    revalidatePath("/admin/facturen");
+  }
   revalidatePath("/admin/crm/deals");
 }
 

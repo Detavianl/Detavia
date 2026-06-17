@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-17 - Facturatiemodule: PDF-factuur bij gewonnen deal + verzendomgeving
+- **Wat is gebouwd/gewijzigd:**
+  - Bij een deal die op "Gewonnen" wordt gezet, wordt automatisch een conceptfactuur aangemaakt (idempotent) met factuurnummer (DETA-jaar-volgnr), bedrag uit de deal, btw 21%, vervaldatum.
+  - Echte PDF-factuur in Detavia-huisstijl via `pdf-lib` (afzender/geadresseerde, regel, subtotaal/btw/totaal, betaalblok). Download/bekijk-route `/admin/facturen/[id]/pdf`.
+  - Factuuromgeving `/admin/facturen`: lijst (openstaand totaal, status) + detail met PDF-knop en acties "Versturen" / "Markeer als betaald". De verzend-actie is een stub die klaarstaat om aan Resend te koppelen (PDF als bijlage mailen) zodra RESEND_API_KEY er is.
+  - Migratie 0010 (invoices + RLS). Demo-facturen + demo-veilige acties. Menu-item onder CRM. Afzendergegevens (KvK/IBAN/BTW) als placeholders in `src/lib/invoice.ts`.
+- **Waarom:**
+  - Gebruiker wil dat facturatie vanuit het systeem gebeurt: PDF bij gewonnen deal + verzendomgeving voor latere Resend-koppeling.
+- **Geraakte bestanden:**
+  - `platform/supabase/migrations/0010_invoices.sql` (nieuw), `src/lib/{invoice.ts,invoice-pdf.ts,invoice-create.ts}` (nieuw), `src/app/admin/facturen/*` (page, [id], [id]/pdf/route, actions), `src/components/InvoiceActions.tsx` (nieuw), `src/app/admin/crm/actions.ts` (moveDeal), `src/components/AdminNav.tsx`, `src/lib/demo.ts`, `package.json` (pdf-lib).
+
 ## 2026-06-17 - Opvolging bij bedrijven + documenten openbaar
 - **Wat is gebouwd/gewijzigd:**
   - "Eigenaar & opvolging"-kaart ook op het bedrijfsdetail (zoals bij kandidaten): eigenaar + volgende actie + datum. FollowupForm gegeneraliseerd (entity candidate/company); `updateCompanyFollowup`-actie + audit; migratie 0009 (volgende_actie/datum op companies).

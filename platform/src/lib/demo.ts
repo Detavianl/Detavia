@@ -134,3 +134,10 @@ export const DEMO_DEALS_FULL: Record<string, { contact: string | null; verwachte
   d1: { contact: "Karin Bos", verwachte_sluiting: "2026-07-15", notitie: "Wacht op formele aanvraag." },
   d3: { contact: "Peter Klein", verwachte_sluiting: "2026-07-01", notitie: "Voorstel verstuurd, follow-up nodig." },
 };
+
+// ---------- Facturen (demo) ----------
+import type { Invoice } from "@/lib/invoice";
+export const DEMO_INVOICES: Invoice[] = [
+  { id: "inv1", nummer: "DETA-2026-0001", bedrijf_naam: "Gemeente Zwolle", bedrijf_email: "crediteuren@zwolle.nl", omschrijving: "Detachering: Inkomensconsulent (juni 2026)", bedrag: 7200, btw_pct: 21, status: "concept", factuurdatum: "2026-06-15", vervaldatum: "2026-06-29", created_at: "2026-06-15" },
+  { id: "inv2", nummer: "DETA-2026-0002", bedrijf_naam: "Gemeente Almere", bedrijf_email: "crediteuren@almere.nl", omschrijving: "Detachering: Wmo-consulent (mei 2026)", bedrag: 8400, btw_pct: 21, status: "verzonden", factuurdatum: "2026-06-01", vervaldatum: "2026-06-15", created_at: "2026-06-01" },
+];

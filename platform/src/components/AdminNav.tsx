@@ -14,6 +14,7 @@ const items: Item[] = [
   { href: "/admin/crm/deals", label: "Deals" },
   { href: "/admin/crm/bedrijven", label: "Bedrijven" },
   { href: "/admin/crm/contacten", label: "Contactpersonen" },
+  { href: "/admin/facturen", label: "Facturen" },
   { header: "Content & overig" },
   { href: "/admin/vacatures", label: "Vacatures" },
   { href: "/admin/blog", label: "Blog" },
