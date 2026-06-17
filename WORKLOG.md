@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-17 - Opdrachtgever-portaal: klant keurt uren van eigen professional goed
+- **Wat is gebouwd/gewijzigd:**
+  - Derde rol/portaal: de opdrachtgever (contactpersoon van een bedrijf) logt in op `/opdrachtgever`, ziet de professionals die via DetaVia bij hen geplaatst zijn en keurt hun ingediende uren goed/af. DB (migratie 0013): `contacts.portaal_user_id` + RLS-helpers (client_company, is_client_of_placement) zodat een opdrachtgever alleen plaatsingen en uren van het eigen bedrijf ziet en mag goedkeuren.
+  - Opdrachtgever uitnodigen: knop bij de contactpersonen op het bedrijfsdetail (`inviteClient`) die een Supabase-login aanmaakt en koppelt aan het contact. Geen tarieven/marge zichtbaar voor de opdrachtgever.
+  - Login: derde demo-knop "Inloggen als opdrachtgever"; middleware beschermt nu ook /opdrachtgever; logout wist alle drie de demo-cookies.
+- **Waarom:**
+  - Gebruiker wil dat de gekoppelde opdrachtgever de uren van hun ingehuurde professional goedkeurt (het is hun opdracht).
+- **Geraakte bestanden:**
+  - `platform/supabase/migrations/0013_opdrachtgever_portaal.sql` (nieuw), `src/lib/client-context.ts` (nieuw), `src/app/opdrachtgever/*` (layout, page, actions), `src/components/{ClientHoursButtons,InviteClientButton}.tsx` (nieuw), `src/app/admin/crm/actions.ts`, `src/app/admin/crm/bedrijven/[id]/page.tsx`, `src/app/login/{page.tsx,actions.ts}`, `src/middleware.ts`.
+
 ## 2026-06-17 - Facturatie uit uren + professional uitnodigen + weekoverzicht/export
 - **Wat is gebouwd/gewijzigd:**
   - (1) Facturatie uit goedgekeurde uren: op het plaatsing-detail een knop die een conceptfactuur opbouwt uit goedgekeurde, nog niet-gefactureerde uren (aantal x uurtarief), die uren markeert als gefactureerd (hours.invoice_id) en doorlinkt naar de factuur. Migratie 0012 (hours.invoice_id, invoices.placement_id + aantal_uren).

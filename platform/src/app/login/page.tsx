@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { loginDemo, loginDemoProfessional } from "./actions";
+import { loginDemo, loginDemoProfessional, loginDemoClient } from "./actions";
 
 const DEMO = (() => {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -42,8 +42,11 @@ export default function LoginPage() {
             <form action={loginDemoProfessional} className="mt-3">
               <button className="w-full rounded-full border-2 border-cobalt px-6 py-3 font-bold text-cobalt">Inloggen als professional</button>
             </form>
+            <form action={loginDemoClient} className="mt-3">
+              <button className="w-full rounded-full border-2 border-neutral-300 px-6 py-3 font-bold text-ink">Inloggen als opdrachtgever</button>
+            </form>
             <div className="mt-4 rounded-xl bg-neutral-100 p-3 text-xs text-muted">
-              Beheer: <b>demo@detavia.nl</b> (super-admin) · Professional: het urenportaal.<br />
+              Beheer (super-admin) · Professional (urenportaal) · Opdrachtgever (uren goedkeuren).<br />
               Wijzigingen worden in demo niet bewaard.
             </div>
           </>

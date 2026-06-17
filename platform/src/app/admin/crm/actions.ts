@@ -31,6 +31,28 @@ export async function moveDeal(id: string, stage: DealStage) {
   revalidatePath("/admin/crm/deals");
 }
 
+// Nodigt een contactpersoon uit voor het opdrachtgever-portaal (urengoedkeuring).
+export async function inviteClient(contactId: string) {
+  const admin = await requireAdmin();
+  if (isDemo()) return;
+  const supabase = await createClient();
+  const { data: ct } = await supabase.from("contacts").select("email, naam, company_id").eq("id", contactId).single();
+  if (!ct?.email) throw new Error("Contact heeft geen e-mailadres.");
+
+  const { createAdminClient } = await import("@/lib/supabase/admin");
+  const sb = createAdminClient();
+  const { data, error } = await sb.auth.admin.inviteUserByEmail(ct.email);
+  let userId = data?.user?.id;
+  if (error || !userId) {
+    const { data: list } = await sb.auth.admin.listUsers();
+    userId = list?.users.find((u) => u.email?.toLowerCase() === ct.email.toLowerCase())?.id;
+    if (!userId) throw new Error("Kon de opdrachtgever niet uitnodigen.");
+  }
+  await sb.from("contacts").update({ portaal_user_id: userId }).eq("id", contactId);
+  if (ct.company_id) await logAudit(admin, "company", ct.company_id, "Opdrachtgever uitgenodigd", ct.naam ?? ct.email);
+  revalidatePath(`/admin/crm/bedrijven/${ct.company_id}`);
+}
+
 export async function updateCompanyFollowup(id: string, eigenaar: string, actie: string, datum: string) {
   const admin = await requireAdmin();
   if (isDemo()) return;

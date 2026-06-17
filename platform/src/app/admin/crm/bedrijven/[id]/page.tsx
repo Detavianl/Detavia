@@ -7,6 +7,7 @@ import ContactMoments from "@/components/ContactMoments";
 import QuickNotes from "@/components/QuickNotes";
 import AuditLog from "@/components/AuditLog";
 import FollowupForm from "@/components/FollowupForm";
+import InviteClientButton from "@/components/InviteClientButton";
 import { isDemo, DEMO_COMPANIES, DEMO_CONTACTS, DEMO_DEALS, DEMO_VACATURES_ADMIN, DEMO_CONTACT_MOMENTS, DEMO_NOTES, DEMO_AUDIT, DEMO_TEAM } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
@@ -90,6 +91,7 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
                 <p className="font-bold">{c.naam}</p>
                 <p className="text-sm text-muted">{c.functie}</p>
                 <p className="mt-1 text-sm">{c.email}{c.telefoon ? ` · ${c.telefoon}` : ""}</p>
+                <div className="mt-2"><InviteClientButton contactId={c.id} uitgenodigd={!!c.portaal_user_id} demo={demo} /></div>
               </div>
             ))}
             {contacten.length === 0 && <p className="text-sm text-muted">Geen contactpersonen.</p>}
