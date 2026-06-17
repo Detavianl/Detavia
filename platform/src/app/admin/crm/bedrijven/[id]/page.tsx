@@ -6,7 +6,8 @@ import { COMPANY_TYPE, COMPANY_STATUS, euro, DEAL_STAGES, VAKGEBIEDEN } from "@/
 import ContactMoments from "@/components/ContactMoments";
 import QuickNotes from "@/components/QuickNotes";
 import AuditLog from "@/components/AuditLog";
-import { isDemo, DEMO_COMPANIES, DEMO_CONTACTS, DEMO_DEALS, DEMO_VACATURES_ADMIN, DEMO_CONTACT_MOMENTS, DEMO_NOTES, DEMO_AUDIT } from "@/lib/demo";
+import FollowupForm from "@/components/FollowupForm";
+import { isDemo, DEMO_COMPANIES, DEMO_CONTACTS, DEMO_DEALS, DEMO_VACATURES_ADMIN, DEMO_CONTACT_MOMENTS, DEMO_NOTES, DEMO_AUDIT, DEMO_TEAM } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,7 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
   const admin = await getAdmin();
   const adminNaam = admin?.naam || admin?.email || "Beheer";
 
-  let co: any, contacten: any[] = [], deals: any[] = [], vacatures: any[] = [], audit: any[] = [], contactmomenten: any[] = [], notities: any[] = [];
+  let co: any, contacten: any[] = [], deals: any[] = [], vacatures: any[] = [], audit: any[] = [], contactmomenten: any[] = [], notities: any[] = [], team: any[] = [];
 
   if (demo) {
     co = DEMO_COMPANIES.find((x) => x.id === id);
@@ -27,11 +28,12 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
     audit = DEMO_AUDIT[id] ?? [];
     contactmomenten = DEMO_CONTACT_MOMENTS[id] ?? [];
     notities = DEMO_NOTES[id] ?? [];
+    team = DEMO_TEAM;
   } else {
     const supabase = await createClient();
     const res = await supabase.from("companies").select("*").eq("id", id).single();
     co = res.data; if (!co) notFound();
-    const [ct, dl, vc, act, aud, team] = await Promise.all([
+    const [ct, dl, vc, act, aud, tm] = await Promise.all([
       supabase.from("contacts").select("*").eq("company_id", id),
       supabase.from("deals").select("id, titel, waarde, stage").eq("company_id", id),
       supabase.from("vacatures").select("id, titel, vakgebied, plaats, status").eq("company_id", id),
@@ -39,8 +41,8 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
       supabase.from("audit_log").select("actie, details, user_naam, created_at").eq("entity", "company").eq("entity_id", id).order("created_at", { ascending: false }).limit(20),
       supabase.from("admin_users").select("user_id, naam"),
     ]);
-    contacten = ct.data ?? []; deals = dl.data ?? []; vacatures = vc.data ?? []; audit = aud.data ?? [];
-    const naam = (uid: string) => (team.data ?? []).find((t: any) => t.user_id === uid)?.naam ?? "Beheer";
+    contacten = ct.data ?? []; deals = dl.data ?? []; vacatures = vc.data ?? []; audit = aud.data ?? []; team = tm.data ?? [];
+    const naam = (uid: string) => team.find((t: any) => t.user_id === uid)?.naam ?? "Beheer";
     const ctNaam = (cid: string) => contacten.find((x: any) => x.id === cid)?.naam ?? null;
     const acts = (act.data ?? []).map((a: any) => ({ ...a, gebruiker: a.created_by ? naam(a.created_by) : null }));
     contactmomenten = acts.filter((a: any) => a.type !== "notitie").map((a: any) => ({ type: a.type, tekst: a.onderwerp, met: a.contact_id ? ctNaam(a.contact_id) : null, created_at: a.created_at, gebruiker: a.gebruiker }));
@@ -76,6 +78,10 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <Section title="Eigenaar & opvolging">
+          <FollowupForm entity="company" id={co.id} eigenaar={co.eigenaar ?? ""} actie={co.volgende_actie ?? ""} datum={co.volgende_actie_datum ?? ""} team={team} demo={demo} />
+        </Section>
+
         {/* Contactpersonen */}
         <Section title="Contactpersonen" action={<Link href="/admin/crm/contacten/nieuw" className="text-sm font-bold text-cobalt">+ Nieuw</Link>}>
           <div className="grid gap-3">

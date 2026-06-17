@@ -130,7 +130,9 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
                   <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[.7rem] font-bold capitalize">{DOC_SOORT[cv.soort] ?? cv.soort ?? "cv"}</span>
                   {cv.storage_path
                     ? <CvButton path={cv.storage_path} filename={cv.filename} />
-                    : <span className="rounded-lg border border-neutral-200 px-3 py-2 text-sm font-semibold">📄 {cv.filename}</span>}
+                    : cv.url
+                      ? <a href={cv.url} target="_blank" rel="noopener noreferrer" download={cv.filename} className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold hover:border-cobalt">📄 {cv.filename}</a>
+                      : <span className="rounded-lg border border-neutral-200 px-3 py-2 text-sm font-semibold">📄 {cv.filename}</span>}
                 </div>
               ))}
               {cvs.length === 0 && <p className="text-sm text-muted">Nog geen documenten.</p>}

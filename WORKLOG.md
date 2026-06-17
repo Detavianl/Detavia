@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-17 - Opvolging bij bedrijven + documenten openbaar
+- **Wat is gebouwd/gewijzigd:**
+  - "Eigenaar & opvolging"-kaart ook op het bedrijfsdetail (zoals bij kandidaten): eigenaar + volgende actie + datum. FollowupForm gegeneraliseerd (entity candidate/company); `updateCompanyFollowup`-actie + audit; migratie 0009 (volgende_actie/datum op companies).
+  - Documenten zijn nu te openen: in live via signed URL (al aanwezig); in demo wordt het geuploade bestand als data-URL bewaard en als klikbare link getoond, zodat je het ook in de demo kunt openen.
+- **Waarom:**
+  - Gebruiker wil opvolging ook bij bedrijven, en documenten daadwerkelijk kunnen openen.
+- **Geraakte bestanden:**
+  - `platform/supabase/migrations/0009_company_followup.sql` (nieuw), `src/components/FollowupForm.tsx`, `src/app/admin/crm/{actions.ts,bedrijven/[id]/page.tsx}`, `src/lib/demo-store.ts`, `src/app/admin/kandidaten/{actions.ts,[id]/page.tsx}`.
+
 ## 2026-06-17 - Sterren-rating verwijderd uit de UI
 - **Wat is gebouwd/gewijzigd:**
   - De ★-rating weggehaald uit het kandidaatdetail (kop + Stars-helper) en uit de Talentpool-lijst (kolom + cel, colspan bijgewerkt). DB-kolom blijft bestaan maar wordt nergens meer getoond.

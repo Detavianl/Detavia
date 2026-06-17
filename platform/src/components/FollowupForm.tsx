@@ -1,11 +1,13 @@
 "use client";
 import { useState } from "react";
 import { updateFollowup } from "@/app/admin/kandidaten/actions";
+import { updateCompanyFollowup } from "@/app/admin/crm/actions";
 
 type Team = { user_id: string; naam: string };
 
-export default function FollowupForm({ id, eigenaar, actie, datum, team, demo }: {
+export default function FollowupForm({ id, eigenaar, actie, datum, team, demo, entity = "candidate" }: {
   id: string; eigenaar: string; actie: string; datum: string; team: Team[]; demo?: boolean;
+  entity?: "candidate" | "company";
 }) {
   const [e, setE] = useState(eigenaar);
   const [a, setA] = useState(actie);
@@ -14,7 +16,10 @@ export default function FollowupForm({ id, eigenaar, actie, datum, team, demo }:
 
   async function save() {
     setStatus("Opslaan…");
-    if (!demo) await updateFollowup(id, e, a, d);
+    if (!demo) {
+      if (entity === "company") await updateCompanyFollowup(id, e, a, d);
+      else await updateFollowup(id, e, a, d);
+    }
     setStatus("Opgeslagen ✓");
     setTimeout(() => setStatus(""), 1500);
   }

@@ -100,9 +100,12 @@ export async function uploadDocument(candidateId: string, formData: FormData) {
   if (!(file instanceof File) || file.size === 0) return;
 
   if (isDemo()) {
+    // bewaar als data-URL zodat het bestand ook te openen is in de demo
+    const buf = Buffer.from(await file.arrayBuffer());
+    const url = `data:${file.type || "application/octet-stream"};base64,${buf.toString("base64")}`;
     addDemoDocument(candidateId, {
       id: "doc-" + Math.random().toString(36).slice(2, 8),
-      filename: file.name, soort, uploaded_at: new Date().toISOString().slice(0, 10),
+      filename: file.name, soort, uploaded_at: new Date().toISOString().slice(0, 10), url,
     });
     revalidatePath(`/admin/kandidaten/${candidateId}`);
     return;

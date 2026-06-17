@@ -23,6 +23,19 @@ export async function moveDeal(id: string, stage: DealStage) {
   revalidatePath("/admin/crm/deals");
 }
 
+export async function updateCompanyFollowup(id: string, eigenaar: string, actie: string, datum: string) {
+  const admin = await requireAdmin();
+  if (isDemo()) return;
+  const supabase = await createClient();
+  await supabase.from("companies").update({
+    eigenaar: eigenaar || null,
+    volgende_actie: actie || null,
+    volgende_actie_datum: datum || null,
+  }).eq("id", id);
+  await logAudit(admin, "company", id, "gewijzigd", "opvolging");
+  revalidatePath(`/admin/crm/bedrijven/${id}`);
+}
+
 export async function createCompany(formData: FormData) {
   const admin = await requireAdmin();
   if (isDemo()) redirect("/admin/crm/bedrijven");
