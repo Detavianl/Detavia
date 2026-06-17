@@ -10,8 +10,8 @@ export default function SiteFooter() {
             <img src="/img/logo_black.svg" alt="DetaVia" className="mb-4 h-8" />
             <p className="max-w-[34ch] text-muted">Jouw betrouwbare carrièrepartner in het sociaal domein.</p>
           </div>
-          <FootCol title="Ontdek" links={[["Vacatures", "/vacatures"], ["Verhalen", "/verhalen"], ["Over ons", "/over-ons"]]} />
-          <FootCol title="DetaVia" links={[["Contact", "/contact"], ["Veelgesteld", "/contact#faq"]]} />
+          <FootCol title="Voor kandidaten" links={[["Vacatures", "/vacatures"], ["Open sollicitatie", "/solliciteren"], ["Verhalen", "/verhalen"]]} />
+          <FootCol title="Voor opdrachtgevers" links={[["Vraag een professional aan", "/voor-opdrachtgevers"], ["Over ons", "/over-ons"], ["Contact", "/contact"]]} />
           <FootCol title="Account" links={[["Inloggen flexportaal", "https://detavia.flexportal.eu/"], ["Beheer", "/admin"]]} />
         </div>
         <div className="mt-10 flex flex-wrap justify-between gap-4 border-t border-neutral-200 pt-6 text-sm text-muted">

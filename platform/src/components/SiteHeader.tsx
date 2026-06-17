@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 const nav = [
-  { href: "/", label: "Home" },
   { href: "/vacatures", label: "Vacatures" },
+  { href: "/voor-opdrachtgevers", label: "Voor opdrachtgevers" },
   { href: "/over-ons", label: "Over ons" },
   { href: "/verhalen", label: "Verhalen" },
   { href: "/contact", label: "Contact" },
@@ -23,12 +23,15 @@ export default function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-3">
-          <Link href="/vacatures" className="hidden rounded-full bg-cobalt px-5 py-2.5 font-bold text-white sm:inline-block">
-            Bekijk vacatures
+        <div className="flex items-center gap-2.5">
+          <Link href="/voor-opdrachtgevers" className="hidden rounded-full bg-cobalt px-5 py-2.5 font-bold text-white sm:inline-block">
+            Personeel nodig?
+          </Link>
+          <Link href="/vacatures" className="hidden rounded-full border-2 border-cobalt px-5 py-2 font-bold text-cobalt md:inline-block">
+            Vacatures
           </Link>
           <a href="https://detavia.flexportal.eu/" target="_blank" rel="noopener noreferrer"
-             className="inline-flex items-center gap-1.5 rounded-xl border-2 border-cobalt px-4 py-2 font-bold text-cobalt">
+             className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 font-bold text-cobalt hover:bg-cobalt/5">
             Inloggen
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-3.5 w-3.5"><path d="M7 17L17 7M17 7H8M17 7v9" /></svg>
           </a>

@@ -33,6 +33,19 @@ export default async function VacaturesPage() {
       </section>
       <section className="mx-auto max-w-[1180px] px-5 py-14 sm:px-10">
         <VacatureZoeker vacatures={vacatures} />
+
+        <div className="mt-12 grid gap-5 md:grid-cols-2">
+          <div className="rounded-[22px] border-[1.5px] border-neutral-200 p-7">
+            <h3 className="text-xl font-bold">Niets passends gevonden?</h3>
+            <p className="mt-1.5 text-muted">Stuur een open sollicitatie. We denken graag met je mee over wat wél past.</p>
+            <a href="/solliciteren" className="mt-4 inline-block rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Open sollicitatie</a>
+          </div>
+          <div className="rounded-[22px] bg-neutral-900 p-7 text-white">
+            <h3 className="text-xl font-bold">Zoek je juist personeel?</h3>
+            <p className="mt-1.5 text-white/80">Ben je opdrachtgever en zoek je een professional in het sociaal domein? Wij denken mee.</p>
+            <a href="/voor-opdrachtgevers" className="mt-4 inline-block rounded-full bg-yellow px-5 py-2.5 font-bold text-black">Vraag een professional aan</a>
+          </div>
+        </div>
       </section>
     </>
   );

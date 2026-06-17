@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { submitContact } from "../actions";
 
 export const metadata = { title: "Contact & veelgestelde vragen | DetaVia" };
@@ -16,6 +17,26 @@ export default function Contact() {
           <p className="text-sm font-semibold opacity-70">Home / Contact</p>
           <h1 className="display mt-3 text-4xl sm:text-6xl">Even kennismaken?</h1>
           <p className="mt-4 max-w-[54ch] text-lg">Vragen, of klaar voor je volgende stap? Laat je gegevens achter, dan nemen we persoonlijk contact met je op.</p>
+        </div>
+      </section>
+
+      {/* SPLIT-KEUZE */}
+      <section className="mx-auto -mt-10 max-w-[1180px] px-5 sm:px-10">
+        <div className="grid gap-5 md:grid-cols-2">
+          <Link href="/vacatures" className="group flex items-center justify-between gap-4 rounded-[22px] border-[1.5px] border-neutral-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:border-cobalt">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.16em] text-cobalt">Ik zoek werk</p>
+              <h3 className="mt-1 text-xl font-bold">Bekijk vacatures &amp; solliciteer</h3>
+            </div>
+            <span className="shrink-0 rounded-full bg-cobalt px-4 py-3 font-bold text-white transition group-hover:translate-x-1">→</span>
+          </Link>
+          <Link href="/voor-opdrachtgevers" className="group flex items-center justify-between gap-4 rounded-[22px] bg-cobalt p-7 text-white shadow-sm transition hover:-translate-y-1">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.16em] text-arctic">Ik zoek personeel</p>
+              <h3 className="mt-1 text-xl font-bold">Vraag een professional aan</h3>
+            </div>
+            <span className="shrink-0 rounded-full bg-yellow px-4 py-3 font-bold text-black transition group-hover:translate-x-1">→</span>
+          </Link>
         </div>
       </section>
 
@@ -39,6 +60,10 @@ export default function Contact() {
                 <span className="text-sm font-bold">Bericht</span>
                 <textarea name="bericht" rows={4} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3" />
               </label>
+              <label className="flex items-center gap-2.5 text-sm font-semibold">
+                <input type="checkbox" name="terugbellen" value="1" className="h-4 w-4 accent-cobalt" />
+                Liever gebeld worden? Vink aan, dan bellen wij jou.
+              </label>
               <button className="justify-self-start rounded-full bg-black px-6 py-3 font-bold text-white" type="submit">Verstuur</button>
               <p className="text-xs text-muted">Komt binnen bij het beheer (contactberichten) zodra Supabase gekoppeld is.</p>
             </form>
@@ -46,10 +71,15 @@ export default function Contact() {
           <div>
             <h2 className="display text-2xl">Direct contact</h2>
             <dl className="mt-6">
-              <dt className="mt-4 font-bold">E-mail</dt><dd className="text-muted">[ info@detavia.nl ]</dd>
-              <dt className="mt-4 font-bold">Telefoon</dt><dd className="text-muted">[ telefoonnummer ]</dd>
+              <dt className="mt-4 font-bold">E-mail</dt><dd><a href="mailto:info@detavia.nl" className="text-cobalt hover:underline">[ info@detavia.nl ]</a></dd>
+              <dt className="mt-4 font-bold">Telefoon</dt><dd><a href="tel:+31000000000" className="text-cobalt hover:underline">[ telefoonnummer ]</a></dd>
               <dt className="mt-4 font-bold">Adres</dt><dd className="text-muted">[ Argonweg 72, 1362 AD Almere ]</dd>
             </dl>
+            <div className="mt-8 rounded-[22px] bg-cobalt p-7 text-white">
+              <h3 className="text-lg font-bold">Liever direct iemand spreken?</h3>
+              <p className="mt-1 text-white/85">We staan je graag persoonlijk te woord tijdens kantooruren.</p>
+              <a href="tel:+31000000000" className="mt-4 inline-block rounded-full bg-yellow px-5 py-2.5 font-bold text-black">Bel ons direct</a>
+            </div>
           </div>
         </div>
 

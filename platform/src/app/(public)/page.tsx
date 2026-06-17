@@ -18,7 +18,7 @@ export default function Home() {
             <p className="mt-6 max-w-[42ch] text-lg font-medium">Werken waar het écht telt. DetaVia verbindt professionals in het sociaal domein met opdrachten die passen bij wie je bent, en bij wie je wilt worden.</p>
             <div className="mt-8 flex flex-wrap gap-3.5">
               <Link href="/vacatures" className="rounded-full bg-black px-6 py-3.5 font-bold text-white">Bekijk vacatures</Link>
-              <Link href="/contact" className="rounded-full border-2 border-black px-6 py-3.5 font-bold">Plan een kennismaking</Link>
+              <Link href="/voor-opdrachtgevers" className="rounded-full border-2 border-black px-6 py-3.5 font-bold">Vraag een professional aan</Link>
             </div>
           </div>
           <div className="order-first md:order-none">
@@ -29,8 +29,30 @@ export default function Home() {
         </div>
       </section>
 
+      {/* DOELGROEP-KEUZE */}
+      <section className="mx-auto -mt-8 max-w-[1180px] px-5 sm:px-10">
+        <div className="grid gap-5 md:grid-cols-2">
+          <Link href="/vacatures" className="group flex items-center justify-between gap-4 rounded-[22px] border-[1.5px] border-neutral-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:border-cobalt">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.16em] text-cobalt">Ik zoek werk</p>
+              <h3 className="mt-1 text-2xl font-bold">Vind jouw volgende opdracht</h3>
+              <p className="mt-1 text-muted">Bekijk de vacatures in het sociaal domein en solliciteer direct.</p>
+            </div>
+            <span className="shrink-0 rounded-full bg-cobalt px-4 py-3 font-bold text-white transition group-hover:translate-x-1">→</span>
+          </Link>
+          <Link href="/voor-opdrachtgevers" className="group flex items-center justify-between gap-4 rounded-[22px] bg-cobalt p-7 text-white shadow-sm transition hover:-translate-y-1">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.16em] text-arctic">Ik zoek personeel</p>
+              <h3 className="mt-1 text-2xl font-bold">Vraag een professional aan</h3>
+              <p className="mt-1 text-white/85">Snel de juiste mensen in het sociaal domein, zonder gedoe.</p>
+            </div>
+            <span className="shrink-0 rounded-full bg-yellow px-4 py-3 font-bold text-black transition group-hover:translate-x-1">→</span>
+          </Link>
+        </div>
+      </section>
+
       {/* STATS */}
-      <section className="bg-black text-white">
+      <section className="mt-20 bg-black text-white">
         <div className="mx-auto grid max-w-[1180px] grid-cols-2 gap-6 px-5 py-12 text-center sm:px-10 md:grid-cols-4">
           {[["100%", "Focus op het sociaal domein", false], ["100+", "Professionals geplaatst", true], ["50+", "Gemeenten & organisaties", false], ["9,5", "Gemiddelde beoordeling", true]].map(([n, l, blue]) => (
             <div key={l as string}>
@@ -71,6 +93,19 @@ export default function Home() {
             Jouw <span className="italic text-yellow">vaardigheden</span> maken het verschil,<br />
             <span className="italic text-yellow">niet</span> je achtergrond.
           </p>
+        </div>
+      </section>
+
+      {/* CTA-BAND */}
+      <section className="mx-auto max-w-[1180px] px-5 py-20 sm:px-10">
+        <div className="rounded-[22px] bg-yellow px-8 py-12 text-center sm:px-12">
+          <h2 className="display text-3xl sm:text-4xl">Klaar voor de volgende stap?</h2>
+          <p className="mx-auto mt-3 max-w-[52ch] text-lg font-medium">Of je nu werk zoekt of een professional nodig hebt, we helpen je snel verder.</p>
+          <div className="mt-7 flex flex-wrap justify-center gap-3.5">
+            <Link href="/vacatures" className="rounded-full bg-black px-6 py-3.5 font-bold text-white">Bekijk vacatures</Link>
+            <Link href="/voor-opdrachtgevers" className="rounded-full bg-cobalt px-6 py-3.5 font-bold text-white">Vraag een professional aan</Link>
+            <Link href="/contact" className="rounded-full border-2 border-black px-6 py-3.5 font-bold">Neem contact op</Link>
+          </div>
         </div>
       </section>
     </>

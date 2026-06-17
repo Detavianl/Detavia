@@ -1,6 +1,7 @@
 "use server";
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isDemo } from "@/lib/demo";
 
 // Publieke instroom loopt via de service-role client (RLS staat publieke writes niet toe).
 // We valideren minimaal en houden het simpel; geen jobboard.
@@ -9,6 +10,7 @@ export async function submitSollicitatie(formData: FormData) {
   const naam = String(formData.get("naam") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   if (!naam || !email) throw new Error("Naam en e-mail zijn verplicht");
+  if (isDemo()) redirect("/bedankt");
 
   const supabase = createAdminClient();
 
@@ -51,12 +53,16 @@ export async function submitContact(formData: FormData) {
   const naam = String(formData.get("naam") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   if (!naam || !email) throw new Error("Naam en e-mail zijn verplicht");
+  if (isDemo()) redirect("/bedankt");
+  const organisatie = String(formData.get("organisatie") ?? "").trim();
+  const terugbellen = formData.get("terugbellen") ? "[Bel mij terug] " : "";
+  const orgPrefix = organisatie ? `[${organisatie}] ` : "";
   const supabase = createAdminClient();
   await supabase.from("contact_messages").insert({
     naam, email,
     telefoon: String(formData.get("telefoon") ?? "").trim(),
     soort: String(formData.get("soort") ?? "professional"),
-    bericht: String(formData.get("bericht") ?? "").trim(),
+    bericht: `${terugbellen}${orgPrefix}${String(formData.get("bericht") ?? "").trim()}`,
   });
   redirect("/bedankt");
 }

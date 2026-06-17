@@ -1,5 +1,20 @@
 # Worklog
 
+## 2026-06-17 - CTA's verbreed: meer routes voor opdrachtgevers en kandidaten
+- **Wat is gebouwd/gewijzigd:**
+  - Nieuwe pagina `/voor-opdrachtgevers`: hero, waarom DetaVia, "zo werkt het" (4 stappen) en een aanvraagformulier "Vraag een professional aan" dat als bericht (soort=opdrachtgever) binnenkomt bij beheer.
+  - Header: nav-item + CTA "Personeel nodig?" naar de opdrachtgeverspagina, plus "Vacatures"-knop.
+  - Home: hero-CTA "Vraag een professional aan", doelgroep-keuzeblok (werk zoeken / personeel zoeken) en een CTA-band onderaan.
+  - Vacatures: band met "Open sollicitatie" en een opdrachtgever-route.
+  - Contact: split-keuzeblok (kandidaat/opdrachtgever), klikbaar telefoon/e-mail, "Bel mij terug"-optie.
+  - Footer: twee duidelijke kolommen (Voor kandidaten / Voor opdrachtgevers).
+  - Nieuwe mobiele sticky CTA-balk (Solliciteer / Personeel nodig?).
+  - `submitContact`/`submitSollicitatie`: demo-guard (redirect naar /bedankt) zodat de online demo-formulieren werken; organisatie en terugbel-voorkeur worden in het bericht meegestuurd.
+- **Waarom:**
+  - Klant wil de site toegankelijker maken voor opdrachtgevers (meer "contact opnemen") en kandidaten (meer "solliciteren").
+- **Geraakte bestanden:**
+  - `platform/src/app/(public)/voor-opdrachtgevers/page.tsx` (nieuw), `platform/src/components/MobileCtaBar.tsx` (nieuw), `platform/src/app/(public)/{page,layout,contact/page,vacatures/page,actions}.tsx/ts`, `platform/src/components/{SiteHeader,SiteFooter}.tsx`.
+
 ## 2026-06-17 - Demo online gezet op Vercel
 - **Wat is gebouwd/gewijzigd:**
   - Productie-build geverifieerd en de app gedeployed naar Vercel (account badr-png). Draait in demo-modus (geen Supabase-env), dus volledig publiek deelbaar. Live op https://platform-steel-delta.vercel.app (+ deployment-URL). `.vercel/` toegevoegd aan .gitignore.
