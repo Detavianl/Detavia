@@ -38,6 +38,12 @@ export async function submitSollicitatie(formData: FormData) {
   const vacature_id = String(formData.get("vacature_id") ?? "") || null;
   await supabase.from("applications").insert({ candidate_id: cand.id, vacature_id, stage: "nieuw" });
 
+  // wijzigingslog: levenscyclus-gebeurtenis "Gesolliciteerd"
+  await supabase.from("audit_log").insert({
+    entity: "candidate", entity_id: cand.id, actie: "Gesolliciteerd",
+    details: vacatureNotitie(formData).replace(/^Sollicitatie op: /, ""), user_naam: "Sollicitatieformulier",
+  });
+
   redirect("/bedankt");
 }
 

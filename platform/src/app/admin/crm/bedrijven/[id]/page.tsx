@@ -3,9 +3,10 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getAdmin } from "@/lib/admin-context";
 import { COMPANY_TYPE, COMPANY_STATUS, euro, DEAL_STAGES, VAKGEBIEDEN } from "@/lib/crm";
-import ActivityTimeline from "@/components/ActivityTimeline";
+import ContactMoments from "@/components/ContactMoments";
+import QuickNotes from "@/components/QuickNotes";
 import AuditLog from "@/components/AuditLog";
-import { isDemo, DEMO_COMPANIES, DEMO_CONTACTS, DEMO_DEALS, DEMO_VACATURES_ADMIN, DEMO_COMPANY_ACTIVITIES, DEMO_AUDIT, DEMO_TEAM } from "@/lib/demo";
+import { isDemo, DEMO_COMPANIES, DEMO_CONTACTS, DEMO_DEALS, DEMO_VACATURES_ADMIN, DEMO_CONTACT_MOMENTS, DEMO_NOTES, DEMO_AUDIT } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
   const admin = await getAdmin();
   const adminNaam = admin?.naam || admin?.email || "Beheer";
 
-  let co: any, contacten: any[] = [], deals: any[] = [], vacatures: any[] = [], activities: any[] = [], audit: any[] = [];
+  let co: any, contacten: any[] = [], deals: any[] = [], vacatures: any[] = [], audit: any[] = [], contactmomenten: any[] = [], notities: any[] = [];
 
   if (demo) {
     co = DEMO_COMPANIES.find((x) => x.id === id);
@@ -23,8 +24,9 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
     contacten = DEMO_CONTACTS.filter((c) => c.company_id === id);
     deals = DEMO_DEALS.filter((d) => d.company?.naam === co.naam);
     vacatures = DEMO_VACATURES_ADMIN.filter((v) => v.company_id === id);
-    activities = DEMO_COMPANY_ACTIVITIES[id] ?? [];
     audit = DEMO_AUDIT[id] ?? [];
+    contactmomenten = DEMO_CONTACT_MOMENTS[id] ?? [];
+    notities = DEMO_NOTES[id] ?? [];
   } else {
     const supabase = await createClient();
     const res = await supabase.from("companies").select("*").eq("id", id).single();
@@ -33,13 +35,16 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
       supabase.from("contacts").select("*").eq("company_id", id),
       supabase.from("deals").select("id, titel, waarde, stage").eq("company_id", id),
       supabase.from("vacatures").select("id, titel, vakgebied, plaats, status").eq("company_id", id),
-      supabase.from("crm_activities").select("type, onderwerp, created_at, created_by").eq("company_id", id).order("created_at", { ascending: false }),
+      supabase.from("crm_activities").select("type, onderwerp, contact_id, created_at, created_by").eq("company_id", id).order("created_at", { ascending: false }),
       supabase.from("audit_log").select("actie, details, user_naam, created_at").eq("entity", "company").eq("entity_id", id).order("created_at", { ascending: false }).limit(20),
       supabase.from("admin_users").select("user_id, naam"),
     ]);
     contacten = ct.data ?? []; deals = dl.data ?? []; vacatures = vc.data ?? []; audit = aud.data ?? [];
     const naam = (uid: string) => (team.data ?? []).find((t: any) => t.user_id === uid)?.naam ?? "Beheer";
-    activities = (act.data ?? []).map((a: any) => ({ type: a.type, inhoud: a.onderwerp, created_at: a.created_at, gebruiker: a.created_by ? naam(a.created_by) : null }));
+    const ctNaam = (cid: string) => contacten.find((x: any) => x.id === cid)?.naam ?? null;
+    const acts = (act.data ?? []).map((a: any) => ({ ...a, gebruiker: a.created_by ? naam(a.created_by) : null }));
+    contactmomenten = acts.filter((a: any) => a.type !== "notitie").map((a: any) => ({ type: a.type, tekst: a.onderwerp, met: a.contact_id ? ctNaam(a.contact_id) : null, created_at: a.created_at, gebruiker: a.gebruiker }));
+    notities = acts.filter((a: any) => a.type === "notitie").map((a: any) => ({ tekst: a.onderwerp, created_at: a.created_at, gebruiker: a.gebruiker }));
   }
   const stageLabel = (k: string) => DEAL_STAGES.find((s) => s.key === k)?.label ?? k;
   const openVac = vacatures.filter((v) => v.status === "open").length;
@@ -113,12 +118,17 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
           </div>
         </Section>
 
-        <Section title="Activiteiten, contactmomenten & notities">
-          <ActivityTimeline entity="company" entityId={id} items={activities} currentUser={adminNaam} demo={demo} />
+        <Section title="Activiteiten">
+          <p className="-mt-1 mb-3 text-xs text-muted">Automatisch vastgelegde gebeurtenissen (aanbod gedaan, gewonnen, verloren…).</p>
+          <AuditLog entries={audit} />
         </Section>
 
-        <Section title="Wijzigingslog">
-          <AuditLog entries={audit} />
+        <Section title="Contactmomenten">
+          <ContactMoments entity="company" entityId={id} contacts={contacten.map((c: any) => ({ id: c.id, naam: c.naam }))} items={contactmomenten} currentUser={adminNaam} demo={demo} />
+        </Section>
+
+        <Section title="Notities">
+          <QuickNotes entity="company" entityId={id} items={notities} currentUser={adminNaam} demo={demo} />
         </Section>
       </div>
     </div>

@@ -38,35 +38,46 @@ export const DEMO_APPLICATIONS: AtsCard[] = [
   { id: "a6", stage: "geplaatst", positie: 0, notitie: "", candidate: { id: "c6", naam: "Daan Visser", vakgebied: "beleid", woonplaats: "Amersfoort" }, vacature: { titel: "Adviseur Sociaal Domein" } },
 ];
 
-export const DEMO_ACTIVITIES: Record<string, { type: string; inhoud: string; created_at: string; gebruiker?: string }[]> = {
-  c1: [
-    { type: "telefoon", inhoud: "Eerste telefonisch contact, enthousiast over interim-opdrachten.", created_at: "2026-06-14", gebruiker: "Demo-beheerder" },
-    { type: "gesprek", inhoud: "Kennismakingsgesprek gepland voor volgende week.", created_at: "2026-06-13", gebruiker: "Recruiter Noord" },
-    { type: "notitie", inhoud: "Cv ontvangen via website, past goed op Wmo-opdrachten.", created_at: "2026-06-12", gebruiker: "Demo-beheerder" },
-  ],
-  c3: [
-    { type: "voorstel", inhoud: "Voorgesteld bij Gemeente Den Haag (Adviseur Sociaal Domein).", created_at: "2026-06-15", gebruiker: "Demo-beheerder" },
-    { type: "gesprek", inhoud: "Uitgebreid kennismakingsgesprek, sterke indruk.", created_at: "2026-06-11", gebruiker: "Recruiter Noord" },
-  ],
-};
+// ===== Drie losse soorten, voor kandidaten (c..) én bedrijven (co..) =====
 
-// CRM: activiteiten per bedrijf + wijzigingslogs (audit)
-export const DEMO_COMPANY_ACTIVITIES: Record<string, { type: string; inhoud: string; created_at: string; gebruiker?: string }[]> = {
-  co1: [
-    { type: "afspraak", inhoud: "Kwartaaloverleg ingepland met Karin Bos.", created_at: "2026-06-14", gebruiker: "Demo-beheerder" },
-    { type: "telefoon", inhoud: "Behoefte aan 2 Wmo-consulenten voor Q3 besproken.", created_at: "2026-06-10", gebruiker: "Recruiter Noord" },
-    { type: "notitie", inhoud: "Vaste opdrachtgever, korte lijnen.", created_at: "2026-05-02", gebruiker: "Demo-beheerder" },
-  ],
-};
-
+// 1) WIJZIGINGSLOG (automatisch herkende gebeurtenissen)
 export const DEMO_AUDIT: Record<string, { actie: string; details?: string; user_naam: string; created_at: string }[]> = {
   c1: [
-    { actie: "gewijzigd", details: "opvolging", user_naam: "Demo-beheerder", created_at: "2026-06-14 09:12" },
-    { actie: "aangemaakt", details: "Sanne de Vries", user_naam: "Demo-beheerder", created_at: "2026-06-12 16:40" },
+    { actie: "Voorgesteld aan opdrachtgever", details: "Gemeente Almere", user_naam: "Demo-beheerder", created_at: "2026-06-15 14:20" },
+    { actie: "Kennismaking", user_naam: "Recruiter Noord", created_at: "2026-06-13 10:05" },
+    { actie: "Gesolliciteerd", details: "Wmo-consulent", user_naam: "Sollicitatieformulier", created_at: "2026-06-12 16:40" },
+  ],
+  c3: [
+    { actie: "Aanbod gedaan", details: "Adviseur Sociaal Domein", user_naam: "Demo-beheerder", created_at: "2026-06-15 09:30" },
+    { actie: "Voorgesteld aan opdrachtgever", user_naam: "Demo-beheerder", created_at: "2026-06-11 13:00" },
   ],
   co1: [
-    { actie: "gewijzigd", details: "status → klant", user_naam: "Demo-beheerder", created_at: "2026-05-02 11:05" },
+    { actie: "Gewonnen (opdracht)", details: "Inkomensconsulent", user_naam: "Demo-beheerder", created_at: "2026-06-15 16:10" },
+    { actie: "Aanbod gedaan", details: "2 Wmo-consulenten Q3", user_naam: "Recruiter Noord", created_at: "2026-06-10 11:25" },
     { actie: "aangemaakt", details: "Gemeente Almere", user_naam: "Demo-beheerder", created_at: "2026-03-01 10:00" },
+  ],
+};
+
+// 2) CONTACTMOMENTEN (los, met wie + tekst)
+export const DEMO_CONTACT_MOMENTS: Record<string, { type: string; tekst: string; met?: string; created_at: string; gebruiker?: string }[]> = {
+  c1: [
+    { type: "telefoon", tekst: "Eerste telefonisch contact, enthousiast over interim-opdrachten.", created_at: "2026-06-14", gebruiker: "Demo-beheerder" },
+    { type: "gesprek", tekst: "Kennismakingsgesprek gevoerd, sterke indruk.", created_at: "2026-06-13", gebruiker: "Recruiter Noord" },
+  ],
+  co1: [
+    { type: "afspraak", tekst: "Kwartaaloverleg gevoerd over capaciteit Q3.", met: "Karin Bos", created_at: "2026-06-14", gebruiker: "Demo-beheerder" },
+    { type: "telefoon", tekst: "Behoefte aan 2 Wmo-consulenten besproken.", met: "Karin Bos", created_at: "2026-06-10", gebruiker: "Recruiter Noord" },
+  ],
+};
+
+// 3) NOTITIES (snelle losse aantekeningen, eigen balkje + wie)
+export const DEMO_NOTES: Record<string, { tekst: string; created_at: string; gebruiker?: string }[]> = {
+  c1: [
+    { tekst: "Belt liever na 17:00 uur.", created_at: "2026-06-14", gebruiker: "Demo-beheerder" },
+    { tekst: "Cv ontvangen via website, past goed op Wmo.", created_at: "2026-06-12", gebruiker: "Demo-beheerder" },
+  ],
+  co1: [
+    { tekst: "Vaste opdrachtgever, korte lijnen.", created_at: "2026-05-02", gebruiker: "Demo-beheerder" },
   ],
 };
 

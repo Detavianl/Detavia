@@ -9,6 +9,18 @@ export const STAGES = [
   { key: "talentpool", label: "Talentpool" },
 ] as const;
 
+// Mensvriendelijke levenscyclus-gebeurtenis per ATS-fase, voor de wijzigingslog van de kandidaat.
+export const CAND_EVENT: Record<string, string> = {
+  nieuw: "Nieuwe sollicitatie",
+  kwalificatie: "In kwalificatie",
+  kennismaking: "Kennismaking",
+  voorgesteld: "Voorgesteld aan opdrachtgever",
+  aanbieding: "Aanbod gedaan",
+  geplaatst: "Geplaatst",
+  afgewezen: "Afgewezen",
+  talentpool: "Naar talentpool",
+};
+
 export const KANDIDAAT_STATUS: Record<string, string> = {
   talentpool: "Talentpool",
   actief: "Actief",

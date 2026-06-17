@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
 import { isDemo } from "@/lib/demo";
 import { logAudit } from "@/lib/audit";
-import type { DealStage } from "@/lib/crm";
+import { DEAL_EVENT, type DealStage } from "@/lib/crm";
 
 const s = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
 const n = (fd: FormData, k: string) => { const v = s(fd, k); return v === "" ? null : Number(v); };
@@ -14,9 +14,12 @@ export async function moveDeal(id: string, stage: DealStage) {
   const admin = await requireAdmin();
   if (isDemo()) return;
   const supabase = await createClient();
-  const { error } = await supabase.from("deals").update({ stage }).eq("id", id);
+  const { data, error } = await supabase.from("deals").update({ stage }).eq("id", id).select("company_id, titel").single();
   if (error) throw new Error(error.message);
-  await logAudit(admin, "deal", id, "fase gewijzigd", stage);
+  const event = DEAL_EVENT[stage] ?? stage;
+  await logAudit(admin, "deal", id, "fase gewijzigd", event);
+  // herkent automatisch de klant-gebeurtenis en plaatst die in de wijzigingslog van het bedrijf
+  if (data?.company_id) await logAudit(admin, "company", data.company_id, event, data.titel ?? "");
   revalidatePath("/admin/crm/deals");
 }
 
@@ -67,11 +70,3 @@ export async function createDeal(formData: FormData) {
   redirect("/admin/crm/deals");
 }
 
-export async function addCompanyActivity(companyId: string, type: string, onderwerp: string) {
-  const admin = await requireAdmin();
-  if (!onderwerp.trim()) return;
-  if (isDemo()) return;
-  const supabase = await createClient();
-  await supabase.from("crm_activities").insert({ company_id: companyId, type, onderwerp, created_by: admin.user_id });
-  revalidatePath(`/admin/crm/bedrijven/${companyId}`);
-}

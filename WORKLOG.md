@@ -1,5 +1,17 @@
 # Worklog
 
+## 2026-06-17 - Splitsing: Activiteiten (wijzigingslog) / Contactmomenten / Notities
+- **Wat is gebouwd/gewijzigd:**
+  - Bij zowel kandidaten als bedrijven de tracking opgesplitst in drie losse onderdelen:
+    1. **Activiteiten** = wijzigingslog met automatisch herkende gebeurtenissen. Kandidaat: Gesolliciteerd / Voorgesteld aan opdrachtgever / Aanbod gedaan / Geplaatst (via ATS-fasewissel; CAND_EVENT-labels). Bedrijf: deal-gebeurtenissen (Aanbod gedaan / Gewonnen / Verloren) worden automatisch op het bedrijf gelogd (DEAL_EVENT).
+    2. **Contactmomenten** = los, aanklikbaar, met type + (bij bedrijven) met wie + tekst + gebruiker.
+    3. **Notities** = losse balkjes per notitie, met datum + gebruiker.
+  - Centrale acties `addContactMoment` / `addNote` (kandidaat + bedrijf). Nieuwe componenten ContactMoments + QuickNotes; oude ActivityTimeline verwijderd. Publiek sollicitatieformulier logt "Gesolliciteerd".
+- **Waarom:**
+  - Gebruiker wil activiteiten = wijzigingslog, en contactmomenten + notities als losse dingen (met wie/datum), consistent bij bedrijven én kandidaten.
+- **Geraakte bestanden:**
+  - `platform/src/lib/{ats.ts,crm.ts,demo.ts}`, `src/app/admin/activity-actions.ts` (nieuw), `src/components/{ContactMoments,QuickNotes}.tsx` (nieuw), `src/app/admin/{ats/actions.ts,kandidaten/{actions.ts,[id]/page.tsx},crm/{actions.ts,bedrijven/[id]/page.tsx}}`, `src/app/(public)/actions.ts`.
+
 ## 2026-06-17 - Activiteiten-tijdlijn bij bedrijven + wijzigingslog (wie/wanneer)
 - **Wat is gebouwd/gewijzigd:**
   - Activiteiten/contactmomenten/notities-tijdlijn nu ook op het bedrijfsdetail (zoals bij kandidaten), met de gebruiker erbij. Tijdlijn-component generiek gemaakt (kandidaat + bedrijf) en toont datum + wie het deed.

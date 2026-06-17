@@ -3,12 +3,12 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { VAKGEBIEDEN, STAGES, KANDIDAAT_STATUS } from "@/lib/ats";
 import CvButton from "@/components/CvButton";
-import NoteForm from "@/components/NoteForm";
-import ActivityTimeline from "@/components/ActivityTimeline";
+import ContactMoments from "@/components/ContactMoments";
+import QuickNotes from "@/components/QuickNotes";
 import AuditLog from "@/components/AuditLog";
 import FollowupForm from "@/components/FollowupForm";
 import { getAdmin } from "@/lib/admin-context";
-import { isDemo, DEMO_ACTIVITIES, DEMO_TEAM, DEMO_AUDIT } from "@/lib/demo";
+import { isDemo, DEMO_TEAM, DEMO_AUDIT, DEMO_CONTACT_MOMENTS, DEMO_NOTES } from "@/lib/demo";
 import { demoCandidate, demoApplications } from "@/lib/demo-store";
 
 export const dynamic = "force-dynamic";
@@ -20,14 +20,15 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
   const admin = await getAdmin();
   const adminNaam = admin?.naam || admin?.email || "Beheer";
 
-  let c: any, cvs: any[] = [], apps: any[] = [], activities: any[] = [], team: any[] = [], audit: any[] = [];
+  let c: any, cvs: any[] = [], apps: any[] = [], team: any[] = [], audit: any[] = [], contactmomenten: any[] = [], notities: any[] = [];
   if (demo) {
     c = demoCandidate(id);
     if (!c) notFound();
     apps = demoApplications().filter((a) => a.candidate?.id === id).map((a) => ({ id: a.id, stage: a.stage, vacature: a.vacature }));
-    activities = DEMO_ACTIVITIES[id] ?? [];
     team = DEMO_TEAM;
     audit = DEMO_AUDIT[id] ?? [];
+    contactmomenten = DEMO_CONTACT_MOMENTS[id] ?? [];
+    notities = DEMO_NOTES[id] ?? [];
   } else {
     const supabase = await createClient();
     const res = await supabase.from("candidates").select("*").eq("id", id).single();
@@ -42,7 +43,9 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
     ]);
     cvs = cvRes.data ?? []; apps = appRes.data ?? []; team = teamRes.data ?? []; audit = audRes.data ?? [];
     const naam = (uid: string) => team.find((t: any) => t.user_id === uid)?.naam ?? "Beheer";
-    activities = (actRes.data ?? []).map((a: any) => ({ ...a, gebruiker: a.created_by ? naam(a.created_by) : null }));
+    const acts = (actRes.data ?? []).map((a: any) => ({ ...a, gebruiker: a.created_by ? naam(a.created_by) : null }));
+    contactmomenten = acts.filter((a: any) => a.type !== "notitie").map((a: any) => ({ type: a.type, tekst: a.inhoud, created_at: a.created_at, gebruiker: a.gebruiker }));
+    notities = acts.filter((a: any) => a.type === "notitie").map((a: any) => ({ tekst: a.inhoud, created_at: a.created_at, gebruiker: a.gebruiker }));
   }
 
   const stageLabel = (k: string) => STAGES.find((s) => s.key === k)?.label ?? k;
@@ -95,12 +98,17 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
             </div>
           </Section>
 
-          <Section title="Activiteiten, contactmomenten & notities">
-            <ActivityTimeline entity="candidate" entityId={c.id} items={activities} currentUser={adminNaam} demo={demo} />
+          <Section title="Activiteiten">
+            <p className="-mt-2 mb-3 text-xs text-muted">Automatisch vastgelegde gebeurtenissen (gesolliciteerd, voorgesteld, aanbod gedaan, geplaatst…).</p>
+            <AuditLog entries={audit} />
           </Section>
 
-          <Section title="Notitie">
-            <NoteForm id={c.id} initial={c.notitie ?? ""} />
+          <Section title="Contactmomenten">
+            <ContactMoments entity="candidate" entityId={c.id} items={contactmomenten} currentUser={adminNaam} demo={demo} />
+          </Section>
+
+          <Section title="Notities">
+            <QuickNotes entity="candidate" entityId={c.id} items={notities} currentUser={adminNaam} demo={demo} />
           </Section>
         </div>
 
@@ -131,10 +139,6 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
 
           <Section title="Laatste contact">
             <p className="text-sm">{c.laatste_contact ?? "—"}</p>
-          </Section>
-
-          <Section title="Wijzigingslog">
-            <AuditLog entries={audit} />
           </Section>
         </div>
       </div>

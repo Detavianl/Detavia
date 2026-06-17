@@ -55,7 +55,7 @@ export async function createCandidate(formData: FormData) {
     .insert({ ...fields, created_by: admin.user_id })
     .select("id").single();
   if (error) throw new Error(error.message);
-  await logAudit(admin, "candidate", data.id, "aangemaakt", naam);
+  await logAudit(admin, "candidate", data.id, "Toegevoegd aan talentpool", naam);
 
   // direct een ATS-kaart aanmaken in 'nieuw'
   await supabase.from("applications").insert({ candidate_id: data.id, stage: "nieuw" });
@@ -90,16 +90,6 @@ export async function updateFollowup(id: string, eigenaar: string, actie: string
   await logAudit(admin, "candidate", id, "gewijzigd", "opvolging");
   revalidatePath(`/admin/kandidaten/${id}`);
   revalidatePath("/admin/kandidaten");
-}
-
-export async function addActivity(candidateId: string, type: string, inhoud: string) {
-  const admin = await requireAdmin();
-  if (!inhoud.trim()) return;
-  if (isDemo()) return;
-  const supabase = await createClient();
-  await supabase.from("candidate_activities").insert({ candidate_id: candidateId, type, inhoud, created_by: admin.user_id });
-  await supabase.from("candidates").update({ laatste_contact: new Date().toISOString().slice(0, 10) }).eq("id", candidateId);
-  revalidatePath(`/admin/kandidaten/${candidateId}`);
 }
 
 /** Tijdelijke (signed) download-URL voor een cv in de privé-bucket. */

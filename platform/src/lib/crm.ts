@@ -9,6 +9,16 @@ export const DEAL_STAGES = [
 
 export type DealStage = (typeof DEAL_STAGES)[number]["key"];
 
+// Mensvriendelijke "klant-gebeurtenis" per dealfase, voor de wijzigingslog van het bedrijf.
+export const DEAL_EVENT: Record<string, string> = {
+  lead: "Nieuwe lead",
+  gekwalificeerd: "Gekwalificeerd",
+  voorstel: "Aanbod gedaan",
+  onderhandeling: "In onderhandeling",
+  gewonnen: "Gewonnen (opdracht)",
+  verloren: "Verloren",
+};
+
 export const COMPANY_TYPE: Record<string, string> = {
   gemeente: "Gemeente",
   organisatie: "Organisatie",

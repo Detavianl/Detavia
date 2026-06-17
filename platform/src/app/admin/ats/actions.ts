@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
 import { isDemo } from "@/lib/demo";
 import { logAudit } from "@/lib/audit";
-import type { StageKey } from "@/lib/ats";
+import { CAND_EVENT, type StageKey } from "@/lib/ats";
 
 export async function moveApplication(id: string, stage: StageKey) {
   const admin = await requireAdmin();
@@ -12,7 +12,8 @@ export async function moveApplication(id: string, stage: StageKey) {
   const supabase = await createClient();
   const { data, error } = await supabase.from("applications").update({ stage }).eq("id", id).select("candidate_id").single();
   if (error) throw new Error(error.message);
-  if (data?.candidate_id) await logAudit(admin, "candidate", data.candidate_id, "fase gewijzigd", stage);
+  // levenscyclus-gebeurtenis in de wijzigingslog van de kandidaat
+  if (data?.candidate_id) await logAudit(admin, "candidate", data.candidate_id, CAND_EVENT[stage] ?? stage);
   revalidatePath("/admin/ats");
 }
 
