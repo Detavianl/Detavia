@@ -4,7 +4,8 @@
 - **Wat is gebouwd/gewijzigd:**
   - De statistiek-sectie (100% / 100+ / 50+ / 9,5) op de homepage vervangen door een bewegende logobalk (marquee) van echte opdrachtgevers.
   - 10 logo's gedownload van detavia.nl/over-ons naar `public/img/opdrachtgevers/` (gemeenten Alphen aan den Rijn, Dronten, Rijswijk, Soest, Wijk bij Duurstede, Zeist; Provinciehuis Flevoland; Ferm Werk; Werkbedrijf De Binnenbaan; Uitvoeringsorganisatie BBS).
-  - Nieuwe component `OpdrachtgeverMarquee.tsx`: pure-CSS oneindige marquee, logo's grijs/70% die op hover full-color worden, pauzeert bij hover, respecteert prefers-reduced-motion. Keyframes in globals.css. Kop "Vertrouwd door, gemeenten en organisaties in het sociaal domein".
+  - Nieuwe component `OpdrachtgeverMarquee.tsx`: pure-CSS oneindige marquee, logo's in volle kleur (op verzoek), pauzeert bij hover, respecteert prefers-reduced-motion. Keyframes in globals.css (60s). Kop "Vertrouwd door, gemeenten en organisaties in het sociaal domein".
+  - Geen-gaten-fix: set dubbel per groep zodat elke groep breder is dan het scherm; en het witte (dus op witte achtergrond onzichtbare) logo Gemeente Wijk bij Duurstede omgekleurd naar donker (#1A1A1A). Alle 10 logo's geverifieerd zichtbaar.
 - **Waarom:**
   - Klant wil de cijfers vervangen door de echte opdrachtgevers, bewegend en in DetaVia-stijl.
 - **Geraakte bestanden:**
