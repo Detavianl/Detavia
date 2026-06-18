@@ -1,6 +1,8 @@
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
+import TeamSpots from "@/components/TeamSpots";
+import InlineContactForm from "@/components/InlineContactForm";
 
 export const metadata = {
   title: "Onze diensten",
@@ -50,6 +52,25 @@ export default function OnzeDiensten() {
           </ul>
         </div>
       </section>
+
+      <TeamSpots
+        title="Je accountteam"
+        intro="Vaste contactpersonen die jouw organisatie en de markt kennen, zo schakelen we snel."
+        spots={[
+          { naam: "[ Naam ]", functie: "[ Accountmanager ]" },
+          { naam: "[ Naam ]", functie: "[ Accountmanager ]" },
+          { naam: "[ Naam ]", functie: "[ Recruiter ]" },
+          { naam: "[ Naam ]", functie: "[ Recruiter ]" },
+        ]}
+      />
+
+      <InlineContactForm
+        soort="opdrachtgever"
+        organisatie
+        title="Vraag een professional aan"
+        text="Laat je gegevens achter en vertel kort wat je zoekt. We nemen snel persoonlijk contact met je op."
+        button="Verstuur aanvraag"
+      />
 
       <PageCta
         title="Benieuwd wat we voor je kunnen doen?"

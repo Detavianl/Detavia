@@ -1,5 +1,6 @@
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
+import InlineContactForm from "@/components/InlineContactForm";
 
 export const metadata = {
   title: "DetaVia Academy",
@@ -51,6 +52,13 @@ export default function Academy() {
           </ul>
         </div>
       </section>
+
+      <InlineContactForm
+        soort="professional"
+        title="Meer weten over de Academy?"
+        text="Laat je gegevens achter, dan vertellen we je graag wat de DetaVia Academy voor jouw ontwikkeling kan betekenen."
+        button="Neem contact op"
+      />
 
       <PageCta
         title="Werken en groeien bij DetaVia"

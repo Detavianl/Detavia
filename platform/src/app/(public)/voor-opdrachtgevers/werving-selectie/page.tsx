@@ -1,5 +1,6 @@
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
+import InlineContactForm from "@/components/InlineContactForm";
 
 export const metadata = {
   title: "Werving & selectie",
@@ -51,6 +52,14 @@ export default function WervingSelectie() {
           ))}
         </ul>
       </section>
+
+      <InlineContactForm
+        soort="opdrachtgever"
+        organisatie
+        title="Start je wervingsvraag"
+        text="Laat je gegevens achter en vertel kort wie je zoekt. We gaan gericht voor je aan de slag."
+        button="Verstuur aanvraag"
+      />
 
       <PageCta
         title="Op zoek naar een vaste kracht?"

@@ -1,5 +1,7 @@
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
+import TeamSpots from "@/components/TeamSpots";
+import InlineContactForm from "@/components/InlineContactForm";
 
 export const metadata = {
   title: "Werken bij DetaVia",
@@ -56,6 +58,15 @@ export default function WerkenBijDetavia() {
           </div>
         </div>
       </section>
+
+      <TeamSpots intro="Korte lijnen en een vast gezicht. Dit zijn de consultants die met je meedenken over je loopbaan." />
+
+      <InlineContactForm
+        soort="professional"
+        title="Even kennismaken?"
+        text="Laat je gegevens achter, dan nemen we contact op om kennis te maken en te kijken welke opdrachten bij je passen."
+        button="Plan een kennismaking"
+      />
 
       <PageCta
         title="Klaar voor je volgende opdracht?"

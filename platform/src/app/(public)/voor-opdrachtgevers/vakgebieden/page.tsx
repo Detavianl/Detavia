@@ -1,5 +1,6 @@
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
+import InlineContactForm from "@/components/InlineContactForm";
 
 export const metadata = {
   title: "Vakgebieden",
@@ -34,6 +35,14 @@ export default function Vakgebieden() {
           ))}
         </div>
       </section>
+
+      <InlineContactForm
+        soort="opdrachtgever"
+        organisatie
+        title="Een professional nodig?"
+        text="Vertel ons in welk vakgebied en wat je zoekt, dan dragen we snel passende professionals voor."
+        button="Verstuur aanvraag"
+      />
 
       <PageCta
         title="Een professional nodig in jouw vakgebied?"

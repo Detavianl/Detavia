@@ -1,5 +1,6 @@
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
+import InlineContactForm from "@/components/InlineContactForm";
 
 export const metadata = {
   title: "Certificering & CAO",
@@ -56,6 +57,14 @@ export default function CertificeringCao() {
           </div>
         </div>
       </section>
+
+      <InlineContactForm
+        soort="opdrachtgever"
+        organisatie
+        title="Vragen over onze voorwaarden?"
+        text="Laat je gegevens achter, dan vertellen we je graag hoe we kwaliteit en goede voorwaarden borgen."
+        button="Neem contact op"
+      />
 
       <PageCta
         title="Samenwerken met zekerheid?"

@@ -1,5 +1,7 @@
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
+import TeamSpots from "@/components/TeamSpots";
+import InlineContactForm from "@/components/InlineContactForm";
 
 export const metadata = {
   title: "Voor ZZP'ers",
@@ -34,6 +36,24 @@ export default function Zzp() {
           ))}
         </div>
       </section>
+
+      <TeamSpots
+        title="Je vaste aanspreekpunt"
+        intro="Als zelfstandige werk je samen met een vaste consultant die de markt kent en je opdrachten op maat aanbiedt."
+        spots={[
+          { naam: "[ Naam ]", functie: "[ Consultant ZZP ]" },
+          { naam: "[ Naam ]", functie: "[ Consultant ZZP ]" },
+          { naam: "[ Naam ]", functie: "[ Recruiter ]" },
+          { naam: "[ Naam ]", functie: "[ Recruiter ]" },
+        ]}
+      />
+
+      <InlineContactForm
+        soort="professional"
+        title="Even kennismaken?"
+        text="Laat je gegevens achter, dan bellen we je voor een persoonlijke kennismaking en bespreken we welke opdrachten passen."
+        button="Plan een kennismaking"
+      />
 
       <PageCta
         title="Op zoek naar een mooie opdracht?"

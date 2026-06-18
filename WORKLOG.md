@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-18 - Pagina's verrijkt: teamfoto-spots + inline formulieren
+- **Wat is gebouwd/gewijzigd:**
+  - Naar voorbeeld van joinuz.nl/zelfstandige-en-joinuz: meer CTA's, inline formulieren en teamfoto-spots toegevoegd aan de nieuwe pagina's.
+  - Nieuwe herbruikbare componenten: `TeamSpots` (nette placeholder-plekken voor teamfoto's, met [Naam]/[Functie]) en `InlineContactForm` (formulier dat via submitContact als bericht binnenkomt; soort professional/opdrachtgever, optioneel organisatie-veld).
+  - Toegepast op: ZZP (team + formulier), Werken bij DetaVia (team + formulier), Academy (formulier), Onze diensten (accountteam + aanvraagformulier), Werving & selectie / Vakgebieden / Certificering & CAO (aanvraagformulier).
+- **Waarom:**
+  - Klant wil pagina's met genoeg CTA's, een formulier ter plekke en plekken voor teamfoto's, joinuz als voorbeeld.
+- **Geraakte bestanden:**
+  - `platform/src/components/TeamSpots.tsx` + `InlineContactForm.tsx` (nieuw); de 7 nieuwe pagina's onder `(public)/professionals/*` en `(public)/voor-opdrachtgevers/*`.
+
 ## 2026-06-18 - Menu-items worden eigen pagina's (7 nieuwe pagina's)
 - **Wat is gebouwd/gewijzigd:**
   - De uitklap-items van Professionals en Opdrachtgevers wijzen nu naar echte aparte pagina's i.p.v. anchors. Geinspireerd op joinuz.nl (droombaan/jij-en-joinuz/academy/onze-diensten/certificering-cao), maar in DetaVia-stijl/kleuren en alleen sociaal domein.
