@@ -34,6 +34,6 @@ body { font-family: var(--font-sans); color: var(--color-ink); }
 
 /* Bewegende logobalk (opdrachtgevers) */
 @keyframes detavia-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.animate-marquee { animation: detavia-marquee 45s linear infinite; }
+.animate-marquee { animation: detavia-marquee 60s linear infinite; }
 .marquee-pause:hover .animate-marquee { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .animate-marquee { animation: none; } }
