@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const opdrachtgevers = [
   { naam: "Gemeente Alphen aan den Rijn", file: "Gemeente-Alphen-aan-den-Rijn.svg" },
   { naam: "Gemeente Dronten", file: "Gemeente-Dronten.svg" },
@@ -39,6 +41,16 @@ export default function OpdrachtgeverMarquee() {
               ))}
             </ul>
           ))}
+        </div>
+      </div>
+
+      {/* CTA voor opdrachtgevers, rijdt mee op het vertrouwen van de logo's */}
+      <div className="mx-auto mt-12 max-w-[1180px] px-5 text-center sm:px-10">
+        <h3 className="text-xl font-bold sm:text-2xl">Sluit je aan bij deze organisaties</h3>
+        <p className="mx-auto mt-2 max-w-[46ch] text-muted">Ook personeel nodig in het sociaal domein? Wij denken met je mee en ontzorgen volledig.</p>
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+          <Link href="/voor-opdrachtgevers" className="rounded-full bg-cobalt px-6 py-3 font-bold text-white transition hover:-translate-y-0.5">Vraag een professional aan</Link>
+          <Link href="/contact" className="font-bold text-cobalt hover:underline">Of neem contact op</Link>
         </div>
       </div>
     </section>
