@@ -1,4 +1,5 @@
 import Link from "next/link";
+import OpdrachtgeverMarquee from "@/components/OpdrachtgeverMarquee";
 
 export const metadata = {
   title: "Detacheren in het sociaal domein",
@@ -58,17 +59,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* STATS */}
-      <section className="mt-20 bg-black text-white">
-        <div className="mx-auto grid max-w-[1180px] grid-cols-2 gap-6 px-5 py-12 text-center sm:px-10 md:grid-cols-4">
-          {[["100%", "Focus op het sociaal domein"], ["100+", "Professionals geplaatst"], ["50+", "Gemeenten & organisaties"], ["9,5", "Gemiddelde beoordeling"]].map(([n, l]) => (
-            <div key={l}>
-              <div className="text-4xl font-extrabold text-arctic">{n}</div>
-              <div className="mt-2 text-sm opacity-85">{l}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* OPDRACHTGEVERS (bewegende logobalk) */}
+      <OpdrachtgeverMarquee />
 
       {/* UITGELICHTE VACATURES */}
       <section className="mx-auto max-w-[1180px] px-5 py-20 sm:px-10">

@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-18 - Cijfers vervangen door bewegende opdrachtgever-logobalk
+- **Wat is gebouwd/gewijzigd:**
+  - De statistiek-sectie (100% / 100+ / 50+ / 9,5) op de homepage vervangen door een bewegende logobalk (marquee) van echte opdrachtgevers.
+  - 10 logo's gedownload van detavia.nl/over-ons naar `public/img/opdrachtgevers/` (gemeenten Alphen aan den Rijn, Dronten, Rijswijk, Soest, Wijk bij Duurstede, Zeist; Provinciehuis Flevoland; Ferm Werk; Werkbedrijf De Binnenbaan; Uitvoeringsorganisatie BBS).
+  - Nieuwe component `OpdrachtgeverMarquee.tsx`: pure-CSS oneindige marquee, logo's grijs/70% die op hover full-color worden, pauzeert bij hover, respecteert prefers-reduced-motion. Keyframes in globals.css. Kop "Vertrouwd door, gemeenten en organisaties in het sociaal domein".
+- **Waarom:**
+  - Klant wil de cijfers vervangen door de echte opdrachtgevers, bewegend en in DetaVia-stijl.
+- **Geraakte bestanden:**
+  - `platform/src/components/OpdrachtgeverMarquee.tsx` (nieuw), `platform/src/app/(public)/page.tsx`, `platform/src/app/globals.css`, `platform/public/img/opdrachtgevers/*.svg` (10 logo's).
+
 ## 2026-06-18 - Logo naar 48px (betere balans)
 - **Wat is gebouwd/gewijzigd:**
   - Header-logo van h-14 (56px) naar h-12 (48px), ~55% van de 88px header. Na meting/screenshot oordeelde dat 56px net te dominant was.

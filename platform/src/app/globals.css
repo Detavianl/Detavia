@@ -31,3 +31,9 @@ body { font-family: var(--font-sans); color: var(--color-ink); }
 .prose-detavia a { color: var(--color-cobalt); text-decoration: underline; }
 .prose-detavia ul { list-style: disc; padding-left:1.4em; margin:.8em 0; }
 .prose-detavia img { border-radius: 14px; margin:1em 0; }
+
+/* Bewegende logobalk (opdrachtgevers) */
+@keyframes detavia-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.animate-marquee { animation: detavia-marquee 45s linear infinite; }
+.marquee-pause:hover .animate-marquee { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .animate-marquee { animation: none; } }
