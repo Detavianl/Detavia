@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-18 - Echte oorzaak klein logo gevonden en opgelost (flex-shrink)
+- **Wat is gebouwd/gewijzigd:**
+  - Met Chrome DevTools (CDP) gemeten dat de logo-box in de header werd afgekapt tot ~47px breed: de flex-header liep over (mega-menu + 3 CTA-knoppen), waardoor het logo-flexitem kromp en Tailwind's `max-width:100%` het logo verkleinde. Niet de SVG of h-14 (die was correct 56px).
+  - Fix: logo-`Link` `shrink-0`, img `w-auto max-w-none` (krimpt/kapt niet meer). Plus de dubbele "Vacatures"-knop uit de header verwijderd (stond al in het menu) om de balk minder vol te maken.
+  - Onderweg de logo-SVG's al een vaste maat 108x30 gegeven (i.p.v. 100%).
+- **Waarom:**
+  - Logo bleef klein ondanks h-14; echte oorzaak was flex-overloop, niet de logogrootte.
+- **Geraakte bestanden:**
+  - `platform/src/components/SiteHeader.tsx`, `platform/public/img/logo_blue.svg`, `logo_black.svg`, `logo_white.svg`.
+
 ## 2026-06-18 - Header-logo vergroot + SVG intrinsieke maat gefixt
 - **Wat is gebouwd/gewijzigd:**
   - Header-logo vergroot van h-[30px] naar h-14 (56px), header-hoogte 78px -> 88px.
