@@ -19,9 +19,10 @@ const professionals: Menu = {
   },
   items: [
     { href: "/vacatures", label: "Vacatures", desc: "Alle openstaande opdrachten" },
+    { href: "/professionals/werken-bij-detavia", label: "Werken bij DetaVia", desc: "Wat jij van ons mag verwachten" },
+    { href: "/professionals/academy", label: "DetaVia Academy", desc: "Blijf groeien in je vak" },
+    { href: "/professionals/zzp", label: "Voor ZZP'ers", desc: "Zelfstandig, maar nooit alleen" },
     { href: "/solliciteren", label: "Open sollicitatie", desc: "Niets gevonden? Stuur je cv" },
-    { href: "/verhalen", label: "Verhalen & kennis", desc: "Ervaringen uit het vak" },
-    { href: "/over-ons", label: "Over DetaVia", desc: "Wie we zijn en waar we voor staan" },
   ],
 };
 
@@ -34,10 +35,10 @@ const opdrachtgevers: Menu = {
     cta: { href: "/voor-opdrachtgevers", label: "Vraag een professional aan" },
   },
   items: [
-    { href: "/voor-opdrachtgevers#wat-we-doen", label: "Wat we doen", desc: "Detacheren in het sociaal domein" },
-    { href: "/voor-opdrachtgevers#vakgebieden", label: "Vakgebieden", desc: "Wmo, Jeugd, Participatie en meer" },
-    { href: "/voor-opdrachtgevers#diensten", label: "Onze diensten", desc: "Detachering, werving en interim" },
-    { href: "/voor-opdrachtgevers#cao", label: "Certificering & CAO", desc: "Kwaliteit en zekerheid" },
+    { href: "/voor-opdrachtgevers/onze-diensten", label: "Onze diensten", desc: "Detachering, werving en interim" },
+    { href: "/voor-opdrachtgevers/vakgebieden", label: "Vakgebieden", desc: "Wmo, Jeugd, Participatie en meer" },
+    { href: "/voor-opdrachtgevers/werving-selectie", label: "Werving & selectie", desc: "De juiste vaste kracht" },
+    { href: "/voor-opdrachtgevers/certificering-cao", label: "Certificering & CAO", desc: "Kwaliteit en zekerheid" },
     { href: "/contact", label: "Contact", desc: "Direct met ons in gesprek" },
   ],
 };

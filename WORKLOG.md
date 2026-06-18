@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-18 - Menu-items worden eigen pagina's (7 nieuwe pagina's)
+- **Wat is gebouwd/gewijzigd:**
+  - De uitklap-items van Professionals en Opdrachtgevers wijzen nu naar echte aparte pagina's i.p.v. anchors. Geinspireerd op joinuz.nl (droombaan/jij-en-joinuz/academy/onze-diensten/certificering-cao), maar in DetaVia-stijl/kleuren en alleen sociaal domein.
+  - Nieuwe pagina's: `/professionals/werken-bij-detavia`, `/professionals/academy`, `/professionals/zzp`; `/voor-opdrachtgevers/onze-diensten`, `/vakgebieden`, `/werving-selectie`, `/certificering-cao`.
+  - Herbruikbare componenten `PageHero` (cobalt hero) en `PageCta` (cobalt CTA-band, gele knop) voor consistentie.
+  - SiteHeader-menu's bijgewerkt naar de nieuwe routes (Professionals: Vacatures/Werken bij DetaVia/Academy/ZZP/Open sollicitatie; Opdrachtgevers: Onze diensten/Vakgebieden/Werving & selectie/Certificering & CAO/Contact).
+- **Waarom:**
+  - Klant wil dat de menu-items losse pagina's met eigen content worden, joinuz.nl als voorbeeld, DetaVia-kleuren behouden.
+- **Geraakte bestanden:**
+  - 7x nieuwe `page.tsx` onder `(public)/professionals/*` en `(public)/voor-opdrachtgevers/*`; `platform/src/components/PageHero.tsx` + `PageCta.tsx` (nieuw); `platform/src/components/SiteHeader.tsx`.
+
 ## 2026-06-18 - CTA voor opdrachtgevers onder de logobalk
 - **Wat is gebouwd/gewijzigd:**
   - Onder de opdrachtgever-logobalk een CTA toegevoegd ("Sluit je aan bij deze organisaties") met hoofdknop "Vraag een professional aan" (/voor-opdrachtgevers) en zachte link "Of neem contact op" (/contact). Benut de social proof van de logo's.
