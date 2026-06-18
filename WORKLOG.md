@@ -3,6 +3,7 @@
 ## 2026-06-18 - CTA voor opdrachtgevers onder de logobalk
 - **Wat is gebouwd/gewijzigd:**
   - Onder de opdrachtgever-logobalk een CTA toegevoegd ("Sluit je aan bij deze organisaties") met hoofdknop "Vraag een professional aan" (/voor-opdrachtgevers) en zachte link "Of neem contact op" (/contact). Benut de social proof van de logo's.
+  - CTA in een zacht licht cobalt-getint bandje (border-cobalt/10, bg-cobalt/[0.05], afgerond), logo's blijven clean op wit. Gekozen na advies: logo-wall hoort op wit, alleen de CTA krijgt subtiel accent (de norm).
 - **Waarom:**
   - Gebruiker wilde een slimme opdrachtgever-CTA op die plek; aanbeveling was de strakke regel direct onder de logo's.
 - **Geraakte bestanden:**
