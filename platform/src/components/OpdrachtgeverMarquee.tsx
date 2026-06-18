@@ -45,12 +45,14 @@ export default function OpdrachtgeverMarquee() {
       </div>
 
       {/* CTA voor opdrachtgevers, rijdt mee op het vertrouwen van de logo's */}
-      <div className="mx-auto mt-12 max-w-[1180px] px-5 text-center sm:px-10">
-        <h3 className="text-xl font-bold sm:text-2xl">Sluit je aan bij deze organisaties</h3>
-        <p className="mx-auto mt-2 max-w-[46ch] text-muted">Ook personeel nodig in het sociaal domein? Wij denken met je mee en ontzorgen volledig.</p>
-        <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
-          <Link href="/voor-opdrachtgevers" className="rounded-full bg-cobalt px-6 py-3 font-bold text-white transition hover:-translate-y-0.5">Vraag een professional aan</Link>
-          <Link href="/contact" className="font-bold text-cobalt hover:underline">Of neem contact op</Link>
+      <div className="mx-auto mt-12 max-w-[760px] px-5 sm:px-10">
+        <div className="rounded-[24px] border border-cobalt/10 bg-cobalt/[0.05] px-6 py-9 text-center sm:px-10">
+          <h3 className="text-xl font-bold sm:text-2xl">Sluit je aan bij deze organisaties</h3>
+          <p className="mx-auto mt-2 max-w-[46ch] text-muted">Ook personeel nodig in het sociaal domein? Wij denken met je mee en ontzorgen volledig.</p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+            <Link href="/voor-opdrachtgevers" className="rounded-full bg-cobalt px-6 py-3 font-bold text-white transition hover:-translate-y-0.5">Vraag een professional aan</Link>
+            <Link href="/contact" className="font-bold text-cobalt hover:underline">Of neem contact op</Link>
+          </div>
         </div>
       </div>
     </section>
