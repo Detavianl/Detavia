@@ -1,12 +1,13 @@
 # Worklog
 
-## 2026-06-18 - Header-logo vergroot
+## 2026-06-18 - Header-logo vergroot + SVG intrinsieke maat gefixt
 - **Wat is gebouwd/gewijzigd:**
-  - Header-logo vergroot van h-[30px] (minimum) naar h-14 (56px), en header-hoogte van 78px naar 88px zodat het logo goed past. (Tussenstap h-11/44px stond al live; gebruiker vond dat nog te klein, mogelijk ook browsercache.) Build geverifieerd.
+  - Header-logo vergroot van h-[30px] naar h-14 (56px), header-hoogte 78px -> 88px.
+  - Oorzaak "logo blijft klein" onderzocht: live HTML was al h-14 (dus deels browsercache), maar de logo-SVG's hadden `width="100%" height="100%"` i.p.v. een vaste maat, waardoor de intrinsieke grootte/verhouding onbetrouwbaar is. Opgelost door alle drie de varianten (logo_blue/black/white) een vaste `width="108" height="30"` te geven.
 - **Waarom:**
-  - Gebruiker vond het logo te klein.
+  - Gebruiker vond het logo te klein en het bleef klein ogen; vaste SVG-maat maakt schaling met h-14 betrouwbaar.
 - **Geraakte bestanden:**
-  - `platform/src/components/SiteHeader.tsx`.
+  - `platform/src/components/SiteHeader.tsx`, `platform/public/img/logo_blue.svg`, `logo_black.svg`, `logo_white.svg`.
 
 ## 2026-06-18 - Aanscherping "uitsluitend sociaal domein" + CTA-fix
 - **Wat is gebouwd/gewijzigd:**
