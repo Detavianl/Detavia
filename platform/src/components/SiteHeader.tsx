@@ -65,7 +65,7 @@ export default function SiteHeader() {
       <div className="mx-auto flex h-[88px] max-w-[1180px] items-center justify-between gap-6 px-5 sm:px-10">
         <Link href="/" aria-label="DetaVia" className="shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/img/logo_blue.svg" alt="DetaVia" className="h-14 w-auto max-w-none" />
+          <img src="/img/logo_blue.svg" alt="DetaVia" className="h-12 w-auto max-w-none" />
         </Link>
 
         <nav className="hidden items-center gap-6 font-semibold lg:flex">

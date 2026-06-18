@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-18 - Logo naar 48px (betere balans)
+- **Wat is gebouwd/gewijzigd:**
+  - Header-logo van h-14 (56px) naar h-12 (48px), ~55% van de 88px header. Na meting/screenshot oordeelde dat 56px net te dominant was.
+- **Waarom:**
+  - Gebruiker vroeg eerlijke mening; 56px oogde te groot, 48px is in betere balans met het menu.
+- **Geraakte bestanden:**
+  - `platform/src/components/SiteHeader.tsx`.
+
 ## 2026-06-18 - Echte oorzaak klein logo gevonden en opgelost (flex-shrink)
 - **Wat is gebouwd/gewijzigd:**
   - Met Chrome DevTools (CDP) gemeten dat de logo-box in de header werd afgekapt tot ~47px breed: de flex-header liep over (mega-menu + 3 CTA-knoppen), waardoor het logo-flexitem kromp en Tailwind's `max-width:100%` het logo verkleinde. Niet de SVG of h-14 (die was correct 56px).
