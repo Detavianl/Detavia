@@ -90,13 +90,20 @@ export async function fetchDetail(aanvraagnr: string, titel: string): Promise<Fl
   const duur = stripTags(pair("Duur"));
   const regio = stripTags(pair("Regio"));
 
-  // Opdrachtomschrijving: tussen "Opdracht" en "Vereisten"
+  // Opdrachtomschrijving: tussen "Opdracht" en "Vereisten". Kop weghalen,
+  // blokgrenzen omzetten naar alinea's, dan opschonen tot nette <p>-tekst.
   const oi = h.search(/>\s*Opdracht\s*</i);
   const vi = h.search(/Vereisten\s*\/?\s*knock|Vereisten\s*</i);
-  let taken = "";
+  let takenHtml = "";
+  let takenTekst = "";
   if (oi >= 0) {
-    const seg = h.slice(oi, vi > oi ? vi : oi + 4000);
-    taken = stripTags(seg).replace(/^Opdracht\s*/i, "").trim();
+    let seg = h.slice(oi, vi > oi ? vi : oi + 5000);
+    seg = seg.replace(/^[\s\S]*?Opdracht\s*<\/[a-z0-9]+>/i, ""); // kop weg
+    seg = seg.replace(/<\/(p|div|li|h[1-6])>/gi, "\n").replace(/<br\s*\/?>/gi, "\n");
+    const clean = stripTags(seg).replace(/^[>\s]*Opdracht[\s:]*/i, "").trim();
+    const paras = clean.split(/\n+/).map((s) => s.trim()).filter((s) => s.length > 1);
+    takenHtml = paras.map((p) => `<p>${p}</p>`).join("");
+    takenTekst = clean;
   }
 
   // Eisen: genummerde <br>-lijst na "Vereisten"
@@ -112,15 +119,15 @@ export async function fetchDetail(aanvraagnr: string, titel: string): Promise<Fl
     }
   }
 
-  const vakgebied = vakgebiedVan(`${titel} ${taken}`);
+  const vakgebied = vakgebiedVan(`${titel} ${takenTekst}`);
   return {
     aanvraagnr,
     titel,
     vakgebied,
     plaats: regio,
     opdrachtgever: "",
-    omschrijving: taken.slice(0, 240),
-    taken,
+    omschrijving: takenTekst.slice(0, 240),
+    taken: takenHtml,
     eisen: eisen.slice(0, 10),
     uren_min: umin,
     uren_max: umax,
