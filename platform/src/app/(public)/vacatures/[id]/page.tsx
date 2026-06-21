@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { VAKGEBIEDEN, salarisLabel } from "@/lib/vacatures-demo";
+import { VAKGEBIEDEN, salarisLabel, urenLabel } from "@/lib/vacatures-demo";
 import { loadVacatures } from "@/lib/vacatures";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 
@@ -56,7 +56,7 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
     jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", addressLocality: v.plaats, addressCountry: "NL" } },
     industry: "Sociaal domein",
     url: `${SITE_URL}/vacatures/${slug}`,
-    ...(v.salaris[0] > 0 ? { baseSalary: { "@type": "MonetaryAmount", currency: "EUR", value: { "@type": "QuantitativeValue", minValue: v.salaris[0], maxValue: v.salaris[1], unitText: "MONTH" } } } : {}),
+    ...(v.salaris[0] > 0 ? { baseSalary: { "@type": "MonetaryAmount", currency: "EUR", value: { "@type": "QuantitativeValue", minValue: v.salaris[0], maxValue: v.salaris[1], unitText: ({ uur: "HOUR", week: "WEEK", "4weken": "WEEK", maand: "MONTH" }[v.salaris_periode ?? "maand"] ?? "MONTH") } } } : {}),
   };
 
   return (
@@ -75,8 +75,8 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
           <h1 className="display mt-3 max-w-[22ch] text-4xl sm:text-5xl">{v.titel}</h1>
           <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 font-semibold text-white/90">
             <span>📍 {v.plaats}</span>
-            <span>🕒 {v.uren[0]}-{v.uren[1]} uur</span>
-            <span>💶 {salarisLabel(v.salaris)}</span>
+            <span>🕒 {urenLabel(v.uren)}</span>
+            <span>💶 {salarisLabel(v.salaris, v.salaris_periode)}</span>
             <span>📄 {v.type}</span>
           </div>
           <div className="mt-7 flex flex-wrap gap-3.5">
@@ -145,8 +145,8 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
               <Row k="Vakgebied" v={vakLabel} />
               {v.opdrachtgever && <Row k="Opdrachtgever" v={v.opdrachtgever} />}
               <Row k="Plaats" v={v.plaats} />
-              <Row k="Uren per week" v={`${v.uren[0]}-${v.uren[1]} uur`} />
-              <Row k="Salarisindicatie" v={salarisLabel(v.salaris)} />
+              <Row k="Uren per week" v={urenLabel(v.uren)} />
+              <Row k="Salarisindicatie" v={salarisLabel(v.salaris, v.salaris_periode)} />
               <Row k="Dienstverband" v={v.type} />
               {v.startdatum && <Row k="Startdatum" v={v.startdatum} />}
               {v.duur && <Row k="Duur" v={v.duur} />}
@@ -180,7 +180,7 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
                 <Link key={r.id} href={`/vacatures/${r.slug ?? r.id}`} className="flex flex-col rounded-2xl border-[1.5px] border-neutral-200 bg-white p-6 transition hover:-translate-y-1 hover:border-cobalt">
                   <span className="self-start text-xs font-bold uppercase tracking-wide text-cobalt">{VAKGEBIEDEN[r.vakgebied] ?? r.vakgebied}</span>
                   <h3 className="mt-1.5 text-lg font-bold">{r.titel}</h3>
-                  <p className="mt-1 text-sm font-semibold text-muted">{r.plaats} · {r.uren[0]}-{r.uren[1]} uur</p>
+                  <p className="mt-1 text-sm font-semibold text-muted">{r.plaats} · {urenLabel(r.uren)}</p>
                   <span className="mt-3 font-bold text-cobalt">Bekijk vacature →</span>
                 </Link>
               ))}

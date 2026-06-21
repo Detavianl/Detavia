@@ -1,7 +1,7 @@
 import Link from "next/link";
 import OpdrachtgeverMarquee from "@/components/OpdrachtgeverMarquee";
 import { loadVacatures } from "@/lib/vacatures";
-import { VAKGEBIEDEN } from "@/lib/vacatures-demo";
+import { VAKGEBIEDEN, urenLabel } from "@/lib/vacatures-demo";
 
 export const metadata = {
   title: "Detacheren in het sociaal domein",
@@ -76,7 +76,7 @@ export default async function Home() {
               <Link key={v.id} href={`/vacatures/${v.slug ?? v.id}`} className="flex min-h-[210px] flex-col gap-2.5 rounded-[22px] border-[1.5px] border-neutral-200 p-7 transition hover:-translate-y-1 hover:border-cobalt">
                 <span className="self-start rounded-full bg-yellow px-3 py-1 text-xs font-bold">{VAKGEBIEDEN[v.vakgebied] ?? v.vakgebied}</span>
                 <h3 className="mt-1.5 text-xl font-bold">{v.titel}</h3>
-                <p className="text-sm font-semibold text-muted">{v.plaats} · {v.uren[0]}-{v.uren[1]} uur</p>
+                <p className="text-sm font-semibold text-muted">{v.plaats} · {urenLabel(v.uren)}</p>
                 <p className="flex-1 text-[.96rem] text-muted">{v.omschrijving}</p>
                 <span className="font-bold text-cobalt">Bekijk vacature →</span>
               </Link>

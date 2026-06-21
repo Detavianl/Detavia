@@ -4,10 +4,13 @@ import { DEMO_VACATURES, type Vacature } from "@/lib/vacatures-demo";
 
 type Row = {
   id: string; titel: string; slug: string | null; vakgebied: string; plaats: string;
-  uren_min: number; uren_max: number; salaris_min: number | null; salaris_max: number | null;
+  uren_min: number; uren_max: number; salaris_min: number | string | null; salaris_max: number | string | null;
   type: string; top: boolean; created_at: string | null; omschrijving: string;
   taken?: string; eisen?: string[]; opdrachtgever?: string; startdatum?: string; duur?: string;
+  salaris_periode?: string; inactief_op?: string | null;
 };
+
+const num = (v: number | string | null) => (v == null ? 0 : Number(v));
 
 export function mapVacatureRow(v: Row): Vacature {
   return {
@@ -17,7 +20,8 @@ export function mapVacatureRow(v: Row): Vacature {
     vakgebied: v.vakgebied,
     plaats: v.plaats,
     uren: [v.uren_min, v.uren_max],
-    salaris: [v.salaris_min ?? 0, v.salaris_max ?? 0],
+    salaris: [num(v.salaris_min), num(v.salaris_max)],
+    salaris_periode: v.salaris_periode || "maand",
     type: v.type,
     top: v.top,
     datum: (v.created_at ?? "").slice(0, 10),
@@ -27,18 +31,22 @@ export function mapVacatureRow(v: Row): Vacature {
     opdrachtgever: v.opdrachtgever || undefined,
     startdatum: v.startdatum || undefined,
     duur: v.duur || undefined,
+    inactief_op: v.inactief_op ?? null,
   };
 }
 
 // Open vacatures. In demo-modus de voorbeelden, anders uitsluitend de database.
+// Vacatures met een verstreken inactief-datum worden automatisch verborgen.
 export async function loadVacatures(): Promise<Vacature[]> {
   if (isDemo()) return DEMO_VACATURES;
   try {
     const supabase = await createClient();
+    const vandaag = new Date().toISOString().slice(0, 10);
     const { data } = await supabase
       .from("vacatures")
       .select("*")
       .eq("status", "open")
+      .or(`inactief_op.is.null,inactief_op.gte.${vandaag}`)
       .order("created_at", { ascending: false });
     return (data ?? []).map(mapVacatureRow);
   } catch {

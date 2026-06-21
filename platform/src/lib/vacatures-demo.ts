@@ -25,6 +25,8 @@ export type Vacature = {
   opdrachtgever?: string;
   startdatum?: string;
   duur?: string;
+  salaris_periode?: string; // 'uur' | 'week' | '4weken' | 'maand'
+  inactief_op?: string | null;
 };
 
 // Alleen gebruikt als voorbeeld in demo-modus (zonder Supabase). Op de live site
@@ -44,7 +46,21 @@ export const DEMO_VACATURES: Vacature[] = [
   { id: "12", titel: "Beleidsmedewerker Wmo & Jeugd", vakgebied: "beleid", plaats: "Nijmegen", uren: [28, 36], salaris: [3700, 5300], type: "Detachering", top: false, datum: "2026-05-22", omschrijving: "Je ontwikkelt en evalueert beleid op het brede sociaal domein." },
 ];
 
-export const euro = (n: number) => "€ " + n.toLocaleString("nl-NL");
-export const fmtSalaris = (s: [number, number]) => `${euro(s[0])} - ${euro(s[1])} p/m`;
-// Toont een nette tekst als er geen maandsalaris bekend is (bv. bij uurtarief-opdrachten).
-export const salarisLabel = (s: [number, number]) => (s[0] > 0 ? fmtSalaris(s) : "Tarief in overleg");
+export const euro = (n: number) =>
+  "€ " + n.toLocaleString("nl-NL", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+
+export const PERIODE_LABEL: Record<string, string> = {
+  uur: "per uur",
+  week: "per week",
+  "4weken": "per 4 weken",
+  maand: "per maand",
+};
+
+// Nette uren-weergave: "28 uur" of "28-36 uur".
+export const urenLabel = (u: [number, number]) => (u[0] === u[1] ? `${u[0]} uur` : `${u[0]}-${u[1]} uur`);
+
+// Salaris met de juiste periode, of "Tarief in overleg" als er geen bedrag is.
+export const salarisLabel = (s: [number, number], periode = "maand") =>
+  s[0] > 0 ? `${euro(s[0])} - ${euro(s[1])} ${PERIODE_LABEL[periode] ?? "per maand"}` : "Tarief in overleg";
+
+export const fmtSalaris = (s: [number, number]) => salarisLabel(s, "maand");

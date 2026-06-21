@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-21 - Vacature bewerken: salaris-periode, auto-inactief, inactief-knop
+- **Wat is gebouwd/gewijzigd:**
+  - Migratie 0016 (live): salaris_min/max naar numeric (centen mogelijk, bv. uurtarief 62,50), nieuwe kolommen `salaris_periode` ('uur'/'week'/'4weken'/'maand') en `inactief_op` (date).
+  - Beheerformulier: keuze "Salaris per" (uur/week/4 weken/maand), datumveld "Automatisch inactief op", en een knop "Op inactief zetten" (nieuwe actie `deactivateVacature`). Salarisvelden accepteren centen.
+  - Weergave: nieuwe helper `salarisLabel(s, periode)` toont "€ x - € y per uur/week/4 weken/maand" (of "Tarief in overleg"), en `urenLabel` toont "28 uur" i.p.v. "28-28 uur". Toegepast op detailpagina, overzicht en homepage. JobPosting-structured-data krijgt de juiste eenheid (HOUR/WEEK/MONTH).
+  - Loader verbergt automatisch vacatures waarvan `inactief_op` is verstreken (geen cron nodig).
+- **Waarom:**
+  - Klant wil per uur/week/4 weken/maand kunnen kiezen, een vacature kunnen inplannen om automatisch inactief te worden, en een directe inactief-knop.
+- **Geraakte bestanden:**
+  - `supabase/migrations/0016_vacature_salaris_periode.sql`, `src/lib/vacatures-demo.ts`, `src/lib/vacatures.ts`, `src/components/VacatureForm.tsx`, `src/app/admin/vacatures/actions.ts`, `src/app/(public)/vacatures/[id]/page.tsx`, `src/components/VacatureZoeker.tsx`, `src/app/(public)/page.tsx`.
+
 ## 2026-06-21 - Flextender-sync verfijnd: opmaak, eisen, snelheid
 - **Wat is gebouwd/gewijzigd:**
   - Taakomschrijving uit Flextender behoudt nu alinea-opmaak (block-tags -> alinea's, als `<p>`-HTML), en de stray "Opdracht"-kop is weg.
