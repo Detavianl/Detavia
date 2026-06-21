@@ -18,6 +18,12 @@ export async function saveVacature(formData: FormData) {
     const v = formData.get(k);
     return v === null || v === "" ? null : Number(v);
   };
+  // eisen: een regel per eis in de textarea -> array
+  const eisen = String(formData.get("eisen") ?? "")
+    .split("\n")
+    .map((r) => r.trim())
+    .filter(Boolean);
+
   const fields = {
     titel,
     vakgebied: String(formData.get("vakgebied") ?? "wmo"),
@@ -31,6 +37,11 @@ export async function saveVacature(formData: FormData) {
     omschrijving: String(formData.get("omschrijving") ?? "").trim(),
     status: String(formData.get("status") ?? "open"),
     company_id: String(formData.get("company_id") ?? "") || null,
+    taken: String(formData.get("taken") ?? "").trim(),
+    eisen,
+    opdrachtgever: String(formData.get("opdrachtgever") ?? "").trim(),
+    startdatum: String(formData.get("startdatum") ?? "").trim(),
+    duur: String(formData.get("duur") ?? "").trim(),
   };
 
   if (id) {

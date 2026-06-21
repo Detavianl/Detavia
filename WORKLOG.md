@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-21 - Beheer: rijke vacaturevelden invulbaar
+- **Wat is gebouwd/gewijzigd:**
+  - Migratie 0014 (gedraaid op live Supabase): kolommen taken (text), eisen (text[]), opdrachtgever, startdatum, duur op de vacatures-tabel.
+  - Beheerformulier (VacatureForm) uitgebreid met: Korte omschrijving, Wat ga je doen (taken), Wat je meebrengt (eisen, een per regel), Opdrachtgever (weergavenaam), Startdatum, Duur. Bewerk-pagina laadt ze automatisch (select *).
+  - saveVacature-actie slaat de velden op; eisen-textarea wordt per regel naar een array gesplitst.
+  - Publieke detailpagina-loader mapt de nieuwe DB-kolommen, zodat zelf geplaatste vacatures dezelfde rijke detailpagina krijgen (met fallback naar generieke tekst als velden leeg zijn).
+- **Waarom:**
+  - Klant wil dit soort vacature-info (zoals de 1Stroom-vacature) zelf via het beheer kunnen invullen.
+- **Geraakte bestanden:**
+  - `platform/supabase/migrations/0014_vacature_details.sql` (nieuw), `platform/src/components/VacatureForm.tsx`, `platform/src/app/admin/vacatures/actions.ts`, `platform/src/app/(public)/vacatures/[id]/page.tsx`.
+
 ## 2026-06-21 - Echte vacature toegevoegd (Medewerker Sociaal loket, 1Stroom)
 - **Wat is gebouwd/gewijzigd:**
   - Vacature-model uitgebreid met optionele rijke velden: taken (wat ga je doen), eisen (string[]), opdrachtgever, startdatum, duur.

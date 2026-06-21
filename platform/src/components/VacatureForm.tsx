@@ -6,6 +6,7 @@ type V = {
   id?: string; titel?: string; vakgebied?: string; plaats?: string;
   uren_min?: number; uren_max?: number; salaris_min?: number | null; salaris_max?: number | null;
   type?: string; top?: boolean; omschrijving?: string; status?: string; company_id?: string | null;
+  taken?: string; eisen?: string[] | null; opdrachtgever?: string; startdatum?: string; duur?: string;
 };
 
 export default function VacatureForm({ vacature, companies = [] }: { vacature?: V; companies?: { id: string; naam: string }[] }) {
@@ -45,8 +46,24 @@ export default function VacatureForm({ vacature, companies = [] }: { vacature?: 
               <option value="open">Open</option><option value="gesloten">Gesloten</option>
             </select></label>
         </div>
-        <label className="grid gap-1.5"><span className="text-sm font-bold">Omschrijving</span>
-          <textarea name="omschrijving" rows={4} defaultValue={v.omschrijving} className="rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>
+        <label className="grid gap-1.5"><span className="text-sm font-bold">Korte omschrijving</span>
+          <span className="text-xs text-neutral-500">Korte intro die in het overzicht en bovenaan de vacature staat.</span>
+          <textarea name="omschrijving" rows={3} defaultValue={v.omschrijving} className="rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>
+
+        <label className="grid gap-1.5"><span className="text-sm font-bold">Wat ga je doen?</span>
+          <span className="text-xs text-neutral-500">De uitgebreide taakomschrijving op de detailpagina.</span>
+          <textarea name="taken" rows={5} defaultValue={v.taken} className="rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>
+
+        <label className="grid gap-1.5"><span className="text-sm font-bold">Wat je meebrengt (eisen)</span>
+          <span className="text-xs text-neutral-500">Eén eis per regel. Verschijnen als lijst met vinkjes.</span>
+          <textarea name="eisen" rows={6} defaultValue={(v.eisen ?? []).join("\n")} className="rounded-xl border-2 border-neutral-200 px-4 py-3" placeholder={"Een afgeronde hbo-opleiding\nMinimaal 1 jaar ervaring in het sociaal domein\n..."} /></label>
+
+        <div className="grid gap-5 sm:grid-cols-3">
+          <Field label="Opdrachtgever (weergavenaam)" name="opdrachtgever" defaultValue={v.opdrachtgever} />
+          <Field label="Startdatum" name="startdatum" defaultValue={v.startdatum} />
+          <Field label="Duur" name="duur" defaultValue={v.duur} />
+        </div>
+
         <label className="flex items-center gap-2 font-semibold">
           <input type="checkbox" name="top" defaultChecked={v.top} className="h-5 w-5 accent-cobalt" /> Topvacature (uitgelicht)
         </label>

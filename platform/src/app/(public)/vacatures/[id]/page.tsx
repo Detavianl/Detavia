@@ -10,10 +10,15 @@ async function loadAll(): Promise<Vacature[]> {
     const supabase = await createClient();
     const { data } = await supabase.from("vacatures").select("*").eq("status", "open").order("created_at", { ascending: false });
     if (!data || data.length === 0) return DEMO_VACATURES;
-    return data.map((v: { id: string; titel: string; vakgebied: string; plaats: string; uren_min: number; uren_max: number; salaris_min: number | null; salaris_max: number | null; type: string; top: boolean; created_at: string | null; omschrijving: string }) => ({
+    return data.map((v: { id: string; titel: string; vakgebied: string; plaats: string; uren_min: number; uren_max: number; salaris_min: number | null; salaris_max: number | null; type: string; top: boolean; created_at: string | null; omschrijving: string; taken?: string; eisen?: string[]; opdrachtgever?: string; startdatum?: string; duur?: string }) => ({
       id: v.id, titel: v.titel, vakgebied: v.vakgebied, plaats: v.plaats,
-      uren: [v.uren_min, v.uren_max], salaris: [v.salaris_min ?? 0, v.salaris_max ?? 0],
+      uren: [v.uren_min, v.uren_max] as [number, number], salaris: [v.salaris_min ?? 0, v.salaris_max ?? 0] as [number, number],
       type: v.type, top: v.top, datum: (v.created_at ?? "").slice(0, 10), omschrijving: v.omschrijving,
+      taken: v.taken || undefined,
+      eisen: v.eisen && v.eisen.length ? v.eisen : undefined,
+      opdrachtgever: v.opdrachtgever || undefined,
+      startdatum: v.startdatum || undefined,
+      duur: v.duur || undefined,
     }));
   } catch {
     return DEMO_VACATURES;
