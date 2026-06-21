@@ -90,10 +90,12 @@ export async function fetchDetail(aanvraagnr: string, titel: string): Promise<Fl
   const duur = stripTags(pair("Duur"));
   const regio = stripTags(pair("Regio"));
 
-  // Opdrachtomschrijving: tussen "Opdracht" en "Vereisten". Kop weghalen,
+  // Opdrachtomschrijving: tussen "Opdracht" en de eisen-kop. Kop weghalen,
   // blokgrenzen omzetten naar alinea's, dan opschonen tot nette <p>-tekst.
+  // De eisen-kop varieert: "Vereisten / knock-outcriteria", "Minimumeisen / ...".
   const oi = h.search(/>\s*Opdracht\s*</i);
-  const vi = h.search(/Vereisten\s*\/?\s*knock|Vereisten\s*</i);
+  const eisenKop = /(Vereisten|Minimumeisen|Functie-?eisen|Eisen)\s*\/?\s*knock-?out|knock-?outcriteria/i;
+  const vi = h.search(eisenKop);
   let takenHtml = "";
   let takenTekst = "";
   if (oi >= 0) {
