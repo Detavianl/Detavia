@@ -77,6 +77,26 @@ export async function deleteVacature(id: string) {
   revalidatePath("/vacatures");
 }
 
+// Dupliceer een vacature naar een nieuwe concept-vacature (gesloten).
+export async function cloneVacature(id: string) {
+  await requireAdmin();
+  if (isDemo()) redirect("/admin/vacatures");
+  const supabase = await createClient();
+  const { data: orig } = await supabase.from("vacatures").select("*").eq("id", id).single();
+  if (!orig) throw new Error("Vacature niet gevonden");
+  const { id: _id, slug: _slug, created_at: _ca, ...rest } = orig as Record<string, unknown>;
+  const titel = `${orig.titel} (kopie)`;
+  const slug = `${slugify(titel)}-${Math.random().toString(36).slice(2, 6)}`;
+  const { data, error } = await supabase
+    .from("vacatures")
+    .insert({ ...rest, titel, slug, status: "gesloten", top: false, bron: "", extern_id: "", inactief_op: null })
+    .select("id")
+    .single();
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/vacatures");
+  redirect(`/admin/vacatures/${data.id}`);
+}
+
 // Zet een vacature direct op inactief (gesloten).
 export async function deactivateVacature(id: string) {
   await requireAdmin();

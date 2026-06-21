@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { saveVacature } from "@/app/admin/vacatures/actions";
+import { saveVacature, cloneVacature } from "@/app/admin/vacatures/actions";
 import { VAKGEBIEDEN } from "@/lib/ats";
 import VacaturePreview, { type PreviewData } from "@/components/VacaturePreview";
 
@@ -70,6 +70,11 @@ export default function VacatureForm({ vacature, companies = [] }: { vacature?: 
         <h1 className="display text-3xl">{v.id ? "Vacature bewerken" : "Nieuwe vacature"}</h1>
         <div className="flex items-center gap-3">
           {status === "gesloten" && <span className="rounded-full bg-neutral-200 px-3 py-1 text-xs font-bold text-neutral-600">Inactief</span>}
+          {v.id && (
+            <form action={cloneVacature.bind(null, v.id)}>
+              <button className="rounded-full border-2 border-neutral-300 px-5 py-2 font-bold text-ink hover:bg-neutral-50">Dupliceer</button>
+            </form>
+          )}
           <button
             type="button"
             onClick={() => setStatus(status === "open" ? "gesloten" : "open")}

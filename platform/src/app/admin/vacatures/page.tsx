@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { VAKGEBIEDEN } from "@/lib/ats";
 import DeleteVacatureButton from "@/components/DeleteVacatureButton";
+import { cloneVacature } from "./actions";
 import { isDemo, DEMO_VACATURES_ADMIN } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
@@ -37,7 +38,14 @@ export default async function VacaturesAdmin() {
                 <td className="px-5 py-3">{VAKGEBIEDEN[v.vakgebied] ?? v.vakgebied}</td>
                 <td className="px-5 py-3">{v.plaats || "—"}</td>
                 <td className="px-5 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${v.status === "open" ? "bg-green-100 text-green-700" : "bg-neutral-100 text-muted"}`}>{v.status}</span></td>
-                <td className="px-5 py-3 text-right"><DeleteVacatureButton id={v.id} /></td>
+                <td className="px-5 py-3">
+                  <div className="flex items-center justify-end gap-3">
+                    <form action={cloneVacature.bind(null, v.id)}>
+                      <button className="text-xs font-bold text-cobalt hover:underline">Dupliceer</button>
+                    </form>
+                    <DeleteVacatureButton id={v.id} />
+                  </div>
+                </td>
               </tr>
             ))}
             {vacatures.length === 0 && <tr><td colSpan={5} className="px-5 py-10 text-center text-muted">Nog geen vacatures.</td></tr>}

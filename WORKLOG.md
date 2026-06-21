@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-21 - Vacatures dupliceren (clone)
+- **Wat is gebouwd/gewijzigd:**
+  - Actie `cloneVacature`: maakt een kopie van een vacature als concept (status gesloten, titel "(kopie)", nieuwe slug, bron/extern_id leeg, top uit) en opent de bewerkpagina. "Dupliceer"-knop op de vacaturelijst (per rij) en op de bewerkpagina.
+- **Waarom:**
+  - Klant wil vacatures kunnen clonen.
+- **Geraakte bestanden:**
+  - `src/app/admin/vacatures/actions.ts`, `src/app/admin/vacatures/page.tsx`, `src/components/VacatureForm.tsx`.
+
+
 ## 2026-06-21 - Kandidaten: bewerken en verwijderen
 - **Wat is gebouwd/gewijzigd:**
   - Kandidaten konden niet bewerkt/verwijderd worden. Nu wel: herbruikbaar `CandidateForm` (nieuw + bewerken), bewerk-pagina `/admin/kandidaten/[id]/bewerken`, acties `updateCandidate` en `deleteCandidate` (verwijdert ook gekoppelde activiteiten/applications/cvs).
