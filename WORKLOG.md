@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-21 - Notities: bewerken/verwijderen (alleen auteur) + nieuw-form opgeschoond
+- **Wat is gebouwd/gewijzigd:**
+  - Bij elke notitie staan nu een "Bewerk"- en "Verwijder"-knop, maar alleen bij je eigen notities (auteur). Bewerken gaat inline (tekstvlak), afgedwongen op auteur via de query (author-kolom = ingelogde gebruiker). Werkt voor kandidaat, bedrijf en de generieke entiteiten.
+  - Note-loaders geven nu note-id + `mine` (ben ik de auteur) mee; nieuwe acties `editNote` / `deleteNote`.
+  - "Nieuwe kandidaat"-pagina: het oude losse notitie-veld (candidates.notitie) is vervangen; een ingevulde "Eerste notitie" wordt nu als echte notitie in het nieuwe notities-systeem (candidate_activities) opgeslagen en verschijnt in de feed.
+- **Waarom:**
+  - Klant wil notities kunnen bewerken/verwijderen (alleen eigen), en het oude losse notitie-veld op de nieuw-pagina moest weg.
+- **Geraakte bestanden:**
+  - `src/app/admin/activity-actions.ts`, `src/lib/notes.ts`, `src/components/QuickNotes.tsx`, `src/app/admin/kandidaten/[id]/page.tsx`, `src/app/admin/crm/bedrijven/[id]/page.tsx`, `src/app/admin/kandidaten/actions.ts`, `src/app/admin/kandidaten/nieuw/page.tsx`.
+
+
 ## 2026-06-21 - Notities overal mogelijk (audit + generieke notes)
 - **Wat is gebouwd/gewijzigd:**
   - Audit: notities waren alleen mogelijk bij kandidaten en bedrijven. Nu ook bij plaatsingen, facturen en vacatures.

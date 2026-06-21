@@ -43,7 +43,7 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
     const [cvRes, appRes, actRes, teamRes, audRes] = await Promise.all([
       supabase.from("cvs").select("*").eq("candidate_id", id).order("uploaded_at", { ascending: false }),
       supabase.from("applications").select("id, stage, vacature:vacatures(titel)").eq("candidate_id", id),
-      supabase.from("candidate_activities").select("type, inhoud, created_at, created_by").eq("candidate_id", id).order("created_at", { ascending: false }),
+      supabase.from("candidate_activities").select("id, type, inhoud, created_at, created_by").eq("candidate_id", id).order("created_at", { ascending: false }),
       supabase.from("admin_users").select("user_id, naam"),
       supabase.from("audit_log").select("actie, details, user_naam, created_at").eq("entity", "candidate").eq("entity_id", id).order("created_at", { ascending: false }).limit(20),
     ]);
@@ -51,7 +51,7 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
     const naam = (uid: string) => team.find((t: any) => t.user_id === uid)?.naam ?? "Beheer";
     const acts = (actRes.data ?? []).map((a: any) => ({ ...a, gebruiker: a.created_by ? naam(a.created_by) : null }));
     contactmomenten = acts.filter((a: any) => a.type !== "notitie").map((a: any) => ({ type: a.type, tekst: a.inhoud, created_at: a.created_at, gebruiker: a.gebruiker }));
-    notities = acts.filter((a: any) => a.type === "notitie").map((a: any) => ({ tekst: a.inhoud, created_at: a.created_at, gebruiker: a.gebruiker }));
+    notities = acts.filter((a: any) => a.type === "notitie").map((a: any) => ({ id: a.id, tekst: a.inhoud, created_at: a.created_at, gebruiker: a.gebruiker, mine: a.created_by === admin?.user_id }));
   }
 
   const stageLabel = (k: string) => STAGES.find((s) => s.key === k)?.label ?? k;

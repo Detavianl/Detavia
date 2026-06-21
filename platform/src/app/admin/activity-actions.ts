@@ -48,3 +48,37 @@ export async function addNote(entity: Entity, id: string, tekst: string) {
     revalidatePath(PAD[entity]?.(id) ?? "/admin");
   }
 }
+
+// Welke tabel/kolommen horen bij een entiteit voor notities.
+function noteTarget(entity: Entity) {
+  if (entity === "candidate") return { table: "candidate_activities", textCol: "inhoud", authorCol: "created_by" };
+  if (entity === "company") return { table: "crm_activities", textCol: "onderwerp", authorCol: "created_by" };
+  return { table: "notes", textCol: "body", authorCol: "author_id" };
+}
+function notePath(entity: Entity, parentId: string) {
+  if (entity === "candidate") return `/admin/kandidaten/${parentId}`;
+  if (entity === "company") return `/admin/crm/bedrijven/${parentId}`;
+  return PAD[entity]?.(parentId) ?? "/admin";
+}
+
+// Bewerk een notitie. Alleen de auteur (afgedwongen via author-kolom in de query).
+export async function editNote(entity: Entity, parentId: string, noteId: string, tekst: string) {
+  const admin = await requireAdmin();
+  if (isDemo()) return;
+  const t = tekst.trim();
+  if (!t) return;
+  const { table, textCol, authorCol } = noteTarget(entity);
+  const supabase = await createClient();
+  await supabase.from(table).update({ [textCol]: t }).eq("id", noteId).eq(authorCol, admin.user_id);
+  revalidatePath(notePath(entity, parentId));
+}
+
+// Verwijder een notitie. Alleen de auteur.
+export async function deleteNote(entity: Entity, parentId: string, noteId: string) {
+  const admin = await requireAdmin();
+  if (isDemo()) return;
+  const { table, authorCol } = noteTarget(entity);
+  const supabase = await createClient();
+  await supabase.from(table).delete().eq("id", noteId).eq(authorCol, admin.user_id);
+  revalidatePath(notePath(entity, parentId));
+}

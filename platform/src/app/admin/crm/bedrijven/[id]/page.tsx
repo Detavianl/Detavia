@@ -38,7 +38,7 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
       supabase.from("contacts").select("*").eq("company_id", id),
       supabase.from("deals").select("id, titel, waarde, stage").eq("company_id", id),
       supabase.from("vacatures").select("id, titel, vakgebied, plaats, status").eq("company_id", id),
-      supabase.from("crm_activities").select("type, onderwerp, contact_id, created_at, created_by").eq("company_id", id).order("created_at", { ascending: false }),
+      supabase.from("crm_activities").select("id, type, onderwerp, contact_id, created_at, created_by").eq("company_id", id).order("created_at", { ascending: false }),
       supabase.from("audit_log").select("actie, details, user_naam, created_at").eq("entity", "company").eq("entity_id", id).order("created_at", { ascending: false }).limit(20),
       supabase.from("admin_users").select("user_id, naam"),
     ]);
@@ -47,7 +47,7 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
     const ctNaam = (cid: string) => contacten.find((x: any) => x.id === cid)?.naam ?? null;
     const acts = (act.data ?? []).map((a: any) => ({ ...a, gebruiker: a.created_by ? naam(a.created_by) : null }));
     contactmomenten = acts.filter((a: any) => a.type !== "notitie").map((a: any) => ({ type: a.type, tekst: a.onderwerp, met: a.contact_id ? ctNaam(a.contact_id) : null, created_at: a.created_at, gebruiker: a.gebruiker }));
-    notities = acts.filter((a: any) => a.type === "notitie").map((a: any) => ({ tekst: a.onderwerp, created_at: a.created_at, gebruiker: a.gebruiker }));
+    notities = acts.filter((a: any) => a.type === "notitie").map((a: any) => ({ id: a.id, tekst: a.onderwerp, created_at: a.created_at, gebruiker: a.gebruiker, mine: a.created_by === admin?.user_id }));
   }
   const stageLabel = (k: string) => DEAL_STAGES.find((s) => s.key === k)?.label ?? k;
   const openVac = vacatures.filter((v) => v.status === "open").length;

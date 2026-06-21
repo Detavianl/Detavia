@@ -50,12 +50,13 @@ export default function NieuweKandidaat() {
           </Grid>
         </Card>
 
-        <Card title="Status & notitie">
+        <Card title="Status & eerste notitie">
           <Grid>
             <Select label="Status" name="status" options={Object.entries(KANDIDAAT_STATUS)} defaultValue="actief" />
             <div className="hidden sm:block" />
             <label className="grid gap-1.5 sm:col-span-2">
-              <span className="text-sm font-bold">Interne notitie</span>
+              <span className="text-sm font-bold">Eerste notitie (optioneel)</span>
+              <span className="text-xs text-neutral-500">Verschijnt als notitie bij de kandidaat. Meer notities voeg je toe op de kandidaatpagina.</span>
               <textarea name="notitie" rows={3} className="rounded-xl border-2 border-neutral-200 px-4 py-3" />
             </label>
           </Grid>

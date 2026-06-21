@@ -17,6 +17,7 @@ export async function createCandidate(formData: FormData) {
     return v === "" ? null : Number(v);
   };
   const expertise = str(formData, "expertise").split(",").map((s) => s.trim()).filter(Boolean);
+  const eersteNotitie = str(formData, "notitie").trim();
 
   // alle velden uit het formulier, één keer
   const fields = {
@@ -26,7 +27,6 @@ export async function createCandidate(formData: FormData) {
     woonplaats: str(formData, "woonplaats"),
     vakgebied: str(formData, "vakgebied") || null,
     linkedin: str(formData, "linkedin"),
-    notitie: str(formData, "notitie") ?? "",
     bron: "handmatig",
     status: str(formData, "status") || "actief",
     niveau: str(formData, "niveau") || null,
@@ -59,6 +59,10 @@ export async function createCandidate(formData: FormData) {
 
   // direct een ATS-kaart aanmaken in 'nieuw'
   await supabase.from("applications").insert({ candidate_id: data.id, stage: "nieuw" });
+  // eventuele eerste notitie als echte notitie vastleggen (nieuwe notities-systeem)
+  if (eersteNotitie) {
+    await supabase.from("candidate_activities").insert({ candidate_id: data.id, type: "notitie", inhoud: eersteNotitie, created_by: admin.user_id });
+  }
   revalidatePath("/admin/kandidaten");
   revalidatePath("/admin/ats");
   redirect(`/admin/kandidaten/${data.id}`);
