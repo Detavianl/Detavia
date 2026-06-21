@@ -7,6 +7,7 @@ import ContactMoments from "@/components/ContactMoments";
 import QuickNotes from "@/components/QuickNotes";
 import AuditLog from "@/components/AuditLog";
 import FollowupForm from "@/components/FollowupForm";
+import DeleteCandidateButton from "@/components/DeleteCandidateButton";
 import { getAdmin } from "@/lib/admin-context";
 import { uploadDocument } from "../actions";
 import { isDemo, DEMO_TEAM, DEMO_AUDIT, DEMO_CONTACT_MOMENTS, DEMO_NOTES } from "@/lib/demo";
@@ -60,11 +61,19 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
   return (
     <div className="p-8">
       <Link href="/admin/kandidaten" className="text-sm font-semibold text-cobalt">← Kandidaten</Link>
-      <div className="mt-2 flex flex-wrap items-center gap-3">
-        <h1 className="display text-3xl">{c.naam}</h1>
-        {c.niveau && <span className="rounded-full bg-black px-3 py-1 text-sm font-bold capitalize text-white">{c.niveau}</span>}
-        {c.vakgebied && <span className="rounded-full bg-arctic px-3 py-1 text-sm font-bold">{VAKGEBIEDEN[c.vakgebied] ?? c.vakgebied}</span>}
-        <span className="rounded-full bg-yellow px-3 py-1 text-sm font-bold">{KANDIDAAT_STATUS[c.status] ?? c.status}</span>
+      <div className="mt-2 flex flex-wrap items-start justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="display text-3xl">{c.naam}</h1>
+          {c.niveau && <span className="rounded-full bg-black px-3 py-1 text-sm font-bold capitalize text-white">{c.niveau}</span>}
+          {c.vakgebied && <span className="rounded-full bg-arctic px-3 py-1 text-sm font-bold">{VAKGEBIEDEN[c.vakgebied] ?? c.vakgebied}</span>}
+          <span className="rounded-full bg-yellow px-3 py-1 text-sm font-bold">{KANDIDAAT_STATUS[c.status] ?? c.status}</span>
+        </div>
+        {!demo && (
+          <div className="flex items-center gap-2.5">
+            <Link href={`/admin/kandidaten/${c.id}/bewerken`} className="rounded-full border-2 border-cobalt px-5 py-2 font-bold text-cobalt hover:bg-cobalt/5">Bewerken</Link>
+            <DeleteCandidateButton id={c.id} naam={c.naam} />
+          </div>
+        )}
       </div>
       {(c.huidige_functie || c.huidige_werkgever) && (
         <p className="mt-1 text-muted">{[c.huidige_functie, c.huidige_werkgever].filter(Boolean).join(" · ")}</p>

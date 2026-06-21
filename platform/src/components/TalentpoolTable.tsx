@@ -2,6 +2,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { VAKGEBIEDEN, KANDIDAAT_STATUS, NIVEAUS } from "@/lib/ats";
+import DeleteCandidateButton from "@/components/DeleteCandidateButton";
 
 type C = {
   id: string; naam: string; huidige_functie?: string | null; vakgebied?: string | null;
@@ -113,7 +114,7 @@ export default function TalentpoolTable({ candidates }: { candidates: C[] }) {
           <table className="w-full text-left text-sm">
             <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-muted">
               <tr><th className="px-5 py-3">Naam</th><th className="px-5 py-3">Niveau</th><th className="px-5 py-3">Vakgebied</th>
-                <th className="px-5 py-3">Regio</th><th className="px-5 py-3">Uren</th><th className="px-5 py-3">Status</th><th className="px-5 py-3">Tarief</th></tr>
+                <th className="px-5 py-3">Regio</th><th className="px-5 py-3">Uren</th><th className="px-5 py-3">Status</th><th className="px-5 py-3">Tarief</th><th className="px-5 py-3 text-right">Acties</th></tr>
             </thead>
             <tbody>
               {list.map((c) => (
@@ -126,9 +127,15 @@ export default function TalentpoolTable({ candidates }: { candidates: C[] }) {
                   <td className="px-5 py-3">{c.uren_beschikbaar ? `${c.uren_beschikbaar} u` : "—"}</td>
                   <td className="px-5 py-3"><span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-semibold">{KANDIDAAT_STATUS[c.status ?? ""] ?? c.status ?? "—"}</span></td>
                   <td className="px-5 py-3">{c.tarief_min || c.tarief_max ? `€ ${c.tarief_min ?? "?"}-${c.tarief_max ?? "?"}` : "—"}</td>
+                  <td className="px-5 py-3">
+                    <div className="flex items-center justify-end gap-3">
+                      <Link href={`/admin/kandidaten/${c.id}/bewerken`} className="text-xs font-bold text-cobalt hover:underline">Bewerk</Link>
+                      <DeleteCandidateButton id={c.id} naam={c.naam} klein />
+                    </div>
+                  </td>
                 </tr>
               ))}
-              {list.length === 0 && <tr><td colSpan={7} className="px-5 py-10 text-center text-muted">Geen kandidaten gevonden. Pas je filters aan.</td></tr>}
+              {list.length === 0 && <tr><td colSpan={8} className="px-5 py-10 text-center text-muted">Geen kandidaten gevonden. Pas je filters aan.</td></tr>}
             </tbody>
           </table>
         </div>

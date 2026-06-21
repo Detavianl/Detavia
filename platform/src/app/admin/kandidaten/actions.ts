@@ -139,3 +139,55 @@ function str(fd: FormData, key: string) {
   const v = fd.get(key);
   return v == null ? "" : String(v).trim();
 }
+
+// Bewerk een bestaande kandidaat.
+export async function updateCandidate(formData: FormData) {
+  await requireAdmin();
+  const id = str(formData, "id");
+  const naam = str(formData, "naam");
+  if (!id || !naam) throw new Error("Naam is verplicht");
+  if (isDemo()) redirect(`/admin/kandidaten/${id}`);
+
+  const numOrNull = (k: string) => { const v = str(formData, k); return v === "" ? null : Number(v); };
+  const fields = {
+    naam,
+    email: str(formData, "email"),
+    telefoon: str(formData, "telefoon"),
+    woonplaats: str(formData, "woonplaats"),
+    vakgebied: str(formData, "vakgebied") || null,
+    linkedin: str(formData, "linkedin"),
+    status: str(formData, "status") || "actief",
+    niveau: str(formData, "niveau") || null,
+    huidige_functie: str(formData, "huidige_functie"),
+    huidige_werkgever: str(formData, "huidige_werkgever"),
+    beschikbaar_per: str(formData, "beschikbaar_per") || null,
+    uren_beschikbaar: numOrNull("uren_beschikbaar"),
+    tarief_min: numOrNull("tarief_min"),
+    tarief_max: numOrNull("tarief_max"),
+    opleidingsniveau: str(formData, "opleidingsniveau"),
+    regio: str(formData, "regio"),
+    talen: str(formData, "talen"),
+    rijbewijs: formData.get("rijbewijs") === "on",
+    expertise: str(formData, "expertise").split(",").map((s) => s.trim()).filter(Boolean),
+  };
+  const supabase = await createClient();
+  const { error } = await supabase.from("candidates").update(fields).eq("id", id);
+  if (error) throw new Error(error.message);
+  revalidatePath(`/admin/kandidaten/${id}`);
+  revalidatePath("/admin/kandidaten");
+  redirect(`/admin/kandidaten/${id}`);
+}
+
+// Verwijder een kandidaat (incl. gekoppelde rijen).
+export async function deleteCandidate(id: string) {
+  await requireAdmin();
+  if (isDemo()) redirect("/admin/kandidaten");
+  const supabase = await createClient();
+  await supabase.from("candidate_activities").delete().eq("candidate_id", id);
+  await supabase.from("applications").delete().eq("candidate_id", id);
+  await supabase.from("cvs").delete().eq("candidate_id", id);
+  const { error } = await supabase.from("candidates").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/kandidaten");
+  redirect("/admin/kandidaten");
+}

@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-21 - Kandidaten: bewerken en verwijderen
+- **Wat is gebouwd/gewijzigd:**
+  - Kandidaten konden niet bewerkt/verwijderd worden. Nu wel: herbruikbaar `CandidateForm` (nieuw + bewerken), bewerk-pagina `/admin/kandidaten/[id]/bewerken`, acties `updateCandidate` en `deleteCandidate` (verwijdert ook gekoppelde activiteiten/applications/cvs).
+  - "Bewerken" + "Verwijderen" (met bevestiging) op de kandidaat-detailpagina, en per rij in de talentpool (Bewerk-link + Verwijder).
+- **Waarom:**
+  - In de talentpool ontbrak bewerken/verwijderen van een kandidaat.
+- **Geraakte bestanden:**
+  - `src/components/CandidateForm.tsx` + `DeleteCandidateButton.tsx` (nieuw), `src/app/admin/kandidaten/nieuw/page.tsx`, `src/app/admin/kandidaten/[id]/bewerken/page.tsx` (nieuw), `src/app/admin/kandidaten/actions.ts`, `src/app/admin/kandidaten/[id]/page.tsx`, `src/components/TalentpoolTable.tsx`.
+
+
 ## 2026-06-21 - Notities: bewerken/verwijderen (alleen auteur) + nieuw-form opgeschoond
 - **Wat is gebouwd/gewijzigd:**
   - Bij elke notitie staan nu een "Bewerk"- en "Verwijder"-knop, maar alleen bij je eigen notities (auteur). Bewerken gaat inline (tekstvlak), afgedwongen op auteur via de query (author-kolom = ingelogde gebruiker). Werkt voor kandidaat, bedrijf en de generieke entiteiten.
