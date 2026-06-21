@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-21 - Live preview bij vacature bewerken/aanmaken
+- **Wat is gebouwd/gewijzigd:**
+  - Rechts in het vacatureformulier een live preview die 1:1 toont hoe de vacature op de site komt (cobalt hero met titel/kerngegevens/knoppen, "Over deze opdracht", "Wat ga je doen", "Wat je meebrengt", zijbalk met vacaturegegevens), in een nep-browserframe. Werkt mee terwijl je typt.
+  - Nieuwe component `VacaturePreview`; `VacatureForm` omgebouwd naar client-component dat de preview live bijwerkt (FormData on input). Inactief-status toont een INACTIEF-label in de preview.
+- **Waarom:**
+  - Klant wil tijdens het invullen direct zien hoe de vacature eruit komt te zien.
+- **Geraakte bestanden:**
+  - `src/components/VacaturePreview.tsx` (nieuw), `src/components/VacatureForm.tsx`.
+
 ## 2026-06-21 - Vacature bewerken: salaris-periode, auto-inactief, inactief-knop
 - **Wat is gebouwd/gewijzigd:**
   - Migratie 0016 (live): salaris_min/max naar numeric (centen mogelijk, bv. uurtarief 62,50), nieuwe kolommen `salaris_periode` ('uur'/'week'/'4weken'/'maand') en `inactief_op` (date).
