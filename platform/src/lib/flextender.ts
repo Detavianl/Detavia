@@ -5,6 +5,11 @@
 const BASE = "https://www.flextender.nl";
 const UA = { "User-Agent": "Mozilla/5.0 (compatible; DetaViaSync/1.0)" };
 
+// fetch met een harde per-request timeout, zodat een trage pagina de run niet ophoudt.
+async function fetchT(url: string, init: RequestInit = {}, ms = 12000): Promise<Response> {
+  return fetch(url, { ...init, headers: UA, cache: "no-store", signal: AbortSignal.timeout(ms) });
+}
+
 function stripTags(s: string) {
   return s.replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&euro;/g, "€").replace(/\s+/g, " ").trim();
 }
@@ -38,7 +43,7 @@ export type FlexOpdracht = {
 };
 
 async function getWidgetConfig(): Promise<string | null> {
-  const res = await fetch(`${BASE}/opdrachten/`, { headers: UA, cache: "no-store" });
+  const res = await fetchT(`${BASE}/opdrachten/`);
   const html = await res.text();
   const m = html.match(/kbs_flx_widget_config"\s+value="([A-Za-z0-9+/=]+)"/);
   return m ? m[1] : null;
@@ -53,7 +58,7 @@ export async function fetchLijst(): Promise<{ aanvraagnr: string; titel: string;
   fd.set("kbs_flx_widget_config", config);
   fd.set("kbs_flx_joblsrc_freetext", "");
   fd.set("_charset_", "UTF-8");
-  const res = await fetch(`${BASE}/wp-admin/admin-ajax.php`, { method: "POST", headers: UA, body: fd, cache: "no-store" });
+  const res = await fetchT(`${BASE}/wp-admin/admin-ajax.php`, { method: "POST", body: fd }, 15000);
   const json = (await res.json()) as { resultHtml?: string };
   const html = json.resultHtml ?? "";
   const blokken = html.split('<div class="css-foundjob').slice(1);
@@ -78,7 +83,7 @@ function parseUren(s: string): [number, number] {
 // Detailgegevens van een opdracht.
 export async function fetchDetail(aanvraagnr: string, titel: string): Promise<FlexOpdracht | null> {
   const url = `${BASE}/opdracht?aanvraagnr=${aanvraagnr}`;
-  const res = await fetch(url, { headers: UA, cache: "no-store" });
+  const res = await fetchT(url);
   if (!res.ok) return null;
   const h = await res.text();
 
@@ -145,7 +150,7 @@ export async function fetchSociaalDomein(max = 60): Promise<FlexOpdracht[]> {
   const lijst = await fetchLijst();
   const kandidaten = lijst.filter((o) => vakgebiedVan(`${o.titel} ${o.regio}`) !== "").slice(0, max);
   const out: FlexOpdracht[] = [];
-  const BATCH = 10;
+  const BATCH = 14;
   for (let i = 0; i < kandidaten.length; i += BATCH) {
     const batch = kandidaten.slice(i, i + BATCH);
     const details = await Promise.all(batch.map((k) => fetchDetail(k.aanvraagnr, k.titel).catch(() => null)));
