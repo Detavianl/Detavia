@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-21 - Flextender-sync verfijnd: opmaak, eisen, snelheid
+- **Wat is gebouwd/gewijzigd:**
+  - Taakomschrijving uit Flextender behoudt nu alinea-opmaak (block-tags -> alinea's, als `<p>`-HTML), en de stray "Opdracht"-kop is weg.
+  - Bredere herkenning van de eisen-kop ("Vereisten" en "Minimumeisen / knock-outcriteria"), waardoor 22/28 vacatures een nette eisen-lijst krijgen; bij de rest toont de pagina alleen de omschrijving (geen lege sectie).
+  - Sync-snelheid/robuustheid: per-request timeouts (AbortSignal) + meer parallelisme. Runtime van ~54s (soms 504-timeout) naar ~14s.
+- **Waarom:**
+  - Visuele QA op een gesynchroniseerde vacature toonde platte tekst, een ontbrekende eisen-lijst en een function-timeout.
+- **Geraakte bestanden:**
+  - `src/lib/flextender.ts`.
+
 ## 2026-06-21 - Salarisweergave "Tarief in overleg" bij ontbrekend salaris
 - **Wat is gebouwd/gewijzigd:**
   - Nieuwe helper `salarisLabel`: toont "Tarief in overleg" als er geen maandsalaris is (bv. Flextender-uurtarief-opdrachten), in plaats van "€ 0 - € 0 p/m". Toegepast op de vacaturekaarten en de detailpagina (hero + zijbalk).
