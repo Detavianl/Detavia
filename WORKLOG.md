@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-21 - Inactief/actief als toggle, pas opslaan bij Opslaan
+- **Wat is gebouwd/gewijzigd:**
+  - De "Op inactief zetten"-knop sloeg direct op (ging meteen live). Nu is het een toggle die alleen de status (en de preview) lokaal aanpast; de wijziging gaat pas naar de site bij Opslaan.
+  - Knop wisselt van label: "Op inactief zetten" (bij open) <-> "Op actief zetten" (bij gesloten). Status-select is hieraan gekoppeld. Preview-tekst verduidelijkt: "Verschijnt pas op de site nadat je op Opslaan klikt."
+- **Waarom:**
+  - Klant wil dat wijzigingen pas na Opslaan op de site komen, en dat de inactief-knop omschakelt naar actief.
+- **Geraakte bestanden:**
+  - `src/components/VacatureForm.tsx`.
+
 ## 2026-06-21 - Live preview bij vacature bewerken/aanmaken
 - **Wat is gebouwd/gewijzigd:**
   - Rechts in het vacatureformulier een live preview die 1:1 toont hoe de vacature op de site komt (cobalt hero met titel/kerngegevens/knoppen, "Over deze opdracht", "Wat ga je doen", "Wat je meebrengt", zijbalk met vacaturegegevens), in een nep-browserframe. Werkt mee terwijl je typt.
