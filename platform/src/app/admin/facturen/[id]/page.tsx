@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { euro, totalen, STATUS_LABEL, ISSUER, type Invoice } from "@/lib/invoice";
 import InvoiceActions from "@/components/InvoiceActions";
+import QuickNotes from "@/components/QuickNotes";
+import { loadNotes } from "@/lib/notes";
+import { requireAdmin } from "@/lib/admin-context";
 import { isDemo, DEMO_INVOICES } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +24,8 @@ export default async function FactuurDetail({ params }: { params: Promise<{ id: 
   }
   if (!inv) notFound();
   const t = totalen(inv);
+  const admin = await requireAdmin();
+  const notes = demo ? [] : await loadNotes("invoice", id);
 
   return (
     <div className="p-8">
@@ -69,6 +74,10 @@ export default async function FactuurDetail({ params }: { params: Promise<{ id: 
             <p className="text-muted">{ISSUER.adres}, {ISSUER.postcode_plaats}</p>
             <p className="text-muted">KvK {ISSUER.kvk} · BTW {ISSUER.btw}</p>
             <p className="text-muted">IBAN {ISSUER.iban}</p>
+          </section>
+          <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+            <h2 className="mb-3 text-lg font-bold">Notities</h2>
+            <QuickNotes entity="invoice" entityId={id} items={notes} currentUser={admin.naam} demo={demo} />
           </section>
         </aside>
       </div>

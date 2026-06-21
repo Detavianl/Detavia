@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { euro } from "@/lib/crm";
 import PlacementActions from "@/components/PlacementActions";
+import QuickNotes from "@/components/QuickNotes";
+import { loadNotes } from "@/lib/notes";
+import { requireAdmin } from "@/lib/admin-context";
 import { isDemo, DEMO_PLACEMENTS, DEMO_HOURS, DEMO_CANDIDATES } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
@@ -38,6 +41,9 @@ export default async function PlaatsingDetail({ params }: { params: Promise<{ id
     const { data: hr } = await supabase.from("hours").select("*").eq("placement_id", id).order("datum");
     hours = hr ?? [];
   }
+
+  const admin = await requireAdmin();
+  const notes = demo ? [] : await loadNotes("placement", id);
 
   const factureerbaar = hours.filter((h) => h.status === "goedgekeurd" && !h.invoice_id);
   const factUren = factureerbaar.reduce((a, h) => a + Number(h.uren), 0);
@@ -95,6 +101,11 @@ export default async function PlaatsingDetail({ params }: { params: Promise<{ id
       </div>
 
       <p className="mt-6"><a href={`/admin/uren/export?placement=${id}`} className="text-sm font-bold text-cobalt">⬇ Exporteer uren (CSV)</a></p>
+
+      <section className="mt-8 max-w-2xl rounded-2xl border border-neutral-200 bg-white p-6">
+        <h2 className="mb-3 text-lg font-bold">Notities</h2>
+        <QuickNotes entity="placement" entityId={id} items={notes} currentUser={admin.naam} demo={demo} />
+      </section>
     </div>
   );
 }

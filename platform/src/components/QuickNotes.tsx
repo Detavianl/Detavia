@@ -15,7 +15,7 @@ function formatDatum(iso: string): string {
 // Notities zoals in Workster: lijst bovenaan (auteur + datum/tijd + tekst),
 // daaronder een tekstvlak met "Notitie toevoegen" en een tekenteller.
 export default function QuickNotes({ entity, entityId, items, currentUser, demo }: {
-  entity: "candidate" | "company";
+  entity: "candidate" | "company" | "placement" | "invoice" | "vacature";
   entityId: string;
   items: Note[];
   currentUser: string;

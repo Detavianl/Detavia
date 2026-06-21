@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-21 - Notities overal mogelijk (audit + generieke notes)
+- **Wat is gebouwd/gewijzigd:**
+  - Audit: notities waren alleen mogelijk bij kandidaten en bedrijven. Nu ook bij plaatsingen, facturen en vacatures.
+  - Generieke `notes`-tabel (migratie 0017, live) met RLS (alleen admin). Generieke loader `src/lib/notes.ts` en uitgebreide `addNote`-actie (candidate/company houden hun activiteiten-tabellen; placement/invoice/vacature gebruiken de notes-tabel). QuickNotes-entitytype verbreed.
+  - Notities-sectie toegevoegd aan plaatsing-, factuur- en vacature(bewerk)-detailpagina's.
+- **Waarom:**
+  - Klant wil overal waar het zinvol is een notitie kunnen maken.
+- **Geraakte bestanden:**
+  - `supabase/migrations/0017_notes.sql`, `src/lib/notes.ts`, `src/app/admin/activity-actions.ts`, `src/components/QuickNotes.tsx`, `src/app/admin/plaatsingen/[id]/page.tsx`, `src/app/admin/facturen/[id]/page.tsx`, `src/app/admin/vacatures/[id]/page.tsx`.
+
+
 ## 2026-06-21 - Notities exact zoals Workster 2.0 + tarief-filter fix
 - **Wat is gebouwd/gewijzigd:**
   - Workster 2.0 (~/Desktop/Workster2.0, alleen gelezen) gebruikt `ApplicationNotes`: lijst bovenaan met per notitie auteur + datum/tijd + tekst (whitespace-pre-line), daaronder een tekstvlak met "Notitie toevoegen" + tekenteller (max 4000). DetaVia's `QuickNotes` (kandidaat + bedrijf) net zo gemaakt: was een enkele invoerregel, nu een tekstvlak met dezelfde opbouw (lijst boven, auteur + datum/tijd, teller, Cmd/Ctrl+Enter, optimistic toevoegen). Data blijft `candidate_activities` (type=notitie).
