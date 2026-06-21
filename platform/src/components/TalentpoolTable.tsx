@@ -93,10 +93,10 @@ export default function TalentpoolTable({ candidates }: { candidates: C[] }) {
 
         <Group title="Beschikbaarheid & tarief">
           <div className="grid grid-cols-2 gap-2">
-            <label className="grid gap-1 text-xs font-semibold text-muted">Min. uren/week
-              <input type="number" min={0} max={40} value={urenMin ?? ""} onChange={(e) => setUrenMin(e.target.value === "" ? null : +e.target.value)} className="rounded-lg border-2 border-neutral-200 px-2 py-1.5 text-sm" /></label>
-            <label className="grid gap-1 text-xs font-semibold text-muted">Tarief tot €/u
-              <input type="number" min={0} value={tariefMax ?? ""} onChange={(e) => setTariefMax(e.target.value === "" ? null : +e.target.value)} className="rounded-lg border-2 border-neutral-200 px-2 py-1.5 text-sm" /></label>
+            <label className="grid min-w-0 gap-1 text-xs font-semibold text-muted">Min. uren/week
+              <input type="number" min={0} max={40} value={urenMin ?? ""} onChange={(e) => setUrenMin(e.target.value === "" ? null : +e.target.value)} className="w-full min-w-0 rounded-lg border-2 border-neutral-200 px-2 py-1.5 text-sm" /></label>
+            <label className="grid min-w-0 gap-1 text-xs font-semibold text-muted">Tarief tot €/u
+              <input type="number" min={0} value={tariefMax ?? ""} onChange={(e) => setTariefMax(e.target.value === "" ? null : +e.target.value)} className="w-full min-w-0 rounded-lg border-2 border-neutral-200 px-2 py-1.5 text-sm" /></label>
           </div>
         </Group>
 
