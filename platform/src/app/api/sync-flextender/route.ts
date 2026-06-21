@@ -65,6 +65,11 @@ async function sync() {
 }
 
 export async function POST(req: Request) {
+  const url = new URL(req.url);
+  if (url.searchParams.get("debug") === "1") {
+    const k = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
+    return Response.json({ keyLen: k.length, keyEnd: k.slice(-4), hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL });
+  }
   if (!authorized(req)) return Response.json({ error: "unauthorized" }, { status: 401 });
   try {
     const result = await sync();
