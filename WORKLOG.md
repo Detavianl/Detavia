@@ -1,5 +1,18 @@
 # Worklog
 
+## 2026-06-21 - Flextender auto-sync (scraper) + vriendelijke 404
+- **Wat is gebouwd/gewijzigd:**
+  - Uitgezocht en bevestigd dat Flextender geen publieke feed heeft, maar dat de opdrachten serverside (zonder browser) op te halen zijn: lijst via hun WordPress-AJAX (`action=kbs_flx_searchjobs`, token uit de pagina), details per `/opdracht?aanvraagnr=`.
+  - `src/lib/flextender.ts`: haalt lijst + details op, filtert op sociaal domein (vakgebied-detectie), parseert titel/uren/start/duur/regio/omschrijving/eisen.
+  - `/api/sync-flextender` (POST/GET, beveiligd met service-role bearer): synchroniseert sociaal-domein opdrachten naar de DB (bron=flextender, extern_id=aanvraagnr), werkt bestaande bij en verwijdert opdrachten die niet meer op Flextender staan. Handmatige vacatures (bron leeg) blijven ongemoeid.
+  - Migratie 0015 (live gedraaid): kolommen `bron` + `extern_id`.
+  - Vriendelijke 404-pagina in DetaVia-stijl (cobalt, geel logo-watermerk, knoppen naar home/vacatures/contact).
+  - Nog te doen: Supabase pg_cron instellen om het endpoint elke 4 uur te triggeren.
+- **Waarom:**
+  - Klant wil automatisch elke 4 uur Flextender-vacatures (sociaal domein) plaatsen en verdwenen opdrachten verwijderen; plus een mooiere 404.
+- **Geraakte bestanden:**
+  - nieuw: `src/lib/flextender.ts`, `src/app/api/sync-flextender/route.ts`, `src/app/not-found.tsx`, `supabase/migrations/0015_vacature_bron.sql`.
+
 ## 2026-06-21 - XML-importer verbeterd (sociaal-domein filter, opmaak, eisen)
 - **Wat is gebouwd/gewijzigd:**
   - Geconstateerd dat de Workster-feed (https://workster.nl/feed/joof, 593 technische vacatures) wholesale binnenkwam en meeste als "wmo" werden gelabeld (brand-mismatch). 593 verkeerde imports opgeruimd in de DB; alleen 1Stroom blijft.
