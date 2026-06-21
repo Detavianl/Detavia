@@ -1,9 +1,19 @@
 "use client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { addNote } from "@/app/admin/activity-actions";
 
 type Note = { tekst: string; created_at: string; gebruiker?: string | null };
 
+function formatDatum(iso: string): string {
+  try {
+    return new Date(iso).toLocaleString("nl-NL", { dateStyle: "short", timeStyle: "short" });
+  } catch {
+    return iso;
+  }
+}
+
+// Notities zoals in Workster: lijst bovenaan (auteur + datum/tijd + tekst),
+// daaronder een tekstvlak met "Notitie toevoegen" en een tekenteller.
 export default function QuickNotes({ entity, entityId, items, currentUser, demo }: {
   entity: "candidate" | "company";
   entityId: string;
@@ -11,54 +21,61 @@ export default function QuickNotes({ entity, entityId, items, currentUser, demo 
   currentUser: string;
   demo?: boolean;
 }) {
+  const [notes, setNotes] = useState<Note[]>(items);
   const [tekst, setTekst] = useState("");
-  const [list, setList] = useState<Note[]>(items);
-  const [bezig, setBezig] = useState(false);
+  const [pending, start] = useTransition();
 
-  async function add() {
+  function submit() {
     const t = tekst.trim();
     if (!t) return;
-    setBezig(true);
-    setList([{ tekst: t, created_at: today(), gebruiker: currentUser }, ...list]);
+    setNotes((prev) => [{ tekst: t, created_at: new Date().toISOString(), gebruiker: currentUser }, ...prev]);
     setTekst("");
-    if (!demo) await addNote(entity, entityId, t);
-    setBezig(false);
+    start(async () => { if (!demo) await addNote(entity, entityId, t); });
   }
 
   return (
     <div>
-      {/* Notitie-tekstvlak (meerdere regels), met knop. Cmd/Ctrl+Enter = toevoegen. */}
-      <div className="rounded-xl border-2 border-neutral-200 focus-within:border-cobalt">
+      <p className="text-xs text-muted">
+        {notes.length} {notes.length === 1 ? "notitie" : "notities"} · zichtbaar voor het hele team.
+      </p>
+
+      {/* Lijst */}
+      {notes.length > 0 && (
+        <ul className="mt-3 space-y-2.5">
+          {notes.map((n, i) => (
+            <li key={i} className="rounded-xl border border-neutral-200 bg-neutral-50 p-3.5">
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <p className="text-sm font-bold">{n.gebruiker || "Teamlid"}</p>
+                <p className="text-[11px] text-muted">{formatDatum(n.created_at)}</p>
+              </div>
+              <p className="mt-1.5 whitespace-pre-line text-sm text-ink/90">{n.tekst}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Toevoegen */}
+      <div className="mt-4 border-t border-neutral-200 pt-4">
+        <label className="block text-xs font-bold uppercase tracking-wider text-muted">Nieuwe notitie</label>
         <textarea
           value={tekst}
           onChange={(e) => setTekst(e.target.value)}
-          onKeyDown={(e) => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") add(); }}
+          onKeyDown={(e) => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") submit(); }}
           rows={3}
-          placeholder="Schrijf een notitie… (meerdere regels mag)"
-          className="w-full resize-y rounded-t-xl px-3 py-2.5 text-sm outline-none"
+          maxLength={4000}
+          placeholder="Bv: Gebeld op 8 juni, kandidaat is geïnteresseerd, tweede gesprek volgende week."
+          className="mt-2 w-full resize-y rounded-xl border-2 border-neutral-200 px-3 py-2.5 text-sm outline-none focus:border-cobalt"
         />
-        <div className="flex items-center justify-between gap-2 border-t border-neutral-100 px-3 py-2">
-          <span className="text-xs text-muted">Cmd/Ctrl + Enter om toe te voegen</span>
-          <button onClick={add} disabled={bezig || !tekst.trim()} className="rounded-full bg-cobalt px-4 py-1.5 text-sm font-bold text-white disabled:opacity-50">
-            Notitie toevoegen
+        <div className="mt-2.5 flex flex-wrap items-center gap-3">
+          <button type="button" onClick={submit} disabled={pending || !tekst.trim()}
+            className="rounded-full bg-cobalt px-5 py-2 text-sm font-bold text-white disabled:opacity-50">
+            {pending ? "Opslaan…" : "Notitie toevoegen"}
           </button>
+          <span className="text-xs text-muted">{tekst.length} / 4000</span>
+          <span className="text-xs text-muted">Cmd/Ctrl + Enter</span>
         </div>
+        {demo && <p className="mt-2 text-xs text-muted">Demo: nieuwe notities worden niet bewaard.</p>}
       </div>
-
-      <div className="mt-4 grid gap-2">
-        {list.map((nt, i) => (
-          <div key={i} className="rounded-xl border border-neutral-200 bg-neutral-50 p-3">
-            <p className="whitespace-pre-wrap text-sm">{nt.tekst}</p>
-            <p className="mt-1.5 text-xs text-muted">{nt.created_at}{nt.gebruiker ? ` · ${nt.gebruiker}` : ""}</p>
-          </div>
-        ))}
-        {list.length === 0 && <p className="text-sm text-muted">Nog geen notities.</p>}
-      </div>
-      {demo && <p className="mt-3 text-xs text-muted">Demo: nieuwe notities worden niet bewaard.</p>}
     </div>
   );
-}
-
-function today() {
-  return new Date().toISOString().slice(0, 10);
 }
