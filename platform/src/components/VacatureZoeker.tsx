@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import { VAKGEBIEDEN, fmtSalaris, type Vacature } from "@/lib/vacatures-demo";
+import { VAKGEBIEDEN, salarisLabel, type Vacature } from "@/lib/vacatures-demo";
 
 export default function VacatureZoeker({ vacatures }: { vacatures: Vacature[] }) {
   const [tekst, setTekst] = useState("");
@@ -138,7 +138,7 @@ export default function VacatureZoeker({ vacatures }: { vacatures: Vacature[] })
                 <h3 className="text-xl font-bold"><a href={`/vacatures/${v.slug ?? v.id}`} className="hover:text-cobalt">{v.titel}</a></h3>
                 <div className="mt-2 flex flex-wrap gap-4 text-sm font-semibold text-muted">
                   <span>📍 {v.plaats}</span><span>🕒 {v.uren[0]}-{v.uren[1]} uur</span>
-                  <span>💶 {fmtSalaris(v.salaris)}</span><span>📄 {v.type}</span>
+                  <span>💶 {salarisLabel(v.salaris)}</span><span>📄 {v.type}</span>
                 </div>
                 <p className="mt-2.5 text-[.95rem] text-muted">{v.omschrijving}</p>
                 <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">

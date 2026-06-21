@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-21 - Salarisweergave "Tarief in overleg" bij ontbrekend salaris
+- **Wat is gebouwd/gewijzigd:**
+  - Nieuwe helper `salarisLabel`: toont "Tarief in overleg" als er geen maandsalaris is (bv. Flextender-uurtarief-opdrachten), in plaats van "€ 0 - € 0 p/m". Toegepast op de vacaturekaarten en de detailpagina (hero + zijbalk).
+- **Waarom:**
+  - De gesynchroniseerde Flextender-vacatures hebben geen maandsalaris en toonden lelijk "€ 0 - € 0".
+- **Geraakte bestanden:**
+  - `src/lib/vacatures-demo.ts`, `src/components/VacatureZoeker.tsx`, `src/app/(public)/vacatures/[id]/page.tsx`.
+
 ## 2026-06-21 - Flextender auto-sync (scraper) + vriendelijke 404
 - **Wat is gebouwd/gewijzigd:**
   - Uitgezocht en bevestigd dat Flextender geen publieke feed heeft, maar dat de opdrachten serverside (zonder browser) op te halen zijn: lijst via hun WordPress-AJAX (`action=kbs_flx_searchjobs`, token uit de pagina), details per `/opdracht?aanvraagnr=`.

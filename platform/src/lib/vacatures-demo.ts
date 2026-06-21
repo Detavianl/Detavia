@@ -46,3 +46,5 @@ export const DEMO_VACATURES: Vacature[] = [
 
 export const euro = (n: number) => "€ " + n.toLocaleString("nl-NL");
 export const fmtSalaris = (s: [number, number]) => `${euro(s[0])} - ${euro(s[1])} p/m`;
+// Toont een nette tekst als er geen maandsalaris bekend is (bv. bij uurtarief-opdrachten).
+export const salarisLabel = (s: [number, number]) => (s[0] > 0 ? fmtSalaris(s) : "Tarief in overleg");

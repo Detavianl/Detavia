@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { VAKGEBIEDEN, fmtSalaris } from "@/lib/vacatures-demo";
+import { VAKGEBIEDEN, salarisLabel } from "@/lib/vacatures-demo";
 import { loadVacatures } from "@/lib/vacatures";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 
@@ -76,7 +76,7 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
           <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 font-semibold text-white/90">
             <span>📍 {v.plaats}</span>
             <span>🕒 {v.uren[0]}-{v.uren[1]} uur</span>
-            <span>💶 {fmtSalaris(v.salaris)}</span>
+            <span>💶 {salarisLabel(v.salaris)}</span>
             <span>📄 {v.type}</span>
           </div>
           <div className="mt-7 flex flex-wrap gap-3.5">
@@ -146,7 +146,7 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
               {v.opdrachtgever && <Row k="Opdrachtgever" v={v.opdrachtgever} />}
               <Row k="Plaats" v={v.plaats} />
               <Row k="Uren per week" v={`${v.uren[0]}-${v.uren[1]} uur`} />
-              <Row k="Salarisindicatie" v={fmtSalaris(v.salaris)} />
+              <Row k="Salarisindicatie" v={salarisLabel(v.salaris)} />
               <Row k="Dienstverband" v={v.type} />
               {v.startdatum && <Row k="Startdatum" v={v.startdatum} />}
               {v.duur && <Row k="Duur" v={v.duur} />}
