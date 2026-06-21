@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-21 - Notities als tekstvlak (zoals Workster) + tarief-filter fix
+- **Wat is gebouwd/gewijzigd:**
+  - Notitie-invoer (QuickNotes, bij kandidaat en bedrijf) is nu een echt tekstvlak (textarea, meerdere regels) i.p.v. een enkele invoerregel, met knop "Notitie toevoegen" en Cmd/Ctrl+Enter. Notities tonen met behoud van regelafbrekingen. De feed (datum + auteur) blijft.
+  - Talentpool-filter: tarief/uren-velden liepen uit de smalle zijbalk; opgelost met w-full/min-w-0.
+- **Waarom:**
+  - Klant wil notities net als in Workster 2.0 (tekstvlak i.p.v. enkele regel). Tarief-veld stak uit.
+- **Geraakte bestanden:**
+  - `src/components/QuickNotes.tsx`, `src/components/TalentpoolTable.tsx`.
+
+
 ## 2026-06-21 - Talentpool: filteren op meerdere vlakken
 - **Wat is gebouwd/gewijzigd:**
   - Talentpool (kandidaten) heeft nu een filter-zijbalk op meerdere vlakken: zoektekst (naam/functie/expertise/opleiding/plaats), vakgebied (multi), niveau (multi), status, regio/plaats, beschikbaar uiterlijk (datum), min. uren/week, max. tarief, en rijbewijs. Met telling per facet en "Wis filters". Tabel toont nu ook Regio en Uren.
