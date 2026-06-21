@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { saveVacature, deactivateVacature } from "@/app/admin/vacatures/actions";
+import { saveVacature } from "@/app/admin/vacatures/actions";
 import { VAKGEBIEDEN } from "@/lib/ats";
 import VacaturePreview, { type PreviewData } from "@/components/VacaturePreview";
 
@@ -15,6 +15,9 @@ type V = {
 
 export default function VacatureForm({ vacature, companies = [] }: { vacature?: V; companies?: { id: string; naam: string }[] }) {
   const v = vacature ?? {};
+
+  // Status apart, zodat de toggle-knop hem aanpast zonder direct op te slaan.
+  const [status, setStatus] = useState(v.status ?? "open");
 
   const [p, setP] = useState<PreviewData>({
     titel: v.titel ?? "",
@@ -65,14 +68,16 @@ export default function VacatureForm({ vacature, companies = [] }: { vacature?: 
       <Link href="/admin/vacatures" className="text-sm font-semibold text-cobalt">← Vacatures</Link>
       <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
         <h1 className="display text-3xl">{v.id ? "Vacature bewerken" : "Nieuwe vacature"}</h1>
-        {v.id && (v.status ?? "open") === "open" && (
-          <form action={deactivateVacature.bind(null, v.id)}>
-            <button className="rounded-full border-2 border-red-300 px-5 py-2 font-bold text-red-600 hover:bg-red-50">Op inactief zetten</button>
-          </form>
-        )}
-        {v.id && v.status === "gesloten" && (
-          <span className="rounded-full bg-neutral-200 px-4 py-1.5 text-sm font-bold text-neutral-600">Inactief</span>
-        )}
+        <div className="flex items-center gap-3">
+          {status === "gesloten" && <span className="rounded-full bg-neutral-200 px-3 py-1 text-xs font-bold text-neutral-600">Inactief</span>}
+          <button
+            type="button"
+            onClick={() => setStatus(status === "open" ? "gesloten" : "open")}
+            className={`rounded-full border-2 px-5 py-2 font-bold ${status === "open" ? "border-red-300 text-red-600 hover:bg-red-50" : "border-green-400 text-green-700 hover:bg-green-50"}`}
+          >
+            {status === "open" ? "Op inactief zetten" : "Op actief zetten"}
+          </button>
+        </div>
       </div>
 
       <div className="mt-8 grid items-start gap-8 xl:grid-cols-2">
@@ -114,7 +119,7 @@ export default function VacatureForm({ vacature, companies = [] }: { vacature?: 
                 <option>Detachering</option><option>ZZP</option><option>Werving & selectie</option>
               </select></label>
             <label className="grid gap-1.5"><span className="text-sm font-bold">Status</span>
-              <select name="status" defaultValue={v.status ?? "open"} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+              <select name="status" value={status} onChange={(e) => setStatus(e.target.value)} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
                 <option value="open">Open (zichtbaar)</option><option value="gesloten">Gesloten (inactief)</option>
               </select></label>
             <label className="grid gap-1.5"><span className="text-sm font-bold">Automatisch inactief op</span>
@@ -147,8 +152,8 @@ export default function VacatureForm({ vacature, companies = [] }: { vacature?: 
 
         {/* RECHTS: live preview */}
         <div className="xl:sticky xl:top-6 xl:self-start">
-          <p className="mb-3 text-sm font-bold text-neutral-500">Live preview, zo komt de vacature op de site</p>
-          <VacaturePreview v={p} />
+          <p className="mb-3 text-sm font-bold text-neutral-500">Live preview. Verschijnt pas op de site nadat je op Opslaan klikt.</p>
+          <VacaturePreview v={{ ...p, status }} />
         </div>
       </div>
     </div>
