@@ -131,13 +131,16 @@ export async function fetchDetail(aanvraagnr: string, titel: string): Promise<Fl
 }
 
 // Haal alle sociaal-domein opdrachten op (lijst filteren op titel, dan details).
-export async function fetchSociaalDomein(max = 40): Promise<FlexOpdracht[]> {
+// Details parallel in batches voor snelheid (binnen de serverless tijdslimiet).
+export async function fetchSociaalDomein(max = 60): Promise<FlexOpdracht[]> {
   const lijst = await fetchLijst();
   const kandidaten = lijst.filter((o) => vakgebiedVan(`${o.titel} ${o.regio}`) !== "").slice(0, max);
   const out: FlexOpdracht[] = [];
-  for (const k of kandidaten) {
-    const d = await fetchDetail(k.aanvraagnr, k.titel);
-    if (d && d.vakgebied) out.push(d);
+  const BATCH = 10;
+  for (let i = 0; i < kandidaten.length; i += BATCH) {
+    const batch = kandidaten.slice(i, i + BATCH);
+    const details = await Promise.all(batch.map((k) => fetchDetail(k.aanvraagnr, k.titel).catch(() => null)));
+    for (const d of details) if (d && d.vakgebied) out.push(d);
   }
   return out;
 }
