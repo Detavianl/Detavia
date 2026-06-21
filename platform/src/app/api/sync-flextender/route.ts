@@ -9,9 +9,9 @@ export const maxDuration = 60;
 const BRON = "flextender";
 
 function authorized(req: Request) {
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
-  const auth = req.headers.get("authorization") ?? "";
-  return key.length > 10 && (auth === `Bearer ${key}`);
+  const key = (process.env.SUPABASE_SERVICE_ROLE_KEY ?? "").trim();
+  const auth = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "").trim();
+  return key.length > 10 && auth === key;
 }
 
 async function sync() {
@@ -65,11 +65,6 @@ async function sync() {
 }
 
 export async function POST(req: Request) {
-  const url = new URL(req.url);
-  if (url.searchParams.get("debug") === "1") {
-    const k = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
-    return Response.json({ keyLen: k.length, keyEnd: k.slice(-4), hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL });
-  }
   if (!authorized(req)) return Response.json({ error: "unauthorized" }, { status: 401 });
   try {
     const result = await sync();

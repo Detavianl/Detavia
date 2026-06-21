@@ -4,8 +4,8 @@ import { createClient as createSbClient } from "@supabase/supabase-js";
 // Voor publieke instroom (sollicitatie + cv-upload, contactbericht) en seeding.
 export function createAdminClient() {
   return createSbClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    (process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").trim(),
+    (process.env.SUPABASE_SERVICE_ROLE_KEY ?? "").trim(),
     { auth: { persistSession: false, autoRefreshToken: false } },
   );
 }
