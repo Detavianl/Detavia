@@ -14,7 +14,7 @@ export default async function KandidatenPage() {
     const supabase = await createClient();
     const { data } = await supabase
       .from("candidates")
-      .select("id, naam, huidige_functie, vakgebied, niveau, status, tarief_min, tarief_max, rating, expertise, beschikbaar_per, created_at")
+      .select("id, naam, huidige_functie, vakgebied, niveau, status, tarief_min, tarief_max, rating, expertise, beschikbaar_per, uren_beschikbaar, regio, woonplaats, rijbewijs, opleidingsniveau, created_at")
       .order("created_at", { ascending: false });
     candidates = data ?? [];
   }

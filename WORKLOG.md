@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-21 - Talentpool: filteren op meerdere vlakken
+- **Wat is gebouwd/gewijzigd:**
+  - Talentpool (kandidaten) heeft nu een filter-zijbalk op meerdere vlakken: zoektekst (naam/functie/expertise/opleiding/plaats), vakgebied (multi), niveau (multi), status, regio/plaats, beschikbaar uiterlijk (datum), min. uren/week, max. tarief, en rijbewijs. Met telling per facet en "Wis filters". Tabel toont nu ook Regio en Uren.
+  - Kandidaten-query uitgebreid met regio, woonplaats, uren_beschikbaar, rijbewijs, opleidingsniveau.
+- **Waarom:**
+  - Klant wil in de talentpool (cv-/kandidatendatabase) op meerdere vlakken kunnen filteren.
+- **Geraakte bestanden:**
+  - `src/components/TalentpoolTable.tsx`, `src/app/admin/kandidaten/page.tsx`.
+
+
 ## 2026-06-21 - Inactief/actief als toggle, pas opslaan bij Opslaan
 - **Wat is gebouwd/gewijzigd:**
   - De "Op inactief zetten"-knop sloeg direct op (ging meteen live). Nu is het een toggle die alleen de status (en de preview) lokaal aanpast; de wijziging gaat pas naar de site bij Opslaan.
