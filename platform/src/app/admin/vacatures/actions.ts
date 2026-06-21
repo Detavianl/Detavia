@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
 import { slugify } from "@/lib/blog";
 import { isDemo } from "@/lib/demo";
+import { parseJobsXml } from "@/lib/xml-import";
 
 export async function saveVacature(formData: FormData) {
   await requireAdmin();
@@ -65,4 +66,57 @@ export async function deleteVacature(id: string) {
   if (error) throw new Error(error.message);
   revalidatePath("/admin/vacatures");
   revalidatePath("/vacatures");
+}
+
+// Importeer vacatures uit een externe XML-feed (Indeed-stijl) of geplakte XML.
+export async function importVacaturesFeed(formData: FormData) {
+  await requireAdmin();
+  if (isDemo()) redirect("/admin/vacatures/import?demo=1");
+
+  const feedUrl = String(formData.get("feed_url") ?? "").trim();
+  let xml = String(formData.get("xml") ?? "").trim();
+  if (feedUrl) {
+    try {
+      const res = await fetch(feedUrl, { headers: { "User-Agent": "DetaVia-import/1.0" }, cache: "no-store" });
+      xml = await res.text();
+    } catch {
+      redirect("/admin/vacatures/import?fout=ophalen");
+    }
+  }
+  if (!xml) redirect("/admin/vacatures/import?fout=leeg");
+
+  const jobs = parseJobsXml(xml);
+  if (jobs.length === 0) redirect("/admin/vacatures/import?gevonden=0&toegevoegd=0");
+
+  const supabase = await createClient();
+  const rows = jobs.map((j) => ({
+    titel: j.titel,
+    slug: `${slugify(j.titel)}-${(j.referentie || Math.random().toString(36).slice(2, 7)).toString().replace(/[^a-z0-9]/gi, "").slice(0, 8).toLowerCase()}`,
+    vakgebied: j.vakgebied,
+    plaats: j.plaats,
+    uren_min: j.uren_min,
+    uren_max: j.uren_max,
+    salaris_min: j.salaris_min,
+    salaris_max: j.salaris_max,
+    type: j.type,
+    top: false,
+    status: "open",
+    omschrijving: j.omschrijving,
+    taken: j.taken,
+    eisen: [] as string[],
+    opdrachtgever: j.opdrachtgever,
+    startdatum: "",
+    duur: "",
+  }));
+
+  // upsert op slug, dubbele overslaan
+  const { data, error } = await supabase
+    .from("vacatures")
+    .upsert(rows, { onConflict: "slug", ignoreDuplicates: true })
+    .select("id");
+  if (error) redirect(`/admin/vacatures/import?fout=${encodeURIComponent(error.message)}`);
+
+  revalidatePath("/admin/vacatures");
+  revalidatePath("/vacatures");
+  redirect(`/admin/vacatures/import?gevonden=${jobs.length}&toegevoegd=${data?.length ?? 0}`);
 }

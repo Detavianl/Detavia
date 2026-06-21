@@ -20,7 +20,10 @@ export default async function VacaturesAdmin() {
     <div className="p-8">
       <div className="flex items-center justify-between">
         <div><h1 className="display text-3xl">Vacatures</h1><p className="mt-1 text-muted">{vacatures.length} vacatures</p></div>
-        <Link href="/admin/vacatures/nieuw" className="rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Nieuwe vacature</Link>
+        <div className="flex gap-2.5">
+          <Link href="/admin/vacatures/import" className="rounded-full border-2 border-cobalt px-5 py-2 font-bold text-cobalt">Importeren (XML)</Link>
+          <Link href="/admin/vacatures/nieuw" className="rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Nieuwe vacature</Link>
+        </div>
       </div>
       <div className="mt-8 overflow-hidden rounded-2xl border border-neutral-200 bg-white">
         <table className="w-full text-left text-sm">

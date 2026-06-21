@@ -89,7 +89,8 @@ export default async function Home() {
 
       {/* STATEMENT */}
       <section className="relative overflow-hidden bg-cobalt py-24 text-center text-white">
-        <span className="pointer-events-none absolute inset-0 flex items-center justify-center text-[22vw] font-semibold italic tracking-tighter text-white/[.07]">DetaVia</span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/img/logo_white.svg" alt="" aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 w-[150%] max-w-none -translate-x-1/2 -translate-y-1/2 opacity-[0.08]" />
         <div className="relative mx-auto max-w-[1180px] px-5 sm:px-10">
           <p className="text-3xl font-bold leading-tight sm:text-6xl">
             Jouw <span className="italic text-yellow">vaardigheden</span> maken het verschil,<br />

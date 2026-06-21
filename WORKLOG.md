@@ -1,5 +1,18 @@
 # Worklog
 
+## 2026-06-21 - 1Stroom echt, demo weg, SEO, XML-feed export + importer, logo-watermerk
+- **Wat is gebouwd/gewijzigd:**
+  - 1Stroom-vacature (Medewerker Sociaal loket) als echte rij in de live DB gezet; demo-vacatures verwijderd van de live site (gedeelde loader `src/lib/vacatures.ts` toont in productie alleen DB-vacatures, demo enkel in demo-modus). Homepage "uitgelichte vacatures" laadt nu echte vacatures.
+  - Schone slug-URL's voor vacatures (/vacatures/<slug>), detailpagina matcht op slug of id.
+  - SEO: JobPosting structured data (Google Jobs) op vacature-detail, canonicals op vacatures/home, sitemap uitgebreid met de nieuwe pagina's + alle open vacatures.
+  - Indeed-compatibele XML-feed export: `/feeds/vacatures.xml` (route handler, alle open vacatures).
+  - XML-feed importer in beheer: `/admin/vacatures/import` (feed-URL of geplakte XML), parser `src/lib/xml-import.ts` (Indeed-stijl velden, vakgebied-gok, uren/salaris parsing), upsert op slug (dubbele overslaan). Knop "Importeren (XML)" op de vacaturelijst.
+  - Homepage STATEMENT-watermerk: "DetaVia"-tekst vervangen door het witte logo (subtieler, mooier).
+- **Waarom:**
+  - Klant wil 1Stroom echt + demo weg, een SEO-audit met fixes, een Indeed-stijl feed-export en een feed-importer, plus het logo als achtergrond i.p.v. de tekst.
+- **Geraakte bestanden:**
+  - nieuw: `src/lib/vacatures.ts`, `src/lib/xml-import.ts`, `src/app/feeds/vacatures.xml/route.ts`, `src/app/admin/vacatures/import/page.tsx`; gewijzigd: `src/app/(public)/page.tsx`, `vacatures/page.tsx`, `vacatures/[id]/page.tsx`, `sitemap.ts`, `src/components/VacatureZoeker.tsx`, `src/app/admin/vacatures/{actions.ts,page.tsx}`, `src/lib/vacatures-demo.ts`.
+
 ## 2026-06-21 - Beheer: rijke vacaturevelden invulbaar
 - **Wat is gebouwd/gewijzigd:**
   - Migratie 0014 (gedraaid op live Supabase): kolommen taken (text), eisen (text[]), opdrachtgever, startdatum, duur op de vacatures-tabel.
