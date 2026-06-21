@@ -7,7 +7,8 @@
   - `/api/sync-flextender` (POST/GET, beveiligd met service-role bearer): synchroniseert sociaal-domein opdrachten naar de DB (bron=flextender, extern_id=aanvraagnr), werkt bestaande bij en verwijdert opdrachten die niet meer op Flextender staan. Handmatige vacatures (bron leeg) blijven ongemoeid.
   - Migratie 0015 (live gedraaid): kolommen `bron` + `extern_id`.
   - Vriendelijke 404-pagina in DetaVia-stijl (cobalt, geel logo-watermerk, knoppen naar home/vacatures/contact).
-  - Nog te doen: Supabase pg_cron instellen om het endpoint elke 4 uur te triggeren.
+  - Supabase pg_cron + pg_net ingesteld: job 'flextender-sync' draait '0 */4 * * *' (elke 4 uur) en POST naar /api/sync-flextender met de service-role bearer. End-to-end getest: 28 sociaal-domein opdrachten gesynct, pg_net kreeg status 200.
+  - Auth-fix: Vercel had de service-role key met een trailing newline opgeslagen; sync-auth en admin-client trimmen nu (robuust).
 - **Waarom:**
   - Klant wil automatisch elke 4 uur Flextender-vacatures (sociaal domein) plaatsen en verdwenen opdrachten verwijderen; plus een mooiere 404.
 - **Geraakte bestanden:**
