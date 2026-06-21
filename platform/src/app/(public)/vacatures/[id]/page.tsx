@@ -1,35 +1,23 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import { DEMO_VACATURES, VAKGEBIEDEN, fmtSalaris, type Vacature } from "@/lib/vacatures-demo";
+import { VAKGEBIEDEN, fmtSalaris } from "@/lib/vacatures-demo";
+import { loadVacatures } from "@/lib/vacatures";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
-async function loadAll(): Promise<Vacature[]> {
-  try {
-    const supabase = await createClient();
-    const { data } = await supabase.from("vacatures").select("*").eq("status", "open").order("created_at", { ascending: false });
-    if (!data || data.length === 0) return DEMO_VACATURES;
-    return data.map((v: { id: string; titel: string; vakgebied: string; plaats: string; uren_min: number; uren_max: number; salaris_min: number | null; salaris_max: number | null; type: string; top: boolean; created_at: string | null; omschrijving: string; taken?: string; eisen?: string[]; opdrachtgever?: string; startdatum?: string; duur?: string }) => ({
-      id: v.id, titel: v.titel, vakgebied: v.vakgebied, plaats: v.plaats,
-      uren: [v.uren_min, v.uren_max] as [number, number], salaris: [v.salaris_min ?? 0, v.salaris_max ?? 0] as [number, number],
-      type: v.type, top: v.top, datum: (v.created_at ?? "").slice(0, 10), omschrijving: v.omschrijving,
-      taken: v.taken || undefined,
-      eisen: v.eisen && v.eisen.length ? v.eisen : undefined,
-      opdrachtgever: v.opdrachtgever || undefined,
-      startdatum: v.startdatum || undefined,
-      duur: v.duur || undefined,
-    }));
-  } catch {
-    return DEMO_VACATURES;
-  }
-}
+const match = (list: Awaited<ReturnType<typeof loadVacatures>>, id: string) =>
+  list.find((x) => x.slug === id || x.id === id);
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const v = (await loadAll()).find((x) => x.id === id);
-  if (!v) return { title: "Vacature niet gevonden | DetaVia" };
-  return { title: `${v.titel} in ${v.plaats}`, description: v.omschrijving };
+  const v = match(await loadVacatures(), id);
+  if (!v) return { title: "Vacature niet gevonden" };
+  return {
+    title: `${v.titel} in ${v.plaats}`,
+    description: v.omschrijving,
+    alternates: { canonical: `/vacatures/${v.slug ?? v.id}` },
+  };
 }
 
 const meebrengen = [
@@ -47,15 +35,32 @@ const bieden = [
 
 export default async function VacatureDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const all = await loadAll();
-  const v = all.find((x) => x.id === id);
+  const all = await loadVacatures();
+  const v = match(all, id);
   if (!v) notFound();
   const vakLabel = VAKGEBIEDEN[v.vakgebied] ?? v.vakgebied;
+  const slug = v.slug ?? v.id;
   const related = all.filter((x) => x.vakgebied === v.vakgebied && x.id !== v.id).slice(0, 3);
   const solliciteerHref = `/solliciteren?vacature_id=${v.id}&titel=${encodeURIComponent(v.titel)}`;
 
+  // Structured data voor Google Jobs (JobPosting)
+  const jobJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    title: v.titel,
+    description: `<p>${v.omschrijving}</p>${v.taken ? `<p>${v.taken}</p>` : ""}`,
+    datePosted: v.datum || undefined,
+    employmentType: v.uren[1] >= 36 ? "FULL_TIME" : "PART_TIME",
+    hiringOrganization: { "@type": "Organization", name: v.opdrachtgever || SITE_NAME, sameAs: SITE_URL },
+    jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", addressLocality: v.plaats, addressCountry: "NL" } },
+    industry: "Sociaal domein",
+    url: `${SITE_URL}/vacatures/${slug}`,
+    ...(v.salaris[0] > 0 ? { baseSalary: { "@type": "MonetaryAmount", currency: "EUR", value: { "@type": "QuantitativeValue", minValue: v.salaris[0], maxValue: v.salaris[1], unitText: "MONTH" } } } : {}),
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobJsonLd) }} />
       {/* HERO */}
       <section className="bg-cobalt text-white">
         <div className="mx-auto max-w-[1180px] px-5 py-14 sm:px-10">
@@ -163,7 +168,7 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
             <h2 className="display text-2xl sm:text-3xl">Vergelijkbare vacatures</h2>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((r) => (
-                <Link key={r.id} href={`/vacatures/${r.id}`} className="flex flex-col rounded-2xl border-[1.5px] border-neutral-200 bg-white p-6 transition hover:-translate-y-1 hover:border-cobalt">
+                <Link key={r.id} href={`/vacatures/${r.slug ?? r.id}`} className="flex flex-col rounded-2xl border-[1.5px] border-neutral-200 bg-white p-6 transition hover:-translate-y-1 hover:border-cobalt">
                   <span className="self-start text-xs font-bold uppercase tracking-wide text-cobalt">{VAKGEBIEDEN[r.vakgebied] ?? r.vakgebied}</span>
                   <h3 className="mt-1.5 text-lg font-bold">{r.titel}</h3>
                   <p className="mt-1 text-sm font-semibold text-muted">{r.plaats} · {r.uren[0]}-{r.uren[1]} uur</p>

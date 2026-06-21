@@ -135,14 +135,14 @@ export default function VacatureZoeker({ vacatures }: { vacatures: Vacature[] })
                   {v.top && <span className="rounded-full bg-yellow px-2.5 py-0.5 text-xs font-bold">Topvacature</span>}
                   <span className="text-xs font-bold uppercase tracking-wide text-cobalt">{VAKGEBIEDEN[v.vakgebied]}</span>
                 </div>
-                <h3 className="text-xl font-bold"><a href={`/vacatures/${v.id}`} className="hover:text-cobalt">{v.titel}</a></h3>
+                <h3 className="text-xl font-bold"><a href={`/vacatures/${v.slug ?? v.id}`} className="hover:text-cobalt">{v.titel}</a></h3>
                 <div className="mt-2 flex flex-wrap gap-4 text-sm font-semibold text-muted">
                   <span>📍 {v.plaats}</span><span>🕒 {v.uren[0]}-{v.uren[1]} uur</span>
                   <span>💶 {fmtSalaris(v.salaris)}</span><span>📄 {v.type}</span>
                 </div>
                 <p className="mt-2.5 text-[.95rem] text-muted">{v.omschrijving}</p>
                 <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
-                  <a href={`/vacatures/${v.id}`} className="inline-block rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Bekijk vacature</a>
+                  <a href={`/vacatures/${v.slug ?? v.id}`} className="inline-block rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Bekijk vacature</a>
                   <a href={`/solliciteren?vacature_id=${v.id}&titel=${encodeURIComponent(v.titel)}`} className="font-bold text-cobalt hover:underline">Direct solliciteren →</a>
                 </div>
               </article>

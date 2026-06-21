@@ -1,24 +1,8 @@
 import VacatureZoeker from "@/components/VacatureZoeker";
-import { DEMO_VACATURES, type Vacature } from "@/lib/vacatures-demo";
-import { createClient } from "@/lib/supabase/server";
+import { loadVacatures } from "@/lib/vacatures";
 
-export const metadata = { title: "Vacatures in het sociaal domein | DetaVia" };
+export const metadata = { title: "Vacatures in het sociaal domein", alternates: { canonical: "/vacatures" } };
 export const dynamic = "force-dynamic";
-
-async function loadVacatures(): Promise<Vacature[]> {
-  try {
-    const supabase = await createClient();
-    const { data } = await supabase.from("vacatures").select("*").eq("status", "open").order("created_at", { ascending: false });
-    if (!data || data.length === 0) return DEMO_VACATURES; // fallback zolang DB leeg/niet gekoppeld
-    return data.map((v: any) => ({
-      id: v.id, titel: v.titel, vakgebied: v.vakgebied, plaats: v.plaats,
-      uren: [v.uren_min, v.uren_max], salaris: [v.salaris_min ?? 0, v.salaris_max ?? 0],
-      type: v.type, top: v.top, datum: (v.created_at ?? "").slice(0, 10), omschrijving: v.omschrijving,
-    }));
-  } catch {
-    return DEMO_VACATURES;
-  }
-}
 
 export default async function VacaturesPage() {
   const vacatures = await loadVacatures();

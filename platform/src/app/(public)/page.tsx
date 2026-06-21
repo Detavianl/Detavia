@@ -1,5 +1,7 @@
 import Link from "next/link";
 import OpdrachtgeverMarquee from "@/components/OpdrachtgeverMarquee";
+import { loadVacatures } from "@/lib/vacatures";
+import { VAKGEBIEDEN } from "@/lib/vacatures-demo";
 
 export const metadata = {
   title: "Detacheren in het sociaal domein",
@@ -7,14 +9,11 @@ export const metadata = {
     "DetaVia verbindt professionals in Wmo, Jeugd, Participatie en Schuldhulpverlening met opdrachten die passen. Bekijk vacatures of vraag een professional aan.",
   alternates: { canonical: "/" },
 };
+export const dynamic = "force-dynamic";
 
-const featured = [
-  { tag: "Wmo", titel: "Wmo-consulent", meta: "Almere · 32-36 uur", tekst: "Help inwoners zo zelfstandig mogelijk te blijven en zorg op maat te organiseren." },
-  { tag: "Jeugd", titel: "Jeugdconsulent", meta: "Amsterdam · 28-36 uur", tekst: "Begeleid gezinnen naar passende jeugdhulp en werk aan perspectief voor kinderen." },
-  { tag: "Participatie", titel: "Klantmanager Participatie", meta: "Den Haag · 32-40 uur", tekst: "Begeleid inwoners naar werk en meedoen, met aandacht voor wat iemand wél kan." },
-];
-
-export default function Home() {
+export default async function Home() {
+  const alle = await loadVacatures();
+  const featured = [...alle].sort((a, b) => Number(b.top) - Number(a.top)).slice(0, 3);
   return (
     <>
       {/* HERO */}
@@ -71,17 +70,21 @@ export default function Home() {
           </div>
           <Link href="/vacatures" className="rounded-full bg-cobalt px-6 py-3.5 font-bold text-white">Bekijk alle vacatures</Link>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((v) => (
-            <Link key={v.titel} href="/vacatures" className="flex min-h-[210px] flex-col gap-2.5 rounded-[22px] border-[1.5px] border-neutral-200 p-7 transition hover:-translate-y-1 hover:border-cobalt">
-              <span className="self-start rounded-full bg-yellow px-3 py-1 text-xs font-bold">{v.tag}</span>
-              <h3 className="mt-1.5 text-xl font-bold">{v.titel}</h3>
-              <p className="text-sm font-semibold text-muted">{v.meta}</p>
-              <p className="flex-1 text-[.96rem] text-muted">{v.tekst}</p>
-              <span className="font-bold text-cobalt">Bekijk vacature →</span>
-            </Link>
-          ))}
-        </div>
+        {featured.length > 0 ? (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {featured.map((v) => (
+              <Link key={v.id} href={`/vacatures/${v.slug ?? v.id}`} className="flex min-h-[210px] flex-col gap-2.5 rounded-[22px] border-[1.5px] border-neutral-200 p-7 transition hover:-translate-y-1 hover:border-cobalt">
+                <span className="self-start rounded-full bg-yellow px-3 py-1 text-xs font-bold">{VAKGEBIEDEN[v.vakgebied] ?? v.vakgebied}</span>
+                <h3 className="mt-1.5 text-xl font-bold">{v.titel}</h3>
+                <p className="text-sm font-semibold text-muted">{v.plaats} · {v.uren[0]}-{v.uren[1]} uur</p>
+                <p className="flex-1 text-[.96rem] text-muted">{v.omschrijving}</p>
+                <span className="font-bold text-cobalt">Bekijk vacature →</span>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <p className="text-muted">Er staan op dit moment geen vacatures open. Stuur gerust een <Link href="/solliciteren" className="font-bold text-cobalt hover:underline">open sollicitatie</Link>.</p>
+        )}
       </section>
 
       {/* STATEMENT */}
