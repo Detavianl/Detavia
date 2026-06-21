@@ -1,5 +1,17 @@
 # Worklog
 
+## 2026-06-21 - Recruiter-verdiensten per kandidaat (deals) + rol-zicht
+- **Wat is gebouwd/gewijzigd:**
+  - Nieuwe pagina /admin/verdiensten: per kandidaat/plaatsing toont het waarvoor weggezet, kandidaat-uurloon (kostprijs), tarief, marge, DetaVia-fee en het recruiter-deel per uur, plus goedgekeurde uren en recruiter-totaal. KPI's bovenaan.
+  - Rekenregel: marge = uurtarief - kostprijs; DetaVia houdt een fee (% van marge, default 31%, per plaatsing instelbaar via nieuw kolom `detavia_fee_pct`, migratie 0018 live); recruiter krijgt de rest.
+  - Rol-zicht: een recruiter ziet alleen plaatsingen van zijn eigen kandidaten (candidate.eigenaar = ingelogde recruiter); admin/super-admin zien iedereen, met recruiter-filter.
+  - Fee-veld toegevoegd aan het plaatsing-formulier; nav-item "Verdiensten".
+- **Waarom:**
+  - Recruiters verdienen per uur mee; ze willen per kandidaat zien wat het oplevert, super-admin ziet iedereen.
+- **Geraakte bestanden:**
+  - `supabase/migrations/0018_recruiter_fee.sql`, `src/lib/verdiensten.ts`, `src/app/admin/verdiensten/page.tsx` (nieuw), `src/components/AdminNav.tsx`, `src/app/admin/plaatsingen/actions.ts`, `src/app/admin/plaatsingen/nieuw/page.tsx`.
+
+
 ## 2026-06-21 - Vacatures dupliceren (clone)
 - **Wat is gebouwd/gewijzigd:**
   - Actie `cloneVacature`: maakt een kopie van een vacature als concept (status gesloten, titel "(kopie)", nieuwe slug, bron/extern_id leeg, top uit) en opent de bewerkpagina. "Dupliceer"-knop op de vacaturelijst (per rij) en op de bewerkpagina.

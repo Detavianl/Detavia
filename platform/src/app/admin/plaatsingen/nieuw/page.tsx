@@ -27,15 +27,16 @@ export default async function NieuwePlaatsing() {
           <Sel label="Opdrachtgever" name="company_id" options={companies} leeg />
         </div>
         <Field label="Functie" name="functie" placeholder="bv. Adviseur Sociaal Domein" />
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-3">
           <Field label="Uurtarief naar opdrachtgever (€)" name="uurtarief" type="number" placeholder="100" />
           <Field label="Kostprijs / uurloon (€)" name="kostprijs" type="number" placeholder="75" />
+          <Field label="DetaVia-fee (% van marge)" name="detavia_fee_pct" type="number" placeholder="31" />
         </div>
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Startdatum" name="start_datum" type="date" />
           <Field label="Einddatum (optioneel)" name="eind_datum" type="date" />
         </div>
-        <p className="text-xs text-muted">Marge = uurtarief − kostprijs. De professional ziet alleen z'n plaatsing en uren, niet de bedragen.</p>
+        <p className="text-xs text-muted">Marge = uurtarief − kostprijs. DetaVia houdt de fee (standaard 31%), de recruiter (eigenaar van de kandidaat) krijgt de rest per uur. De professional ziet alleen z'n plaatsing en uren, niet de bedragen.</p>
         <button className="justify-self-start rounded-full bg-cobalt px-6 py-3 font-bold text-white">Opslaan</button>
       </div>
     </form>

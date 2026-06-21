@@ -54,6 +54,7 @@ export async function createPlacement(formData: FormData) {
     functie: s(formData, "functie"),
     uurtarief: n(formData, "uurtarief"),
     kostprijs: n(formData, "kostprijs"),
+    detavia_fee_pct: s(formData, "detavia_fee_pct") === "" ? 31 : Number(s(formData, "detavia_fee_pct")),
     start_datum: s(formData, "start_datum") || null,
     eind_datum: s(formData, "eind_datum") || null,
   });
