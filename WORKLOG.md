@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-21 - Vacature-detailpagina (unique.nl-opzet, DetaVia-stijl)
+- **Wat is gebouwd/gewijzigd:**
+  - Nieuwe route `/vacatures/[id]`: detailpagina in de opzet van unique.nl maar in DetaVia-huisstijl. Cobalt hero met breadcrumb, titel, kerngegevens (plaats/uren/salaris/type) en knoppen (Solliciteer direct/Stel een vraag). Hoofdkolom met "Over deze opdracht", "Wat je meebrengt", "Wat DetaVia jou biedt" + tussen-CTA. Sticky zijbalk met vacaturegegevens, solliciteerknop en contactpersoon-spot (teamfoto-placeholder). Onderaan "Vergelijkbare vacatures" (zelfde vakgebied).
+  - Data via Supabase (status=open) met DEMO_VACATURES-fallback; notFound() als id onbekend.
+  - VacatureZoeker-kaarten linken nu naar de detailpagina (titel + "Bekijk vacature"), plus "Direct solliciteren".
+- **Waarom:**
+  - Klant wil dat een vacature een echte detailpagina opent, naar voorbeeld van unique.nl, in DetaVia-stijl.
+- **Geraakte bestanden:**
+  - `platform/src/app/(public)/vacatures/[id]/page.tsx` (nieuw), `platform/src/components/VacatureZoeker.tsx`.
+
 ## 2026-06-18 - Pagina's verrijkt: teamfoto-spots + inline formulieren
 - **Wat is gebouwd/gewijzigd:**
   - Naar voorbeeld van joinuz.nl/zelfstandige-en-joinuz: meer CTA's, inline formulieren en teamfoto-spots toegevoegd aan de nieuwe pagina's.
