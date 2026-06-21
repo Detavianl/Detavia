@@ -7,6 +7,7 @@ export default async function ImportVacatures({ searchParams }: { searchParams: 
   const sp = await searchParams;
   const toegevoegd = sp.toegevoegd;
   const gevonden = sp.gevonden;
+  const overgeslagen = sp.overgeslagen;
   const fout = sp.fout;
   const demo = sp.demo;
 
@@ -18,7 +19,8 @@ export default async function ImportVacatures({ searchParams }: { searchParams: 
 
       {toegevoegd !== undefined && (
         <div className="mt-5 max-w-2xl rounded-xl bg-green-50 p-4 text-sm font-semibold text-green-800">
-          Import klaar: {gevonden} vacatures gevonden in de feed, {toegevoegd} nieuw toegevoegd (dubbele overgeslagen).
+          Import klaar: {gevonden} vacatures in de feed, {toegevoegd} nieuw toegevoegd.
+          {overgeslagen && Number(overgeslagen) > 0 ? ` ${overgeslagen} overgeslagen (buiten het sociaal domein of dubbel).` : ""}
         </div>
       )}
       {fout && <div className="mt-5 max-w-2xl rounded-xl bg-red-50 p-4 text-sm font-semibold text-red-700">Er ging iets mis: {fout}</div>}
@@ -33,6 +35,10 @@ export default async function ImportVacatures({ searchParams }: { searchParams: 
         <label className="grid gap-1.5">
           <span className="text-sm font-bold">XML</span>
           <textarea name="xml" rows={8} placeholder="<source><job>...</job></source>" className="rounded-xl border-2 border-neutral-200 px-4 py-3 font-mono text-xs" />
+        </label>
+        <label className="flex items-center gap-2 font-semibold">
+          <input type="checkbox" name="alleen_sociaal" defaultChecked className="h-5 w-5 accent-cobalt" />
+          Alleen vacatures binnen het sociaal domein importeren (aanbevolen)
         </label>
         <button className="justify-self-start rounded-full bg-cobalt px-6 py-3 font-bold text-white">Importeren</button>
         <p className="text-xs text-muted">Herkent o.a. title, company, city, description, salary, jobtype, hoursperweek en referencenumber. Vakgebied wordt geschat op basis van titel/omschrijving. Dubbele vacatures (zelfde referentie) worden overgeslagen.</p>

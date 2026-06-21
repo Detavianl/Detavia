@@ -6,6 +6,13 @@ import { requireAdmin } from "@/lib/admin-context";
 import { slugify } from "@/lib/blog";
 import { isDemo } from "@/lib/demo";
 import { parseJobsXml } from "@/lib/xml-import";
+import sanitizeHtml from "sanitize-html";
+
+const schoonHtml = (html: string) =>
+  sanitizeHtml(html, {
+    allowedTags: ["p", "br", "strong", "b", "em", "i", "ul", "ol", "li", "h3", "h4"],
+    allowedAttributes: {},
+  });
 
 export async function saveVacature(formData: FormData) {
   await requireAdmin();
@@ -85,14 +92,17 @@ export async function importVacaturesFeed(formData: FormData) {
   }
   if (!xml) redirect("/admin/vacatures/import?fout=leeg");
 
-  const jobs = parseJobsXml(xml);
-  if (jobs.length === 0) redirect("/admin/vacatures/import?gevonden=0&toegevoegd=0");
+  const alleenSociaal = formData.get("alleen_sociaal") === "on";
+  const alle = parseJobsXml(xml);
+  const jobs = alleenSociaal ? alle.filter((j) => j.isSociaal) : alle;
+  const overgeslagen = alle.length - jobs.length;
+  if (jobs.length === 0) redirect(`/admin/vacatures/import?gevonden=${alle.length}&toegevoegd=0&overgeslagen=${overgeslagen}`);
 
   const supabase = await createClient();
   const rows = jobs.map((j) => ({
     titel: j.titel,
     slug: `${slugify(j.titel)}-${(j.referentie || Math.random().toString(36).slice(2, 7)).toString().replace(/[^a-z0-9]/gi, "").slice(0, 8).toLowerCase()}`,
-    vakgebied: j.vakgebied,
+    vakgebied: j.vakgebied || "wmo",
     plaats: j.plaats,
     uren_min: j.uren_min,
     uren_max: j.uren_max,
@@ -102,8 +112,8 @@ export async function importVacaturesFeed(formData: FormData) {
     top: false,
     status: "open",
     omschrijving: j.omschrijving,
-    taken: j.taken,
-    eisen: [] as string[],
+    taken: schoonHtml(j.taken),
+    eisen: j.eisen,
     opdrachtgever: j.opdrachtgever,
     startdatum: "",
     duur: "",
@@ -118,5 +128,5 @@ export async function importVacaturesFeed(formData: FormData) {
 
   revalidatePath("/admin/vacatures");
   revalidatePath("/vacatures");
-  redirect(`/admin/vacatures/import?gevonden=${jobs.length}&toegevoegd=${data?.length ?? 0}`);
+  redirect(`/admin/vacatures/import?gevonden=${alle.length}&toegevoegd=${data?.length ?? 0}&overgeslagen=${overgeslagen}`);
 }

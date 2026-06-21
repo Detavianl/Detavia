@@ -40,6 +40,7 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
   if (!v) notFound();
   const vakLabel = VAKGEBIEDEN[v.vakgebied] ?? v.vakgebied;
   const slug = v.slug ?? v.id;
+  const takenIsHtml = !!v.taken && /<[a-z][\s\S]*>/i.test(v.taken);
   const related = all.filter((x) => x.vakgebied === v.vakgebied && x.id !== v.id).slice(0, 3);
   const solliciteerHref = `/solliciteren?vacature_id=${v.id}&titel=${encodeURIComponent(v.titel)}`;
 
@@ -94,19 +95,27 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
           {v.taken && (
             <>
               <h2 className="display mt-12 text-2xl sm:text-3xl">Wat ga je doen?</h2>
-              <p className="mt-4 leading-relaxed text-muted">{v.taken}</p>
+              {takenIsHtml ? (
+                <div className="prose-detavia mt-4 text-muted" dangerouslySetInnerHTML={{ __html: v.taken }} />
+              ) : (
+                <p className="mt-4 leading-relaxed text-muted">{v.taken}</p>
+              )}
             </>
           )}
 
-          <h2 className="display mt-12 text-2xl sm:text-3xl">Wat je meebrengt</h2>
-          <ul className="mt-4 grid gap-3">
-            {(v.eisen ?? meebrengen).map((p) => (
-              <li key={p} className="flex items-start gap-3">
-                <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-yellow text-xs font-extrabold">✓</span>
-                <span>{p}</span>
-              </li>
-            ))}
-          </ul>
+          {(v.eisen || !takenIsHtml) && (
+            <>
+              <h2 className="display mt-12 text-2xl sm:text-3xl">Wat je meebrengt</h2>
+              <ul className="mt-4 grid gap-3">
+                {(v.eisen ?? meebrengen).map((p) => (
+                  <li key={p} className="flex items-start gap-3">
+                    <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-yellow text-xs font-extrabold">✓</span>
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
 
           <h2 className="display mt-12 text-2xl sm:text-3xl">Wat DetaVia jou biedt</h2>
           <ul className="mt-4 grid gap-3">

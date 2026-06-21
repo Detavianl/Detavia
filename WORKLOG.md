@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-21 - XML-importer verbeterd (sociaal-domein filter, opmaak, eisen)
+- **Wat is gebouwd/gewijzigd:**
+  - Geconstateerd dat de Workster-feed (https://workster.nl/feed/joof, 593 technische vacatures) wholesale binnenkwam en meeste als "wmo" werden gelabeld (brand-mismatch). 593 verkeerde imports opgeruimd in de DB; alleen 1Stroom blijft.
+  - Importer-parser herschreven: herkent sociaal domein (vakgebied-detectie), zet `isSociaal`; behoudt de HTML-opmaak van de beschrijving; haalt eisen uit de bullet-lijst (na een eisen-kop).
+  - Import-actie: nieuwe optie "Alleen sociaal domein importeren" (default aan) die niet-passende vacatures overslaat; beschrijving wordt server-side gesanitized (sanitize-html) opgeslagen; eisen meegenomen; melding toont gevonden/toegevoegd/overgeslagen.
+  - Detailpagina rendert `taken` nu als opgemaakte HTML (lijsten/alinea's) en toont de generieke "Wat je meebrengt" alleen als er geen eisen en geen rijke HTML is.
+- **Waarom:**
+  - Klant testte de importer met de Workster-feed en vroeg wat beter kan; belangrijkste was het sociaal-domein-filter + opmaak/eisen behouden.
+- **Geraakte bestanden:**
+  - `src/lib/xml-import.ts`, `src/app/admin/vacatures/actions.ts`, `src/app/admin/vacatures/import/page.tsx`, `src/app/(public)/vacatures/[id]/page.tsx`.
+
 ## 2026-06-21 - 1Stroom echt, demo weg, SEO, XML-feed export + importer, logo-watermerk
 - **Wat is gebouwd/gewijzigd:**
   - 1Stroom-vacature (Medewerker Sociaal loket) als echte rij in de live DB gezet; demo-vacatures verwijderd van de live site (gedeelde loader `src/lib/vacatures.ts` toont in productie alleen DB-vacatures, demo enkel in demo-modus). Homepage "uitgelichte vacatures" laadt nu echte vacatures.
