@@ -81,9 +81,16 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
           <h2 className="display text-2xl sm:text-3xl">Over deze opdracht</h2>
           <p className="mt-4 text-lg leading-relaxed text-muted">{v.omschrijving}</p>
 
+          {v.taken && (
+            <>
+              <h2 className="display mt-12 text-2xl sm:text-3xl">Wat ga je doen?</h2>
+              <p className="mt-4 leading-relaxed text-muted">{v.taken}</p>
+            </>
+          )}
+
           <h2 className="display mt-12 text-2xl sm:text-3xl">Wat je meebrengt</h2>
           <ul className="mt-4 grid gap-3">
-            {meebrengen.map((p) => (
+            {(v.eisen ?? meebrengen).map((p) => (
               <li key={p} className="flex items-start gap-3">
                 <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-yellow text-xs font-extrabold">✓</span>
                 <span>{p}</span>
@@ -117,10 +124,13 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
             <h3 className="text-lg font-bold">Vacaturegegevens</h3>
             <dl className="mt-4 grid gap-3 text-sm">
               <Row k="Vakgebied" v={vakLabel} />
+              {v.opdrachtgever && <Row k="Opdrachtgever" v={v.opdrachtgever} />}
               <Row k="Plaats" v={v.plaats} />
               <Row k="Uren per week" v={`${v.uren[0]}-${v.uren[1]} uur`} />
               <Row k="Salarisindicatie" v={fmtSalaris(v.salaris)} />
               <Row k="Dienstverband" v={v.type} />
+              {v.startdatum && <Row k="Startdatum" v={v.startdatum} />}
+              {v.duur && <Row k="Duur" v={v.duur} />}
               {v.datum && <Row k="Geplaatst" v={v.datum} />}
             </dl>
             <Link href={solliciteerHref} className="mt-6 block rounded-full bg-cobalt px-6 py-3 text-center font-bold text-white">Solliciteer direct</Link>

@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-21 - Echte vacature toegevoegd (Medewerker Sociaal loket, 1Stroom)
+- **Wat is gebouwd/gewijzigd:**
+  - Vacature-model uitgebreid met optionele rijke velden: taken (wat ga je doen), eisen (string[]), opdrachtgever, startdatum, duur.
+  - Echte vacature toegevoegd op basis van flextender-opdracht 30626: "Medewerker Sociaal loket" bij Gemeenschappelijke regeling 1Stroom (Duiven/Gelderland), 28-36 uur, start 21 juli 2026, met opdrachtomschrijving en knock-out eisen. Vertaald naar DetaVia-stijl/tekst (geen flextender-jargon).
+  - Detailpagina toont nu "Wat ga je doen?" (taken) en de echte eisen bij "Wat je meebrengt"; zijbalk toont opdrachtgever, startdatum en duur. Vacatures zonder die velden vallen terug op de generieke tekst.
+- **Waarom:**
+  - Klant wilde een concrete vacature (flextender 30626) in de nieuwe DetaVia-stijl tonen.
+- **Geraakte bestanden:**
+  - `platform/src/lib/vacatures-demo.ts`, `platform/src/app/(public)/vacatures/[id]/page.tsx`.
+
 ## 2026-06-21 - Vacature-detailpagina (unique.nl-opzet, DetaVia-stijl)
 - **Wat is gebouwd/gewijzigd:**
   - Nieuwe route `/vacatures/[id]`: detailpagina in de opzet van unique.nl maar in DetaVia-huisstijl. Cobalt hero met breadcrumb, titel, kerngegevens (plaats/uren/salaris/type) en knoppen (Solliciteer direct/Stel een vraag). Hoofdkolom met "Over deze opdracht", "Wat je meebrengt", "Wat DetaVia jou biedt" + tussen-CTA. Sticky zijbalk met vacaturegegevens, solliciteerknop en contactpersoon-spot (teamfoto-placeholder). Onderaan "Vergelijkbare vacatures" (zelfde vakgebied).

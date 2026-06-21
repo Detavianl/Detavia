@@ -18,9 +18,29 @@ export type Vacature = {
   top: boolean;
   datum: string;
   omschrijving: string;
+  // Optionele, rijke velden voor de detailpagina (per vacature)
+  taken?: string;
+  eisen?: string[];
+  opdrachtgever?: string;
+  startdatum?: string;
+  duur?: string;
 };
 
 export const DEMO_VACATURES: Vacature[] = [
+  { id: "sociaal-loket-1stroom", titel: "Medewerker Sociaal loket", vakgebied: "wmo", plaats: "Duiven", uren: [28, 36], salaris: [3000, 4000], type: "Detachering", top: true, datum: "2026-06-21",
+    omschrijving: "Als medewerker Sociaal loket ben jij het eerste aanspreekpunt voor inwoners met vragen op het gebied van het sociaal domein. Je helpt mensen snel en persoonlijk verder.",
+    taken: "Als medewerker Sociaal loket ben jij het eerste aanspreekpunt voor burgers, bedrijven en andere instellingen die bellen of langskomen met vragen, klachten of problemen. In de meeste gevallen ben jij degene die de klant meteen kan helpen met zijn of haar vraag op het gebied van het sociaal domein. In het team werk je iedere ochtend aan de telefoon. In de middag werk je aan binnengekomen e-mails of andere achtergrondwerkzaamheden. Daarnaast kun je worden ingezet voor het behandelen van aanvragen leerlingenvervoer.",
+    eisen: [
+      "Een afgeronde opleiding richting Pedagogiek, Social Work of vergelijkbaar",
+      "In het bezit van een geldige SKJ-registratie",
+      "Aantoonbare werkervaring met Suite voor het Sociaal Domein",
+      "Aantoonbare werkervaring met ZorgNed en JKC",
+      "Beschikbaar per uiterlijk 21 juli 2026 voor 28 tot 36 uur per week en bereid om ochtenden te werken",
+      "Minimaal 1 jaar werkervaring in het sociaal domein als kcc-medewerker bij een gemeente of gemeentelijke regeling",
+    ],
+    opdrachtgever: "Gemeenschappelijke regeling 1Stroom (Gelderland)",
+    startdatum: "21 juli 2026",
+    duur: "tot 20 januari 2027, verlenging mogelijk" },
   { id: "1", titel: "Wmo-consulent", vakgebied: "wmo", plaats: "Almere", uren: [32, 36], salaris: [3300, 4600], type: "Detachering", top: true, datum: "2026-06-12", omschrijving: "Je voert keukentafelgesprekken en organiseert passende ondersteuning, zodat inwoners zo zelfstandig mogelijk blijven." },
   { id: "2", titel: "Wmo-consulent complexe casuïstiek", vakgebied: "wmo", plaats: "Utrecht", uren: [36, 40], salaris: [3700, 5300], type: "Detachering", top: false, datum: "2026-06-08", omschrijving: "Voor de zwaardere casuïstiek zoek je samen met inwoner en netwerk naar een duurzame oplossing." },
   { id: "3", titel: "Jeugdconsulent", vakgebied: "jeugd", plaats: "Amsterdam", uren: [28, 36], salaris: [3300, 4600], type: "Detachering", top: true, datum: "2026-06-11", omschrijving: "Je begeleidt gezinnen naar passende jeugdhulp en houdt regie op het ondersteuningsplan." },
