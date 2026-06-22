@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/admin-context";
 import { euro } from "@/lib/crm";
 import { isDemo, DEMO_PLACEMENTS, DEMO_CANDIDATES } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
 export default async function PlaatsingenPage() {
+  const admin = await requireAdmin();
+  const isRecruiter = admin.role === "recruiter";
   let rows: any[];
   if (isDemo()) {
     const naam = (id: string) => DEMO_CANDIDATES.find((c) => c.id === id)?.naam ?? "—";
@@ -13,9 +16,12 @@ export default async function PlaatsingenPage() {
   } else {
     const supabase = await createClient();
     const { data } = await supabase.from("placements")
-      .select("id, functie, uurtarief, kostprijs, status, start_datum, candidate:candidates(naam), company:companies(naam)")
+      .select("id, functie, uurtarief, kostprijs, status, start_datum, candidate:candidates(naam, eigenaar), company:companies(naam)")
       .order("created_at", { ascending: false });
-    rows = (data ?? []).map((p: any) => ({ ...p, kandidaat: p.candidate?.naam ?? "—", company_naam: p.company?.naam ?? "—" }));
+    rows = (data ?? [])
+      // Recruiter ziet alleen plaatsingen van eigen kandidaten (verdiensten privé).
+      .filter((p: any) => !isRecruiter || p.candidate?.eigenaar === admin.user_id)
+      .map((p: any) => ({ ...p, kandidaat: p.candidate?.naam ?? "—", company_naam: p.company?.naam ?? "—" }));
   }
 
   return (

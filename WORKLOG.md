@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-21 - Verdiensten privé: plaatsingen afgeschermd voor recruiters
+- **Wat is gebouwd/gewijzigd:**
+  - Talentpool blijft gedeeld; de tarief-kolom heet nu "Tarief (indicatie)" (het echte tarief zit per plaatsing).
+  - Plaatsingen-lijst en -detail tonen tarief/kostprijs/marge nu alleen aan super-admin/admin en aan de recruiter die eigenaar is van de kandidaat. Een recruiter die een plaatsing van een ander opent, wordt naar /geen-toegang gestuurd. Zo blijven verdiensten privé.
+  - Verdiensten-pagina was al rol-gescoped en rekent met het echte plaatsingstarief (niet de talentpool-indicatie).
+- **Waarom:**
+  - Talentpool is gedeeld en het tarief daar is indicatief, maar verdiensten/marges moeten privé blijven per recruiter.
+- **Geraakte bestanden:**
+  - `src/app/admin/plaatsingen/page.tsx`, `src/app/admin/plaatsingen/[id]/page.tsx`, `src/components/TalentpoolTable.tsx`.
+
+
 ## 2026-06-21 - Recruiter-verdiensten per kandidaat (deals) + rol-zicht
 - **Wat is gebouwd/gewijzigd:**
   - Nieuwe pagina /admin/verdiensten: per kandidaat/plaatsing toont het waarvoor weggezet, kandidaat-uurloon (kostprijs), tarief, marge, DetaVia-fee en het recruiter-deel per uur, plus goedgekeurde uren en recruiter-totaal. KPI's bovenaan.

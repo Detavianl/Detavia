@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { euro } from "@/lib/crm";
 import PlacementActions from "@/components/PlacementActions";
@@ -22,6 +22,7 @@ function weekStart(iso: string) {
 export default async function PlaatsingDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const demo = isDemo();
+  const admin = await requireAdmin();
 
   let p: any, hours: any[], kandidaat: string, candidateId: string, uitgenodigd: boolean;
   if (demo) {
@@ -34,15 +35,16 @@ export default async function PlaatsingDetail({ params }: { params: Promise<{ id
   } else {
     const supabase = await createClient();
     const { data } = await supabase.from("placements")
-      .select("*, candidate:candidates(id, naam, professional_user_id), company:companies(naam)").eq("id", id).single();
+      .select("*, candidate:candidates(id, naam, eigenaar, professional_user_id), company:companies(naam)").eq("id", id).single();
     if (!data) notFound();
+    // Recruiter mag alleen z'n eigen plaatsing zien (verdiensten privé).
+    if (admin?.role === "recruiter" && data.candidate?.eigenaar !== admin.user_id) redirect("/geen-toegang");
     p = { ...data, company_naam: data.company?.naam ?? "" };
     kandidaat = data.candidate?.naam ?? "—"; candidateId = data.candidate?.id; uitgenodigd = !!data.candidate?.professional_user_id;
     const { data: hr } = await supabase.from("hours").select("*").eq("placement_id", id).order("datum");
     hours = hr ?? [];
   }
 
-  const admin = await requireAdmin();
   const notes = demo ? [] : await loadNotes("placement", id);
 
   const factureerbaar = hours.filter((h) => h.status === "goedgekeurd" && !h.invoice_id);

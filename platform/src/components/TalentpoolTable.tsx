@@ -114,7 +114,7 @@ export default function TalentpoolTable({ candidates }: { candidates: C[] }) {
           <table className="w-full text-left text-sm">
             <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-muted">
               <tr><th className="px-5 py-3">Naam</th><th className="px-5 py-3">Niveau</th><th className="px-5 py-3">Vakgebied</th>
-                <th className="px-5 py-3">Regio</th><th className="px-5 py-3">Uren</th><th className="px-5 py-3">Status</th><th className="px-5 py-3">Tarief</th><th className="px-5 py-3 text-right">Acties</th></tr>
+                <th className="px-5 py-3">Regio</th><th className="px-5 py-3">Uren</th><th className="px-5 py-3">Status</th><th className="px-5 py-3">Tarief (indicatie)</th><th className="px-5 py-3 text-right">Acties</th></tr>
             </thead>
             <tbody>
               {list.map((c) => (
