@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-23 - Over ons-pagina professioneler gemaakt
+- **Wat is gebouwd/gewijzigd:**
+  - Over ons herzien: hero is nu twee koloms (tekst + beeld + CTA's) i.p.v. een kaal leeg cobalt-vlak; foto-uitsnedes gefixt (aspect-[4/3] i.p.v. liggende foto in staand kader); kernwaarden-blok (4 cards), een stats-blok en een afsluitende CTA toegevoegd zodat de pagina compleet oogt.
+- **Waarom:**
+  - De pagina oogde kaal/onaf bij het laden (leeg blauw vlak, rare foto-uitsnede, te dun).
+- **Geraakte bestanden:**
+  - `src/app/(public)/over-ons/page.tsx`.
+
+
 ## 2026-06-21 - Verdiensten privé: plaatsingen afgeschermd voor recruiters
 - **Wat is gebouwd/gewijzigd:**
   - Talentpool blijft gedeeld; de tarief-kolom heet nu "Tarief (indicatie)" (het echte tarief zit per plaatsing).
