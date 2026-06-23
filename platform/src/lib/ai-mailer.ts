@@ -36,7 +36,7 @@ export async function genereerMail(input: MailInput): Promise<MailOutput> {
 
   try {
     const client = new Anthropic({ apiKey: key });
-    const model = process.env.DETAVIA_AI_MODEL || "claude-haiku-4-5-20251001";
+    const model = process.env.DETAVIA_AI_MODEL || "claude-sonnet-4-6";
     const prompt = [
       `Type ontvanger: ${MAIL_TYPES[input.type] ?? input.type}`,
       input.ontvanger ? `Naam ontvanger: ${input.ontvanger}` : "",

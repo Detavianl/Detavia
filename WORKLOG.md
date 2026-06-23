@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-23 - AI-mailer standaard op Sonnet 4.6
+- **Wat is gebouwd/gewijzigd:**
+  - Standaardmodel van de AI-mailer van Haiku 4.5 naar `claude-sonnet-4-6` gezet (betere mails). ANTHROPIC-sleutel getest (werkt) en lokaal in .env.local gezet (gitignored). Voor live moet de sleutel nog in Vercel.
+- **Waarom:**
+  - Klant wil de mailer AI-slim maken met een eigen Anthropic-account/sleutel.
+- **Geraakte bestanden:**
+  - `src/lib/ai-mailer.ts` (+ lokale .env.local, niet in git).
+
+
 ## 2026-06-23 - Over ons-pagina professioneler gemaakt
 - **Wat is gebouwd/gewijzigd:**
   - Over ons herzien: hero is nu twee koloms (tekst + beeld + CTA's) i.p.v. een kaal leeg cobalt-vlak; foto-uitsnedes gefixt (aspect-[4/3] i.p.v. liggende foto in staand kader); kernwaarden-blok (4 cards), een stats-blok en een afsluitende CTA toegevoegd zodat de pagina compleet oogt.
