@@ -29,7 +29,7 @@ export default function OverOns() {
             </div>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/img/smiling-woman-600x600.jpg" alt="Professional in het sociaal domein" className="order-first aspect-[4/3] w-full rounded-[22px] object-cover shadow-2xl md:order-none" />
+          <img src="/img/team-meeting-600x448.jpg" alt="Het team van DetaVia in overleg" className="order-first aspect-[4/3] w-full rounded-[22px] object-cover shadow-2xl md:order-none" />
         </div>
       </section>
 
