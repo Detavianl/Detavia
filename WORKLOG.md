@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-24 - AI-mailer als Workster: tool-use bouwt volledige HTML
+- **Wat is gebouwd/gewijzigd:**
+  - AI-mailer omgebouwd naar de Workster-aanpak: Claude bouwt via een `build_email`-tool (forced tool_choice) het onderwerp + de volledige HTML-mail, in plaats van JSON-uit-tekst + sjabloon. Daardoor verwerkt hij de context concreet (namen, plaats, data, links).
+  - Uitgebreide DetaVia-huisstijl systeem-prompt (licht thema, cobalt/geel, logo-img, CTA-knop, ondertekening Team DetaVia, footer, geen em-dashes, sociaal-domein tone). Model claude-sonnet-4-6.
+  - Nette HTML-fallback zonder API-key (bron "sjabloon"). Mailerpagina toont/bewerkt nu de HTML direct (HTML-tab bewerkbaar, live voorbeeld in iframe).
+- **Waarom:**
+  - Klant wil de mailer exact zoals die van Workster (die volgt instructies/context wel op).
+- **Geraakte bestanden:**
+  - `src/lib/ai-mailer.ts`, `src/app/admin/mailer/page.tsx` (email-template.ts nu ongebruikt).
+
+
 ## 2026-06-24 - Marge-model: overhead + 33% nettowinst, recruiter = rest
 - **Wat is gebouwd/gewijzigd:**
   - Recruiter-rekenregel vervangen door het echte model: bruto marge = verkoop - inkoop; overhead (10,6%: ziekteverzuim 4 + administratie 3,3 + juridisch 2 + verzekeringen 1,3) en nettowinst 33% van het verkooptarief; recruitervergoeding = wat overblijft (minimaal 0). Bij te lage marge: recruiter 0 + waarschuwing.
