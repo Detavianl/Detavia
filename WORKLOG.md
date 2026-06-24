@@ -1,5 +1,18 @@
 # Worklog
 
+## 2026-06-24 - Marge-model: overhead + 33% nettowinst, recruiter = rest
+- **Wat is gebouwd/gewijzigd:**
+  - Recruiter-rekenregel vervangen door het echte model: bruto marge = verkoop - inkoop; overhead (10,6%: ziekteverzuim 4 + administratie 3,3 + juridisch 2 + verzekeringen 1,3) en nettowinst 33% van het verkooptarief; recruitervergoeding = wat overblijft (minimaal 0). Bij te lage marge: recruiter 0 + waarschuwing.
+  - Bedrijfsbrede instellingen in tabel `marge_config` (migratie 0019, live, geseed met documentwaarden), alleen super-admin kan ze wijzigen (RLS + requireRole). Instellingenpagina /admin/instellingen/marge.
+  - Verdiensten-pagina toont nu de volledige opbouw per plaatsing (verkoop/inkoop/marge/overhead/nettowinst/recruiter/uren/totaal); rol-gescoped (recruiter eigen, admin/super alles).
+  - Plaatsing-formulier omgebouwd naar client met live marge-calculator (vul verkoop+inkoop, recruitervergoeding rolt eruit). Oude detavia_fee_pct-veld eruit.
+  - Pure rekenlogica in `marge-calc.ts` (client+server), server-loader in `marge.ts`. Oude `verdiensten.ts` verwijderd.
+- **Waarom:**
+  - Klant leverde de echte tariefopbouw; percentages vast en alleen door super-admin te wijzigen.
+- **Geraakte bestanden:**
+  - `supabase/migrations/0019_marge_config.sql`, `src/lib/marge-calc.ts` + `marge.ts`, `src/app/admin/instellingen/marge/{page,actions}.tsx/ts` (nieuw), `src/app/admin/verdiensten/page.tsx`, `src/components/PlacementForm.tsx` (nieuw), `src/app/admin/plaatsingen/nieuw/page.tsx`, `src/app/admin/plaatsingen/actions.ts`.
+
+
 ## 2026-06-23 - AI-mailer standaard op Sonnet 4.6
 - **Wat is gebouwd/gewijzigd:**
   - Standaardmodel van de AI-mailer van Haiku 4.5 naar `claude-sonnet-4-6` gezet (betere mails). ANTHROPIC-sleutel getest (werkt) en lokaal in .env.local gezet (gitignored). Voor live moet de sleutel nog in Vercel.
