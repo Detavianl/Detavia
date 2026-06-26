@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-26 - Mobielaudit: hamburgermenu + overflow-fix
+- **Wat is gebouwd/gewijzigd:**
+  - Mobiel hamburgermenu toegevoegd aan SiteHeader (de nav was hidden lg:flex zonder mobiele variant, dus < 1024px was er geen menu). Met uitklapbare secties Professionals/Opdrachtgevers + knoppen Personeel nodig? en Inloggen. Geverifieerd op live (390px): opent met alle items.
+  - Mobielaudit (390px) over alle 14 publieke pagina's op horizontale overflow: 13 ok, /solliciteren had overflow (455px) door file-input + ontbrekende w-full/min-w-0. Gefixt met w-full op inputs/select, min-w-0 op grid-cellen en een nettere file-input. Opnieuw geverifieerd: 390/390, geen overflow meer.
+- **Waarom:**
+  - Klant zag geen menu op mobiel en vroeg om een mobielaudit van de publieke site.
+- **Geraakte bestanden:**
+  - components/SiteHeader.tsx, app/(public)/solliciteren/page.tsx.
+
+
 ## 2026-06-26 - Calendly: van inline-widget naar popup-op-klik
 - **Wat is gebouwd/gewijzigd:**
   - Inline Calendly-widget vervangen door een popup: de kalender opent nu pas na klik op "Boek een kennismaking" / "Plan een kennismaking". Nieuw component CalendlyButton (laadt het Calendly-script en opent initPopupWidget). CalendlyWidget verwijderd.
