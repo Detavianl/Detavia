@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-26 - Calendly inline-widget + Veilig zzp'en naar ZZP-pagina
+- **Wat is gebouwd/gewijzigd:**
+  - Inline Calendly-boekwidget toegevoegd op de contactpagina (sectie #kennismaking) via nieuw component CalendlyWidget. CALENDLY_URL gezet op https://calendly.com/detavianl/30min. "Boek een kennismaking"-knoppen verwijzen nu naar de widget (#kennismaking).
+  - "Veilig zzp'en bij DetaVia"-sectie verplaatst van Academy naar de ZZP-pagina (/professionals/zzp), waar die logischer hoort.
+- **Waarom:**
+  - Klant leverde de Calendly-link en wilde een echte widget; en de ZZP-uitleg hoort onder de ZZP-pagina.
+- **Geraakte bestanden:**
+  - components/CalendlyWidget.tsx (nieuw), lib/site.ts, app/(public)/contact/page.tsx, app/(public)/professionals/academy/page.tsx, app/(public)/professionals/zzp/page.tsx.
+
+
 ## 2026-06-26 - Contact/Calendly, Over ons-bullet, Academy-cursussen + ZZP, algemene CTA's
 - **Wat is gebouwd/gewijzigd:**
   - Contact + voor-opdrachtgevers: "Bel ons direct" vervangen door "Boek een kennismaking" met Calendly-link. Centrale CALENDLY_URL in site.ts (env NEXT_PUBLIC_CALENDLY_URL, fallback placeholder calendly.com/detavia/kennismaking, nog te vervangen).

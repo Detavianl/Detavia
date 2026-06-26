@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { submitContact } from "../actions";
-import { CALENDLY_URL } from "@/lib/site";
+import CalendlyWidget from "@/components/CalendlyWidget";
 
 export const metadata = { title: "Contact & veelgestelde vragen | DetaVia" };
 
@@ -38,6 +38,16 @@ export default function Contact() {
             </div>
             <span className="shrink-0 rounded-full bg-yellow px-4 py-3 font-bold text-black transition group-hover:translate-x-1">→</span>
           </Link>
+        </div>
+      </section>
+
+      {/* CALENDLY-WIDGET */}
+      <section id="kennismaking" className="mx-auto max-w-[1180px] scroll-mt-24 px-5 pt-20 sm:px-10">
+        <p className="text-xs font-bold uppercase tracking-[.16em] text-cobalt">Plan direct</p>
+        <h2 className="display mt-2 text-3xl sm:text-4xl">Boek een kennismaking</h2>
+        <p className="mt-3 max-w-[54ch] text-lg text-muted">Kies hieronder zelf een moment dat jou uitkomt. We bellen of videobellen je voor een vrijblijvende kennismaking van 30 minuten.</p>
+        <div className="mt-8">
+          <CalendlyWidget />
         </div>
       </section>
 
@@ -79,7 +89,7 @@ export default function Contact() {
             <div className="mt-8 rounded-[22px] bg-cobalt p-7 text-white">
               <h3 className="text-lg font-bold">Liever meteen een afspraak?</h3>
               <p className="mt-1 text-white/85">Plan zelf een kennismakingsgesprek op een moment dat jou uitkomt.</p>
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block rounded-full bg-yellow px-5 py-2.5 font-bold text-black">Boek een kennismaking</a>
+              <a href="#kennismaking" className="mt-4 inline-block rounded-full bg-yellow px-5 py-2.5 font-bold text-black">Boek een kennismaking</a>
             </div>
           </div>
         </div>

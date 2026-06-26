@@ -37,6 +37,24 @@ export default function Zzp() {
         </div>
       </section>
 
+      <section className="bg-cobalt text-white">
+        <div className="mx-auto grid max-w-[1180px] items-center gap-10 px-5 py-20 sm:px-10 md:grid-cols-2">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[.16em] opacity-70">Veilig zzp'en</p>
+            <h2 className="display mt-2 text-3xl sm:text-4xl">Veilig zzp'en bij DetaVia</h2>
+            <p className="mt-4 max-w-[48ch] text-lg text-white/85">Als zelfstandige aan de slag in het sociaal domein, zonder gedoe of risico. Bij DetaVia regelen we de samenwerking zo dat je veilig en zorgeloos als zzp'er kunt werken. Geen schijnzelfstandigheid, wel duidelijke afspraken en een vast aanspreekpunt.</p>
+          </div>
+          <ul className="grid gap-3">
+            {["Werken volgens een goedgekeurde modelovereenkomst", "Helder over de wet DBA, geen risico op schijnzelfstandigheid", "Correcte, tijdige betaling en heldere voorwaarden", "Een vast aanspreekpunt dat met je meedenkt"].map((p) => (
+              <li key={p} className="flex items-start gap-3 rounded-[18px] bg-white/10 p-4 ring-1 ring-white/15">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-yellow text-sm font-extrabold text-black">✓</span>
+                <span className="font-semibold">{p}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       <TeamSpots
         title="Je vaste aanspreekpunt"
         intro="Als zelfstandige werk je samen met een vaste consultant die de markt kent en je opdrachten op maat aanbiedt."
