@@ -1,23 +1,23 @@
 "use server";
 import { requireAdmin } from "@/lib/admin-context";
 import { genereerMail, type MailInput, type MailOutput } from "@/lib/ai-mailer";
+import { sendMail } from "@/lib/email";
 
 export async function generateEmailAction(input: MailInput): Promise<MailOutput> {
   await requireAdmin();
   return genereerMail(input);
 }
 
-/**
- * Verstuurt de e-mail. Nu een stub.
- * HIER komt Resend (zoals bij de facturen):
- *   resend.emails.send({ from: "DetaVia <info@detavia.nl>", to, subject, text/html })
- * Zodra RESEND_API_KEY in de env staat, is dit één blok.
- */
-export async function sendEmailAction(_to: string, _onderwerp: string, _html: string): Promise<{ ok: boolean; melding: string }> {
+// Verstuurt de gegenereerde HTML-mail via Resend.
+export async function sendEmailAction(to: string, onderwerp: string, html: string): Promise<{ ok: boolean; melding: string }> {
   await requireAdmin();
+  const adres = to.trim().toLowerCase();
+  if (!/.+@.+\..+/.test(adres)) return { ok: false, melding: "Vul een geldig e-mailadres in." };
+  if (!onderwerp.trim()) return { ok: false, melding: "Onderwerp mag niet leeg zijn." };
+  if (!html || html.length < 30) return { ok: false, melding: "Genereer eerst een mail." };
   if (!process.env.RESEND_API_KEY) {
-    return { ok: false, melding: "Verzenden is nog niet gekoppeld. Voeg RESEND_API_KEY toe om de HTML-mail echt te versturen." };
+    return { ok: false, melding: "Verzenden niet gekoppeld: voeg RESEND_API_KEY toe in Vercel." };
   }
-  // TODO Resend: resend.emails.send({ to, subject, html })
-  return { ok: true, melding: "Verzonden." };
+  const r = await sendMail({ to: adres, subject: onderwerp.trim(), html });
+  return r.ok ? { ok: true, melding: "Verzonden ✓" } : { ok: false, melding: `Niet verzonden: ${r.error}` };
 }

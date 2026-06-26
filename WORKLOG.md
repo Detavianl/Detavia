@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-26 - Resend-verzending ingebouwd (mailer)
+- **Wat is gebouwd/gewijzigd:**
+  - `resend`-pakket geinstalleerd; `src/lib/email.ts` met `sendMail` (from uit RESEND_FROM). Mailer-verzendactie (`sendEmailAction`) verstuurt de AI-HTML nu echt via Resend i.p.v. de stub.
+  - Resend-key getest: send-only key, en detavia.nl is nog NIET geverifieerd, dus tot verificatie kan alleen naar backoffice@detavia.nl (account-eigenaar) gemaild worden. Default from = onboarding@resend.dev.
+- **Waarom:**
+  - Klant leverde de Resend API-key; mailer moet echt kunnen versturen.
+- **Geraakte bestanden:**
+  - `src/lib/email.ts` (nieuw), `src/app/admin/mailer/actions.ts`, package.json (resend). Keys lokaal in .env.local (gitignored); moeten nog in Vercel.
+
+
 ## 2026-06-24 - AI-mailer als Workster: tool-use bouwt volledige HTML
 - **Wat is gebouwd/gewijzigd:**
   - AI-mailer omgebouwd naar de Workster-aanpak: Claude bouwt via een `build_email`-tool (forced tool_choice) het onderwerp + de volledige HTML-mail, in plaats van JSON-uit-tekst + sjabloon. Daardoor verwerkt hij de context concreet (namen, plaats, data, links).
