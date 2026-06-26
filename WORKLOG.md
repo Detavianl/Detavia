@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-26 - Calendly: van inline-widget naar popup-op-klik
+- **Wat is gebouwd/gewijzigd:**
+  - Inline Calendly-widget vervangen door een popup: de kalender opent nu pas na klik op "Boek een kennismaking" / "Plan een kennismaking". Nieuw component CalendlyButton (laadt het Calendly-script en opent initPopupWidget). CalendlyWidget verwijderd.
+  - Knoppen op contact (boekblok + cobalt-blok) en voor-opdrachtgevers gebruiken nu de popup-knop.
+- **Waarom:**
+  - Klant wil dat de widget pas opent na een klik, niet altijd zichtbaar ingebed.
+- **Geraakte bestanden:**
+  - components/CalendlyButton.tsx (nieuw), components/CalendlyWidget.tsx (verwijderd), app/(public)/contact/page.tsx, app/(public)/voor-opdrachtgevers/page.tsx.
+
+
 ## 2026-06-26 - Calendly inline-widget + Veilig zzp'en naar ZZP-pagina
 - **Wat is gebouwd/gewijzigd:**
   - Inline Calendly-boekwidget toegevoegd op de contactpagina (sectie #kennismaking) via nieuw component CalendlyWidget. CALENDLY_URL gezet op https://calendly.com/detavianl/30min. "Boek een kennismaking"-knoppen verwijzen nu naar de widget (#kennismaking).

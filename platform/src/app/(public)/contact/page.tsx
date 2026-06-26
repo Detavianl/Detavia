@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { submitContact } from "../actions";
-import CalendlyWidget from "@/components/CalendlyWidget";
+import CalendlyButton from "@/components/CalendlyButton";
 
 export const metadata = { title: "Contact & veelgestelde vragen | DetaVia" };
 
@@ -41,13 +41,13 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* CALENDLY-WIDGET */}
+      {/* CALENDLY-BOEKING */}
       <section id="kennismaking" className="mx-auto max-w-[1180px] scroll-mt-24 px-5 pt-20 sm:px-10">
-        <p className="text-xs font-bold uppercase tracking-[.16em] text-cobalt">Plan direct</p>
-        <h2 className="display mt-2 text-3xl sm:text-4xl">Boek een kennismaking</h2>
-        <p className="mt-3 max-w-[54ch] text-lg text-muted">Kies hieronder zelf een moment dat jou uitkomt. We bellen of videobellen je voor een vrijblijvende kennismaking van 30 minuten.</p>
-        <div className="mt-8">
-          <CalendlyWidget />
+        <div className="rounded-[26px] bg-cobalt px-7 py-12 text-center text-white sm:px-12">
+          <p className="text-xs font-bold uppercase tracking-[.16em] text-arctic">Plan direct</p>
+          <h2 className="display mt-2 text-3xl sm:text-4xl">Boek een kennismaking</h2>
+          <p className="mx-auto mt-3 max-w-[54ch] text-lg text-white/85">Klik op de knop en kies zelf een moment dat jou uitkomt. We bellen of videobellen je voor een vrijblijvende kennismaking van 30 minuten.</p>
+          <CalendlyButton className="mt-7 inline-block cursor-pointer rounded-full bg-yellow px-7 py-3.5 font-bold text-black transition hover:brightness-95">Plan een kennismaking</CalendlyButton>
         </div>
       </section>
 
@@ -89,7 +89,7 @@ export default function Contact() {
             <div className="mt-8 rounded-[22px] bg-cobalt p-7 text-white">
               <h3 className="text-lg font-bold">Liever meteen een afspraak?</h3>
               <p className="mt-1 text-white/85">Plan zelf een kennismakingsgesprek op een moment dat jou uitkomt.</p>
-              <a href="#kennismaking" className="mt-4 inline-block rounded-full bg-yellow px-5 py-2.5 font-bold text-black">Boek een kennismaking</a>
+              <CalendlyButton className="mt-4 inline-block cursor-pointer rounded-full bg-yellow px-5 py-2.5 font-bold text-black">Boek een kennismaking</CalendlyButton>
             </div>
           </div>
         </div>
