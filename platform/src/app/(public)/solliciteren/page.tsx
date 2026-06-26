@@ -20,13 +20,13 @@ export default async function Solliciteren({ searchParams }: { searchParams: Pro
           <Field label="Telefoon" name="telefoon" type="tel" />
           <Field label="Woonplaats" name="woonplaats" />
         </div>
-        <label className="grid gap-1.5"><span className="text-sm font-bold">Vakgebied</span>
-          <select name="vakgebied" className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+        <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Vakgebied</span>
+          <select name="vakgebied" className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
             <option value="">—</option>
             {Object.entries(VAKGEBIEDEN).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select></label>
-        <label className="grid gap-1.5"><span className="text-sm font-bold">Cv (pdf/doc)</span>
-          <input name="cv" type="file" accept=".pdf,.doc,.docx" className="rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>
+        <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Cv (pdf/doc)</span>
+          <input name="cv" type="file" accept=".pdf,.doc,.docx" className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-cobalt file:px-3 file:py-1.5 file:font-bold file:text-white" /></label>
         <button className="justify-self-start rounded-full bg-cobalt px-6 py-3 font-bold text-white">Verstuur sollicitatie</button>
         <p className="text-xs text-muted">Werkt zodra Supabase gekoppeld is. Je gegevens komen dan direct in het ATS.</p>
       </form>
@@ -36,9 +36,9 @@ export default async function Solliciteren({ searchParams }: { searchParams: Pro
 
 function Field({ label, name, type = "text", required = false }: { label: string; name: string; type?: string; required?: boolean }) {
   return (
-    <label className="grid gap-1.5">
+    <label className="grid min-w-0 gap-1.5">
       <span className="text-sm font-bold">{label}</span>
-      <input name={name} type={type} required={required} className="rounded-xl border-2 border-neutral-200 px-4 py-3" />
+      <input name={name} type={type} required={required} className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" />
     </label>
   );
 }
