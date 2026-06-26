@@ -16,7 +16,7 @@ export default async function NieuweDeal() {
       <Link href="/admin/crm/deals" className="text-sm font-semibold text-cobalt">← Deals</Link>
       <h1 className="display mt-2 text-3xl">Nieuwe deal</h1>
       <div className="mt-8 grid gap-5">
-        <Field label="Titel" name="titel" required placeholder="bijv. 2 Wmo-consulenten Q3" />
+        <Field label="Titel" name="titel" required placeholder="bijv. 2 leerplichtambtenaren Q3" />
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="grid gap-1.5"><span className="text-sm font-bold">Bedrijf</span>
             <select name="company_id" className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">

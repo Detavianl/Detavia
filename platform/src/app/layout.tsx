@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
   keywords: [
-    "detachering sociaal domein", "Wmo consulent", "jeugdconsulent", "klantmanager participatie",
+    "detachering sociaal domein", "leerplichtambtenaar", "klantmanager werk en inkomen", "klantmanager participatie",
     "schuldhulpverlening", "interim sociaal domein", "professionals gemeente", "DetaVia",
   ],
   authors: [{ name: SITE_NAME }],
@@ -48,7 +48,7 @@ const orgJsonLd = {
   url: SITE_URL,
   logo: `${SITE_URL}/img/logo_blue.svg`,
   description: SITE_DESCRIPTION,
-  knowsAbout: ["Wmo", "Jeugdzorg", "Participatiewet", "Schuldhulpverlening", "Sociaal domein"],
+  knowsAbout: ["Leerplicht", "Werk en inkomen", "Participatiewet", "Schuldhulpverlening", "Sociaal domein"],
   areaServed: { "@type": "Country", name: "Nederland" },
 };
 

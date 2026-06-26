@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 const waarden = [
-  { t: "Alleen sociaal domein", d: "Wmo, Jeugd, Participatie en Schuldhulpverlening. Geen versnippering, wel diepe vakkennis en een sterk netwerk." },
+  { t: "Alleen sociaal domein", d: "Leerplicht, Werk en inkomen, Participatie en Schuldhulpverlening. Geen versnippering, wel diepe vakkennis en een sterk netwerk." },
   { t: "Persoonlijk", d: "Een vast aanspreekpunt dat je echt kent. We luisteren eerst, daarna matchen we, geen hagel maar maatwerk." },
   { t: "Betrouwbaar", d: "Heldere afspraken, eerlijke voorwaarden en alles netjes geregeld. We doen wat we beloven." },
   { t: "Betrokken", d: "We blijven meedenken, ook na de plaatsing. Jouw groei en die van de opdracht staan voorop." },

@@ -52,7 +52,7 @@ export default function CandidateForm({ candidate, action, isEdit }: {
             <label className="flex items-end gap-2 pb-3 font-semibold">
               <input type="checkbox" name="rijbewijs" defaultChecked={!!v.rijbewijs} className="h-5 w-5 accent-cobalt" /> Rijbewijs
             </label>
-            <Field className="sm:col-span-2" label="Expertise" name="expertise" placeholder="Wmo, Complexe casuïstiek (komma-gescheiden)" defaultValue={(v.expertise ?? []).join(", ")} />
+            <Field className="sm:col-span-2" label="Expertise" name="expertise" placeholder="Leerplicht, Complexe casuïstiek (komma-gescheiden)" defaultValue={(v.expertise ?? []).join(", ")} />
           </Grid>
         </Card>
 

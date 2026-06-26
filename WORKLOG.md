@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-26 - Vakgebieden hernoemd: Wmo->Leerplicht, Jeugd->Werk en inkomen
+- **Wat is gebouwd/gewijzigd:**
+  - Labels van vakgebieden hernoemd in alle 3 de VAKGEBIEDEN-maps (ats.ts, crm.ts, vacatures-demo.ts): wmo -> "Leerplicht", jeugd -> "Werk en inkomen". Interne sleutels (wmo/jeugd) en DB blijven ongemoeid, dus geen migratie nodig.
+  - Alle losse teksten op de site bijgewerkt (home, voor-opdrachtgevers, vakgebieden, onze-diensten, over-ons, academy, contact-FAQ, menu), inclusief de vakgebied-kaarten met passende nieuwe beschrijvingen (leerplichtambtenaren/RMC; klantmanagers werk en inkomen).
+  - SEO (layout keywords + knowsAbout), SITE_DESCRIPTION, ai-mailer system-prompt en e-mailfooter aangepast. Backend/admin-placeholders (mailer, deals, kandidaatformulier) ook bijgewerkt.
+- **Waarom:**
+  - Klant: leerplicht en werk en inkomen zijn de specialiteiten; overal op de site en in de backend doorvoeren.
+- **Geraakte bestanden:**
+  - lib/ats.ts, lib/crm.ts, lib/vacatures-demo.ts, lib/site.ts, lib/ai-mailer.ts, lib/email-template.ts, app/layout.tsx, app/(public)/{page, voor-opdrachtgevers/page, voor-opdrachtgevers/vakgebieden/page, voor-opdrachtgevers/onze-diensten/page, over-ons/page, professionals/academy/page, contact/page}.tsx, components/SiteHeader.tsx, components/CandidateForm.tsx, app/admin/mailer/page.tsx, app/admin/crm/deals/nieuw/page.tsx.
+
+
 ## 2026-06-26 - Resend-verzending ingebouwd (mailer)
 - **Wat is gebouwd/gewijzigd:**
   - `resend`-pakket geinstalleerd; `src/lib/email.ts` met `sendMail` (from uit RESEND_FROM). Mailer-verzendactie (`sendEmailAction`) verstuurt de AI-HTML nu echt via Resend i.p.v. de stub.

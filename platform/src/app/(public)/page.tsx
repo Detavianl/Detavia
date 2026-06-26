@@ -6,7 +6,7 @@ import { VAKGEBIEDEN, urenLabel } from "@/lib/vacatures-demo";
 export const metadata = {
   title: "Detacheren in het sociaal domein",
   description:
-    "DetaVia verbindt professionals in Wmo, Jeugd, Participatie en Schuldhulpverlening met opdrachten die passen. Bekijk vacatures of vraag een professional aan.",
+    "DetaVia verbindt professionals in Leerplicht, Werk en inkomen, Participatie en Schuldhulpverlening met opdrachten die passen. Bekijk vacatures of vraag een professional aan.",
   alternates: { canonical: "/" },
 };
 export const dynamic = "force-dynamic";

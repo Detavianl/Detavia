@@ -4,12 +4,12 @@ import InlineContactForm from "@/components/InlineContactForm";
 
 export const metadata = {
   title: "Vakgebieden",
-  description: "Specialisten in het hele sociaal domein: Wmo, Jeugd, Participatie, Schuldhulpverlening, Inkomen en Beleid & advies.",
+  description: "Specialisten in het hele sociaal domein: Leerplicht, Werk en inkomen, Participatie, Schuldhulpverlening, Inkomen en Beleid & advies.",
 };
 
 const vakgebieden = [
-  { t: "Wmo", d: "Consulenten en kwaliteitsmedewerkers voor de Wet maatschappelijke ondersteuning." },
-  { t: "Jeugd", d: "Jeugdconsulenten en gedragswetenschappers met oog voor het gezin." },
+  { t: "Leerplicht", d: "Leerplichtambtenaren en RMC-medewerkers die schoolverzuim aanpakken en jongeren terugleiden naar onderwijs of werk." },
+  { t: "Werk en inkomen", d: "Klantmanagers en consulenten werk en inkomen die inwoners begeleiden naar werk en bestaanszekerheid." },
   { t: "Participatie", d: "Klantmanagers en re-integratieadviseurs richting werk en meedoen." },
   { t: "Schuldhulpverlening", d: "Schuldhulpverleners en budgetcoaches voor financiele rust." },
   { t: "Inkomen", d: "Inkomensconsulenten en handhavers binnen het sociaal domein." },
@@ -22,7 +22,7 @@ export default function Vakgebieden() {
       <PageHero
         kicker="Vakgebieden"
         title="Specialisten in het hele sociaal domein"
-        intro="Van Wmo tot beleid: wij kennen elk vakgebied binnen het sociaal domein en weten welke professional past bij jouw vraag."
+        intro="Van leerplicht tot beleid: wij kennen elk vakgebied binnen het sociaal domein en weten welke professional past bij jouw vraag."
       />
 
       <section className="mx-auto max-w-[1180px] px-5 py-20 sm:px-10">

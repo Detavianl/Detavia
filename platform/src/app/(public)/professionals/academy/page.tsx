@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 const aanbod = [
-  { t: "Vakinhoudelijke trainingen", d: "Up-to-date blijven op Wmo, Jeugd, Participatie en Schuldhulp, met trainers uit de praktijk." },
+  { t: "Vakinhoudelijke trainingen", d: "Up-to-date blijven op Leerplicht, Werk en inkomen, Participatie en Schuldhulp, met trainers uit de praktijk." },
   { t: "Intervisie", d: "Leer van vakgenoten. In kleine groepen bespreek je casuistiek en haal je nieuwe inzichten op." },
   { t: "Kennissessies & webinars", d: "Korte sessies over actuele thema's en wetswijzigingen in het sociaal domein." },
   { t: "Persoonlijke ontwikkeling", d: "Coaching en loopbaanbegeleiding, zodat je niet alleen vakinhoudelijk maar ook persoonlijk groeit." },

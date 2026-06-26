@@ -22,7 +22,7 @@ export type MailOutput = { onderwerp: string; html: string; bron: "ai" | "sjablo
 const LOGO = `${SITE_URL}/img/logo.png`;
 
 // Systeem-prompt: bouwt de volledige HTML-mail in DetaVia-huisstijl.
-const SYSTEM = `Je bent de e-mailgenerator van DetaVia, dé detacheringspartner in het sociaal domein (Wmo, Jeugd, Participatie, Schuldhulpverlening).
+const SYSTEM = `Je bent de e-mailgenerator van DetaVia, dé detacheringspartner in het sociaal domein (Leerplicht, Werk en inkomen, Participatie, Schuldhulpverlening).
 Je bouwt één-op-één e-mails in de DetaVia-huisstijl. Geef je output ALTIJD via het build_email-tool (subject + volledige HTML-body).
 
 VISUEEL (DetaVia-huisstijl, licht thema met cobalt #0047FF en geel #FFEA4B):

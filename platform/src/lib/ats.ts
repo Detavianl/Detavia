@@ -45,7 +45,7 @@ export type CandidateFull = {
 export type StageKey = (typeof STAGES)[number]["key"];
 
 export const VAKGEBIEDEN: Record<string, string> = {
-  wmo: "Wmo", jeugd: "Jeugd", participatie: "Participatie",
+  wmo: "Leerplicht", jeugd: "Werk en inkomen", participatie: "Participatie",
   schuld: "Schuldhulpverlening", inkomen: "Inkomen", beleid: "Beleid & Advies",
 };
 

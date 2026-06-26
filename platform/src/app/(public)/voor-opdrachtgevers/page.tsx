@@ -6,7 +6,7 @@ export const metadata = {
 };
 
 const redenen = [
-  { t: "Specialist in het sociaal domein", d: "Wmo, Jeugd, Participatie, Schuldhulp en beleid. Wij kennen de praktijk en de mensen." },
+  { t: "Specialist in het sociaal domein", d: "Leerplicht, Werk en inkomen, Participatie, Schuldhulp en beleid. Wij kennen de praktijk en de mensen." },
   { t: "Snel de juiste match", d: "Een warm netwerk van professionals, dus snel een passende kandidaat zonder eindeloos zoeken." },
   { t: "Volledig ontzorgd", d: "Wij regelen contract, begeleiding en facturatie. Jij houdt grip op je opdracht." },
 ];
@@ -17,8 +17,8 @@ const stappen = [
   { t: "Aan de slag", d: "Wij regelen de rest, de professional begint." },
 ];
 const vakgebieden = [
-  { t: "Wmo", d: "Consulenten en kwaliteitsmedewerkers voor de Wet maatschappelijke ondersteuning." },
-  { t: "Jeugd", d: "Jeugdconsulenten en gedragswetenschappers met oog voor het gezin." },
+  { t: "Leerplicht", d: "Leerplichtambtenaren en RMC-medewerkers die schoolverzuim aanpakken en jongeren terugleiden naar onderwijs of werk." },
+  { t: "Werk en inkomen", d: "Klantmanagers en consulenten werk en inkomen die inwoners begeleiden naar werk en bestaanszekerheid." },
   { t: "Participatie", d: "Klantmanagers en re-integratieadviseurs richting werk en meedoen." },
   { t: "Schuldhulpverlening", d: "Schuldhulpverleners en budgetcoaches voor financiële rust." },
   { t: "Inkomen", d: "Inkomensconsulenten en handhavers binnen het sociaal domein." },
@@ -39,7 +39,7 @@ export default function VoorOpdrachtgevers() {
           <div>
             <p className="text-xs font-bold uppercase tracking-[.16em] text-arctic">Voor opdrachtgevers</p>
             <h1 className="display mt-3 text-4xl sm:text-6xl">De juiste professional in het sociaal domein</h1>
-            <p className="mt-6 max-w-[44ch] text-lg font-medium text-white/90">Personeel nodig voor Wmo, Jeugd, Participatie of Schuldhulpverlening? Wij koppelen je snel aan de juiste mensen, en ontzorgen je volledig.</p>
+            <p className="mt-6 max-w-[44ch] text-lg font-medium text-white/90">Personeel nodig voor Leerplicht, Werk en inkomen, Participatie of Schuldhulpverlening? Wij koppelen je snel aan de juiste mensen, en ontzorgen je volledig.</p>
             <div className="mt-8 flex flex-wrap gap-3.5">
               <a href="#aanvraag" className="rounded-full bg-yellow px-6 py-3.5 font-bold text-black">Vraag een professional aan</a>
               <a href="tel:+31000000000" className="rounded-full border-2 border-white px-6 py-3.5 font-bold text-white">Bel ons direct</a>
@@ -151,7 +151,7 @@ export default function VoorOpdrachtgevers() {
               </div>
               <label className="grid gap-1.5">
                 <span className="text-sm font-bold">Wat zoek je?</span>
-                <textarea name="bericht" rows={4} placeholder="bv. een Wmo-consulent voor 32 uur, per september, in Almere" className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3" />
+                <textarea name="bericht" rows={4} placeholder="bv. een leerplichtambtenaar voor 32 uur, per september" className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3" />
               </label>
               <button className="justify-self-start rounded-full bg-cobalt px-6 py-3 font-bold text-white">Verstuur aanvraag</button>
               <p className="text-xs text-muted">Vrijblijvend. We reageren snel en persoonlijk.</p>

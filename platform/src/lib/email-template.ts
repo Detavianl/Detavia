@@ -51,7 +51,7 @@ export function renderDetaviaEmail({ onderwerp, body, ctaLabel, ctaUrl }: EmailI
     <!-- footer -->
     <tr><td style="padding:20px 32px;background:#fafafa;border-top:1px solid #eee;color:#9a9aa2;font-size:12px;line-height:1.6;">
       DetaVia &middot; Argonweg 72, 1362 AD Almere<br>
-      Specialist in het sociaal domein &middot; Wmo &middot; Jeugd &middot; Participatie &middot; Schuldhulpverlening
+      Specialist in het sociaal domein &middot; Leerplicht &middot; Werk en inkomen &middot; Participatie &middot; Schuldhulpverlening
     </td></tr>
   </table>
   <div style="color:#b5b5bd;font-size:11px;margin-top:14px;">Deze e-mail is verstuurd door DetaVia.</div>

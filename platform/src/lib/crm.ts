@@ -32,7 +32,7 @@ export const COMPANY_STATUS: Record<string, string> = {
 };
 
 export const VAKGEBIEDEN: Record<string, string> = {
-  wmo: "Wmo", jeugd: "Jeugd", participatie: "Participatie",
+  wmo: "Leerplicht", jeugd: "Werk en inkomen", participatie: "Participatie",
   schuld: "Schuldhulpverlening", inkomen: "Inkomen", beleid: "Beleid & Advies",
 };
 

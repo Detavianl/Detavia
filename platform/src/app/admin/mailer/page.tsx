@@ -41,7 +41,7 @@ export default function MailerPage() {
           <button onClick={genereer} disabled={bezig} className="h-[50px] rounded-full bg-cobalt px-6 font-bold text-white disabled:opacity-60">{bezig ? "Genereren…" : "✨ Genereer met AI"}</button>
         </div>
         <Field label="Context / aanvullende info" className="mt-4">
-          <textarea value={context} onChange={(e) => setContext(e.target.value)} rows={2} placeholder="bv. Wmo-opdracht in Almere, gesprek op donderdag 3 juli om 14:00, link https://detavia.nl/contact" className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" />
+          <textarea value={context} onChange={(e) => setContext(e.target.value)} rows={2} placeholder="bv. leerplicht-opdracht, gesprek op donderdag 3 juli om 14:00, link https://detavia.nl/contact" className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" />
         </Field>
       </section>
 
