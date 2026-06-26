@@ -1,4 +1,5 @@
 import { submitContact } from "../actions";
+import { CALENDLY_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Voor opdrachtgevers | DetaVia",
@@ -42,7 +43,7 @@ export default function VoorOpdrachtgevers() {
             <p className="mt-6 max-w-[44ch] text-lg font-medium text-white/90">Personeel nodig voor Leerplicht, Werk en inkomen, Participatie of Schuldhulpverlening? Wij koppelen je snel aan de juiste mensen, en ontzorgen je volledig.</p>
             <div className="mt-8 flex flex-wrap gap-3.5">
               <a href="#aanvraag" className="rounded-full bg-yellow px-6 py-3.5 font-bold text-black">Vraag een professional aan</a>
-              <a href="tel:+31000000000" className="rounded-full border-2 border-white px-6 py-3.5 font-bold text-white">Bel ons direct</a>
+              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="rounded-full border-2 border-white px-6 py-3.5 font-bold text-white">Boek een kennismaking</a>
             </div>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}

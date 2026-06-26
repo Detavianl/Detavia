@@ -1,5 +1,17 @@
 # Worklog
 
+## 2026-06-26 - Contact/Calendly, Over ons-bullet, Academy-cursussen + ZZP, algemene CTA's
+- **Wat is gebouwd/gewijzigd:**
+  - Contact + voor-opdrachtgevers: "Bel ons direct" vervangen door "Boek een kennismaking" met Calendly-link. Centrale CALENDLY_URL in site.ts (env NEXT_PUBLIC_CALENDLY_URL, fallback placeholder calendly.com/detavia/kennismaking, nog te vervangen).
+  - Over ons: de bullet "Betrokken, ook na de start" naar boven gezet en aangescherpt (onderscheid: blijvend betrokken nadat de nieuwe collega is gestart).
+  - Academy: sectie met 3 uitgelichte cursussen (Basiscursus Participatiewet, Het sociaal domein in vogelvlucht, De wet inburgering theorie en praktijk) + nieuwe sectie "Veilig zzp'en bij DetaVia" (concepttekst, Kevin vult aan).
+  - CTA's gecontroleerd op gemeente-specifieke voorbeelden: placeholders algemener gemaakt; CTA's zelf waren al algemeen.
+- **Waarom:**
+  - Wijzigingen uit het overleg (Kevin-lijst). Calendly-URL en definitieve teksten/foto's + 3 vaste vacatures komen later van Kevin.
+- **Geraakte bestanden:**
+  - lib/site.ts, app/(public)/contact/page.tsx, app/(public)/voor-opdrachtgevers/page.tsx, app/(public)/over-ons/page.tsx, app/(public)/professionals/academy/page.tsx.
+
+
 ## 2026-06-26 - Vakgebieden hernoemd: Wmo->Leerplicht, Jeugd->Werk en inkomen
 - **Wat is gebouwd/gewijzigd:**
   - Labels van vakgebieden hernoemd in alle 3 de VAKGEBIEDEN-maps (ats.ts, crm.ts, vacatures-demo.ts): wmo -> "Leerplicht", jeugd -> "Werk en inkomen". Interne sleutels (wmo/jeugd) en DB blijven ongemoeid, dus geen migratie nodig.

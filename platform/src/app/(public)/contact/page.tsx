@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { submitContact } from "../actions";
+import { CALENDLY_URL } from "@/lib/site";
 
 export const metadata = { title: "Contact & veelgestelde vragen | DetaVia" };
 
@@ -76,9 +77,9 @@ export default function Contact() {
               <dt className="mt-4 font-bold">Adres</dt><dd className="text-muted">[ Argonweg 72, 1362 AD Almere ]</dd>
             </dl>
             <div className="mt-8 rounded-[22px] bg-cobalt p-7 text-white">
-              <h3 className="text-lg font-bold">Liever direct iemand spreken?</h3>
-              <p className="mt-1 text-white/85">We staan je graag persoonlijk te woord tijdens kantooruren.</p>
-              <a href="tel:+31000000000" className="mt-4 inline-block rounded-full bg-yellow px-5 py-2.5 font-bold text-black">Bel ons direct</a>
+              <h3 className="text-lg font-bold">Liever meteen een afspraak?</h3>
+              <p className="mt-1 text-white/85">Plan zelf een kennismakingsgesprek op een moment dat jou uitkomt.</p>
+              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block rounded-full bg-yellow px-5 py-2.5 font-bold text-black">Boek een kennismaking</a>
             </div>
           </div>
         </div>

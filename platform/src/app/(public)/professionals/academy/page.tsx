@@ -14,6 +14,13 @@ const aanbod = [
   { t: "Persoonlijke ontwikkeling", d: "Coaching en loopbaanbegeleiding, zodat je niet alleen vakinhoudelijk maar ook persoonlijk groeit." },
 ];
 
+// Uitgelichte cursussen (concepttekst, wordt door Kevin aangevuld).
+const cursussen = [
+  { t: "Basiscursus Participatiewet", d: "De kern van de Participatiewet, helder en praktijkgericht. Ideaal als basis of opfrisser voor klantmanagers en consulenten." },
+  { t: "Het sociaal domein in vogelvlucht", d: "Overzicht van de wetten, ketenpartners en samenhang binnen het sociaal domein. Snel thuis in het hele speelveld." },
+  { t: "De wet inburgering: theorie en praktijk", d: "Van wettelijk kader tot de uitvoering in de praktijk. Wat de Wet inburgering betekent voor jouw werk met inburgeraars." },
+];
+
 export default function Academy() {
   return (
     <>
@@ -33,6 +40,41 @@ export default function Academy() {
               <p className="mt-2 text-muted">{a.d}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="bg-cobalt text-white">
+        <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-10">
+          <p className="text-xs font-bold uppercase tracking-[.16em] opacity-70">Uitgelichte cursussen</p>
+          <h2 className="display mt-2 text-3xl sm:text-4xl">Drie cursussen om mee te starten</h2>
+          <p className="mt-3 max-w-[52ch] text-lg text-white/80">Onze meest gevraagde trainingen voor professionals in het sociaal domein, gegeven door mensen die het werk zelf doen.</p>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {cursussen.map((c, i) => (
+              <div key={c.t} className="rounded-[22px] bg-white/10 p-7 ring-1 ring-white/15">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-yellow text-sm font-extrabold text-black">{i + 1}</span>
+                <h3 className="mt-4 text-xl font-bold">{c.t}</h3>
+                <p className="mt-2 text-white/80">{c.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1180px] px-5 py-20 sm:px-10">
+        <div className="grid items-center gap-10 md:grid-cols-2">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[.16em] opacity-60">Veilig zzp'en</p>
+            <h2 className="display mt-2 text-3xl sm:text-4xl">Veilig zzp'en bij DetaVia</h2>
+            <p className="mt-4 max-w-[48ch] text-lg text-muted">Als zelfstandige aan de slag in het sociaal domein, zonder gedoe of risico. Bij DetaVia regelen we de samenwerking zo dat je veilig en zorgeloos als zzp'er kunt werken. Geen schijnzelfstandigheid, wel duidelijke afspraken en een vast aanspreekpunt.</p>
+          </div>
+          <ul className="grid gap-3">
+            {["Werken volgens een goedgekeurde modelovereenkomst", "Helder over de wet DBA, geen risico op schijnzelfstandigheid", "Correcte, tijdige betaling en heldere voorwaarden", "Een vast aanspreekpunt dat met je meedenkt"].map((p) => (
+              <li key={p} className="flex items-start gap-3 rounded-[18px] border-[1.5px] border-neutral-200 p-4">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-yellow text-sm font-extrabold">✓</span>
+                <span className="font-semibold">{p}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
