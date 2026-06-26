@@ -44,6 +44,7 @@ const opdrachtgevers: Menu = {
 };
 
 const simpleNav: Item[] = [
+  { href: "/verhalen", label: "Verhalen" },
   { href: "/over-ons", label: "Over ons" },
   { href: "/contact", label: "Contact" },
 ];
