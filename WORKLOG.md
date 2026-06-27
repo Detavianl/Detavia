@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-27 - Nepdata (3 vacatures + 3 verhalen) + backend getest
+- **Wat is gebouwd/gewijzigd:**
+  - 3 nepvacatures (Leerplichtambtenaar/Almere, Klantmanager Werk en Inkomen/Utrecht, Consulent Participatie/Zwolle) en 3 nepverhalen in Supabase gezet via de service-role REST API (met omschrijving, taken, eisen resp. content_html, excerpt, gepubliceerd).
+  - "Verhalen" toegevoegd aan het hoofdmenu (desktop + mobiel).
+  - End-to-end getest op live: publieke lijst- en detailpagina's van vacatures en verhalen (mobiel 390px, geen overflow, content rendert) en de backend (/admin/vacatures en /admin/blog laden en tonen alle nepdata; admin mobiel geen overflow).
+- **Waarom:**
+  - Klant wilde testdata op de site en in de backend, en de backend laten testen.
+- **Geraakte bestanden:**
+  - components/SiteHeader.tsx (Verhalen-menu-item). Data staat in de database (vacatures + blog_posts), niet in code.
+
+
 ## 2026-06-26 - Mobielaudit: hamburgermenu + overflow-fix
 - **Wat is gebouwd/gewijzigd:**
   - Mobiel hamburgermenu toegevoegd aan SiteHeader (de nav was hidden lg:flex zonder mobiele variant, dus < 1024px was er geen menu). Met uitklapbare secties Professionals/Opdrachtgevers + knoppen Personeel nodig? en Inloggen. Geverifieerd op live (390px): opent met alle items.
