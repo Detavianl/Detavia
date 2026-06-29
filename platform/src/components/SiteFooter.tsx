@@ -16,7 +16,11 @@ export default function SiteFooter() {
         </div>
         <div className="mt-10 flex flex-wrap justify-between gap-4 border-t border-neutral-200 pt-6 text-sm text-muted">
           <span>© 2026 DetaVia. Alle rechten voorbehouden.</span>
-          <span>Algemene voorwaarden · Disclaimer · Privacy</span>
+          <span className="flex flex-wrap gap-x-1.5 gap-y-1">
+            <Link href="/algemene-voorwaarden" className="hover:text-cobalt">Algemene voorwaarden</Link>
+            <span aria-hidden>·</span>
+            <Link href="/disclaimer-privacy-en-gebruikersvoorwaarden" className="hover:text-cobalt">Disclaimer, privacy &amp; gebruikersvoorwaarden</Link>
+          </span>
         </div>
       </div>
     </footer>
