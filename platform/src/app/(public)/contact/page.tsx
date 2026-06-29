@@ -76,15 +76,14 @@ export default function Contact() {
                 Liever gebeld worden? Vink aan, dan bellen wij jou.
               </label>
               <button className="justify-self-start rounded-full bg-black px-6 py-3 font-bold text-white" type="submit">Verstuur</button>
-              <p className="text-xs text-muted">Komt binnen bij het beheer (contactberichten) zodra Supabase gekoppeld is.</p>
             </form>
           </div>
           <div>
             <h2 className="display text-2xl">Direct contact</h2>
             <dl className="mt-6">
-              <dt className="mt-4 font-bold">E-mail</dt><dd><a href="mailto:info@detavia.nl" className="text-cobalt hover:underline">[ info@detavia.nl ]</a></dd>
-              <dt className="mt-4 font-bold">Telefoon</dt><dd><a href="tel:+31000000000" className="text-cobalt hover:underline">[ telefoonnummer ]</a></dd>
-              <dt className="mt-4 font-bold">Adres</dt><dd className="text-muted">[ Argonweg 72, 1362 AD Almere ]</dd>
+              <dt className="mt-4 font-bold">E-mail</dt><dd><a href="mailto:info@detavia.nl" className="text-cobalt hover:underline">info@detavia.nl</a></dd>
+              <dt className="mt-4 font-bold">Telefoon</dt><dd><a href="tel:080xxxxxx" className="text-cobalt hover:underline">080xxxxxx</a></dd>
+              <dt className="mt-4 font-bold">Adres</dt><dd className="text-muted">Argonweg 72, 1362 AD Almere</dd>
             </dl>
             <div className="mt-8 rounded-[22px] bg-cobalt p-7 text-white">
               <h3 className="text-lg font-bold">Liever meteen een afspraak?</h3>

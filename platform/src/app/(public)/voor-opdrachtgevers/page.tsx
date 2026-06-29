@@ -137,8 +137,8 @@ export default function VoorOpdrachtgevers() {
             <h2 className="display text-3xl sm:text-4xl">Vraag een professional aan</h2>
             <p className="mt-3 max-w-[46ch] text-lg text-muted">Laat je gegevens achter en vertel kort wat je zoekt. We nemen snel persoonlijk contact met je op, vrijblijvend.</p>
             <dl className="mt-8 grid gap-3 text-sm">
-              <div><dt className="font-bold">Telefoon</dt><dd><a href="tel:+31000000000" className="text-cobalt">[ telefoonnummer ]</a></dd></div>
-              <div><dt className="font-bold">E-mail</dt><dd><a href="mailto:info@detavia.nl" className="text-cobalt">[ info@detavia.nl ]</a></dd></div>
+              <div><dt className="font-bold">Telefoon</dt><dd><a href="tel:080xxxxxx" className="text-cobalt">080xxxxxx</a></dd></div>
+              <div><dt className="font-bold">E-mail</dt><dd><a href="mailto:info@detavia.nl" className="text-cobalt">info@detavia.nl</a></dd></div>
             </dl>
           </div>
           <form action={submitContact} className="rounded-[22px] bg-neutral-100 p-8">

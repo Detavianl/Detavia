@@ -28,7 +28,6 @@ export default async function Solliciteren({ searchParams }: { searchParams: Pro
         <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Cv (pdf/doc)</span>
           <input name="cv" type="file" accept=".pdf,.doc,.docx" className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-cobalt file:px-3 file:py-1.5 file:font-bold file:text-white" /></label>
         <button className="justify-self-start rounded-full bg-cobalt px-6 py-3 font-bold text-white">Verstuur sollicitatie</button>
-        <p className="text-xs text-muted">Werkt zodra Supabase gekoppeld is. Je gegevens komen dan direct in het ATS.</p>
       </form>
     </section>
   );

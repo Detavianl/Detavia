@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-29 - Testvacature vervangen + contactgegevens opgeschoond
+- **Wat is gewijzigd:**
+  - Testvacature "Klantmanager Werk en Inkomen" vervangen door "Klantmanager Inburgering" (vakgebied beleid = Inburgering, eigen slug, omschrijving/taken/eisen) in de live DB.
+  - Contactgegevens op contact- en opdrachtgeverspagina: haakjes weg, e-mail info@detavia.nl, adres Argonweg 72 1362 AD Almere, telefoon voorlopig placeholder 080xxxxxx (echte nummer volgt).
+  - Dev-notities verwijderd op contactformulier en sollicitatieformulier ("...zodra Supabase gekoppeld is").
+- **Waarom:**
+  - Klant: testvacature vervangen; contactgegevens kloppend maken (nummer komt nog, voorlopig 080xxxxxx).
+- **Geraakte bestanden:**
+  - app/(public)/contact/page.tsx, app/(public)/voor-opdrachtgevers/page.tsx, app/(public)/solliciteren/page.tsx. Data: vacatures-rij in DB.
+
+
 ## 2026-06-29 - Homepage-foto + vakgebieden: Werk/Inkomen los, Beleid->Inburgering
 - **Wat is gewijzigd:**
   - Homepage-hero gebruikt nu een nieuwe Pexels-foto (vrouw met wit overhemd, public/img/hero-vrouw-wit-overhemd.jpg).
