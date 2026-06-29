@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-29 - Toegangscode-poort voor de hele site
+- **Wat is gebouwd:**
+  - Pre-launch toegangspoort: bezoekers moeten eerst een toegangscode invoeren (0492) voordat ze de site zien. Code wordt server-side gecontroleerd (verifyToegang), staat niet in de client-bundle; na invoer onthoudt een httpOnly-cookie het 30 dagen. Geldt voor de hele site via de middleware (alles behalve /toegang en statische assets). DetaVia-gestylede /toegang-pagina (cobalt, logo, codeveld).
+  - Code is te wijzigen via env SITE_ACCESS_CODE (default 0492).
+- **Waarom:**
+  - Klant wil de site afschermen met een toegangscode tot livegang.
+- **Geraakte bestanden:**
+  - lib/toegang.ts (nieuw), app/toegang/page.tsx + actions.ts (nieuw), middleware.ts.
+
+
 ## 2026-06-29 - Site-URL standaard op www.detavia.nl
 - **Wat is gewijzigd:**
   - SITE_URL-default in lib/site.ts van detavia.vercel.app naar https://www.detavia.nl gezet, zodat sitemap, canonical-tags, social previews en het mailer-logo het echte domein gebruiken zonder dat er een Vercel-env nodig is (NEXT_PUBLIC_SITE_URL kan het nog steeds overschrijven).

@@ -1,8 +1,22 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { TOEGANG_COOKIE, TOEGANG_TOKEN } from "@/lib/toegang";
 
-// Refresht de Supabase-sessie op elke request en beschermt /admin/*.
+// Refresht de Supabase-sessie op elke request, beschermt /admin/* en zet een
+// toegangscode-poort voor de hele site (pre-launch).
 export async function middleware(request: NextRequest) {
+  const pad = request.nextUrl.pathname;
+
+  // Toegangspoort: zonder geldige cookie eerst naar /toegang.
+  const heeftToegang = request.cookies.get(TOEGANG_COOKIE)?.value === TOEGANG_TOKEN;
+  if (!heeftToegang && pad !== "/toegang") {
+    const naar = request.nextUrl.clone();
+    naar.pathname = "/toegang";
+    naar.search = "";
+    naar.searchParams.set("next", pad + request.nextUrl.search);
+    return NextResponse.redirect(naar);
+  }
+
   let response = NextResponse.next({ request });
 
   // Zonder geconfigureerde Supabase (lokaal nog niet gekoppeld): niets doen,
