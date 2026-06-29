@@ -1,10 +1,10 @@
 export const VAKGEBIEDEN: Record<string, string> = {
   wmo: "Leerplicht",
-  jeugd: "Werk en inkomen",
+  jeugd: "Werk",
   participatie: "Participatie",
   schuld: "Schuldhulpverlening",
   inkomen: "Inkomen",
-  beleid: "Beleid & Advies",
+  beleid: "Inburgering",
 };
 
 export type Vacature = {

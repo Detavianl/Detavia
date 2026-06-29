@@ -6,7 +6,7 @@ export const metadata = { title: "Contact & veelgestelde vragen | DetaVia" };
 
 const faq = [
   ["Voor wie is DetaVia bedoeld?", "Voor professionals in het sociaal domein, van starter tot ervaren consulent of adviseur, die via detachering willen werken aan opdrachten met impact."],
-  ["In welke vakgebieden bemiddelt DetaVia?", "Uitsluitend binnen het sociaal domein: Leerplicht, Werk en inkomen, Participatie, Schuldhulpverlening, Inkomen en Beleid & Advies."],
+  ["In welke vakgebieden bemiddelt DetaVia?", "Uitsluitend binnen het sociaal domein: Leerplicht, Werk, Inkomen, Participatie, Schuldhulpverlening en Inburgering."],
   ["Hoe verloopt het traject?", "Kennismaking, match, plaatsing en begeleiding. We nemen persoonlijk contact op na je bericht of sollicitatie."],
 ];
 

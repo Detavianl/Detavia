@@ -6,7 +6,7 @@ import { VAKGEBIEDEN, urenLabel } from "@/lib/vacatures-demo";
 export const metadata = {
   title: "Detacheren in het sociaal domein",
   description:
-    "DetaVia verbindt professionals in Leerplicht, Werk en inkomen, Participatie en Schuldhulpverlening met opdrachten die passen. Bekijk vacatures of vraag een professional aan.",
+    "DetaVia verbindt professionals in Leerplicht, Werk, Inkomen, Participatie en Schuldhulpverlening met opdrachten die passen. Bekijk vacatures of vraag een professional aan.",
   alternates: { canonical: "/" },
 };
 export const dynamic = "force-dynamic";
@@ -30,7 +30,7 @@ export default async function Home() {
           </div>
           <div className="order-first md:order-none">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/img/smiling-woman-600x600.jpg" alt="Professional in het sociaal domein"
+            <img src="/img/hero-vrouw-wit-overhemd.jpg" alt="Lachende professional in het sociaal domein"
                  className="aspect-[4/5] w-full rounded-[22px] object-cover shadow-2xl" />
           </div>
         </div>

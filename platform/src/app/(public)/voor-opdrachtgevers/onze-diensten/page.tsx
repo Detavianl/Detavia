@@ -43,7 +43,7 @@ export default function OnzeDiensten() {
             <p className="mt-4 max-w-[46ch] text-lg text-muted">Wij doen uitsluitend het sociaal domein. Die volledige focus betekent dat we de praktijk, de wetgeving en de mensen kennen, en dus sneller de juiste match maken.</p>
           </div>
           <ul className="grid gap-3">
-            {["Diepe kennis van Leerplicht, Werk en inkomen, Participatie en Schuldhulp", "Een warm netwerk van professionals", "Korte lijnen en een vaste contactpersoon", "Alles netjes geregeld volgens cao"].map((p) => (
+            {["Diepe kennis van Leerplicht, Werk, Inkomen, Participatie en Schuldhulp", "Een warm netwerk van professionals", "Korte lijnen en een vaste contactpersoon", "Alles netjes geregeld volgens cao"].map((p) => (
               <li key={p} className="flex items-start gap-3 rounded-[18px] bg-white p-4 shadow-sm">
                 <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-yellow text-sm font-extrabold">✓</span>
                 <span className="font-semibold">{p}</span>

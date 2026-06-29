@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-29 - Homepage-foto + vakgebieden: Werk/Inkomen los, Beleid->Inburgering
+- **Wat is gewijzigd:**
+  - Homepage-hero gebruikt nu een nieuwe Pexels-foto (vrouw met wit overhemd, public/img/hero-vrouw-wit-overhemd.jpg).
+  - Vakgebieden bijgewerkt: "Werk en inkomen" hernoemd naar "Werk" (Werk en Inkomen staan nu als losse secties; de Inkomen-kaart bestond al), en "Beleid & Advies" vervangen door "Inburgering". Doorgevoerd in de 3 VAKGEBIEDEN-maps + alle teksten (home, voor-opdrachtgevers, vakgebieden, onze-diensten, over-ons, academy, contact-FAQ, menu), SEO (layout keywords/knowsAbout), SITE_DESCRIPTION, ai-mailer-prompt en e-mailfooter. Kaartbeschrijvingen van Werk en Inburgering passend gemaakt.
+- **Waarom:**
+  - Klant: foto voor de homepage; Werk en Inkomen als aparte secties; Beleid & Advies wordt Inburgering.
+- **Geraakte bestanden:**
+  - public/img/hero-vrouw-wit-overhemd.jpg (nieuw), app/(public)/page.tsx, lib/{ats,crm,vacatures-demo,site,ai-mailer,email-template}.ts, app/layout.tsx, app/(public)/{contact,over-ons,professionals/academy,voor-opdrachtgevers/page,voor-opdrachtgevers/vakgebieden/page,voor-opdrachtgevers/onze-diensten/page}.tsx, components/SiteHeader.tsx.
+
+
 ## 2026-06-29 - Toegangscode-poort voor de hele site
 - **Wat is gebouwd:**
   - Pre-launch toegangspoort: bezoekers moeten eerst een toegangscode invoeren (0492) voordat ze de site zien. Code wordt server-side gecontroleerd (verifyToegang), staat niet in de client-bundle; na invoer onthoudt een httpOnly-cookie het 30 dagen. Geldt voor de hele site via de middleware (alles behalve /toegang en statische assets). DetaVia-gestylede /toegang-pagina (cobalt, logo, codeveld).

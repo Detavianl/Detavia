@@ -9,4 +9,4 @@ export const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://cal
 export const SITE_NAME = "DetaVia";
 export const SITE_TAGLINE = "Specialist in het sociaal domein";
 export const SITE_DESCRIPTION =
-  "DetaVia is uitsluitend gespecialiseerd in het sociaal domein. Wij verbinden professionals in Leerplicht, Werk en inkomen, Participatie en Schuldhulpverlening met opdrachtgevers, en ontzorgen volledig.";
+  "DetaVia is uitsluitend gespecialiseerd in het sociaal domein. Wij verbinden professionals in Leerplicht, Werk, Inkomen, Participatie en Schuldhulpverlening met opdrachtgevers, en ontzorgen volledig.";

@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 const redenen = [
-  { t: "Specialist in het sociaal domein", d: "Leerplicht, Werk en inkomen, Participatie, Schuldhulp en beleid. Wij kennen de praktijk en de mensen." },
+  { t: "Specialist in het sociaal domein", d: "Leerplicht, Werk, Inkomen, Participatie, Schuldhulp en inburgering. Wij kennen de praktijk en de mensen." },
   { t: "Snel de juiste match", d: "Een warm netwerk van professionals, dus snel een passende kandidaat zonder eindeloos zoeken." },
   { t: "Volledig ontzorgd", d: "Wij regelen contract, begeleiding en facturatie. Jij houdt grip op je opdracht." },
 ];
@@ -19,11 +19,11 @@ const stappen = [
 ];
 const vakgebieden = [
   { t: "Leerplicht", d: "Leerplichtambtenaren en RMC-medewerkers die schoolverzuim aanpakken en jongeren terugleiden naar onderwijs of werk." },
-  { t: "Werk en inkomen", d: "Klantmanagers en consulenten werk en inkomen die inwoners begeleiden naar werk en bestaanszekerheid." },
+  { t: "Werk", d: "Consulenten en klantmanagers die inwoners begeleiden naar passend werk." },
   { t: "Participatie", d: "Klantmanagers en re-integratieadviseurs richting werk en meedoen." },
   { t: "Schuldhulpverlening", d: "Schuldhulpverleners en budgetcoaches voor financiële rust." },
   { t: "Inkomen", d: "Inkomensconsulenten en handhavers binnen het sociaal domein." },
-  { t: "Beleid & advies", d: "Beleidsadviseurs en projectleiders voor het sociaal domein." },
+  { t: "Inburgering", d: "Klantmanagers en consulenten inburgering die nieuwkomers wegwijs maken in taal, werk en samenleving." },
 ];
 const diensten = [
   { t: "Detachering", d: "Onze professional, jouw opdracht. Wij blijven werkgever en ontzorgen volledig." },
@@ -40,7 +40,7 @@ export default function VoorOpdrachtgevers() {
           <div>
             <p className="text-xs font-bold uppercase tracking-[.16em] text-arctic">Voor opdrachtgevers</p>
             <h1 className="display mt-3 text-4xl sm:text-6xl">De juiste professional in het sociaal domein</h1>
-            <p className="mt-6 max-w-[44ch] text-lg font-medium text-white/90">Personeel nodig voor Leerplicht, Werk en inkomen, Participatie of Schuldhulpverlening? Wij koppelen je snel aan de juiste mensen, en ontzorgen je volledig.</p>
+            <p className="mt-6 max-w-[44ch] text-lg font-medium text-white/90">Personeel nodig voor Leerplicht, Werk, Inkomen, Participatie of Schuldhulpverlening? Wij koppelen je snel aan de juiste mensen, en ontzorgen je volledig.</p>
             <div className="mt-8 flex flex-wrap gap-3.5">
               <a href="#aanvraag" className="rounded-full bg-yellow px-6 py-3.5 font-bold text-black">Vraag een professional aan</a>
               <CalendlyButton className="cursor-pointer rounded-full border-2 border-white px-6 py-3.5 font-bold text-white">Boek een kennismaking</CalendlyButton>

@@ -8,7 +8,7 @@ export const metadata = {
 
 const waarden = [
   { t: "Betrokken, ook na de start", d: "We blijven betrokken nadat de nieuwe collega is gestart. Juist die blijvende betrokkenheid na de plaatsing maakt voor ons het verschil, voor de professional en voor de opdracht." },
-  { t: "Alleen sociaal domein", d: "Leerplicht, Werk en inkomen, Participatie en Schuldhulpverlening. Geen versnippering, wel diepe vakkennis en een sterk netwerk." },
+  { t: "Alleen sociaal domein", d: "Leerplicht, Werk, Inkomen, Participatie en Schuldhulpverlening. Geen versnippering, wel diepe vakkennis en een sterk netwerk." },
   { t: "Persoonlijk", d: "Een vast aanspreekpunt dat je echt kent. We luisteren eerst, daarna matchen we, geen hagel maar maatwerk." },
   { t: "Betrouwbaar", d: "Heldere afspraken, eerlijke voorwaarden en alles netjes geregeld. We doen wat we beloven." },
 ];

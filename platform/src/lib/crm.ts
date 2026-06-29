@@ -32,8 +32,8 @@ export const COMPANY_STATUS: Record<string, string> = {
 };
 
 export const VAKGEBIEDEN: Record<string, string> = {
-  wmo: "Leerplicht", jeugd: "Werk en inkomen", participatie: "Participatie",
-  schuld: "Schuldhulpverlening", inkomen: "Inkomen", beleid: "Beleid & Advies",
+  wmo: "Leerplicht", jeugd: "Werk", participatie: "Participatie",
+  schuld: "Schuldhulpverlening", inkomen: "Inkomen", beleid: "Inburgering",
 };
 
 export const euro = (n: number | null | undefined) =>
