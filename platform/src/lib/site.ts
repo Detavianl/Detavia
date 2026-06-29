@@ -1,6 +1,6 @@
-// Centrale site-config voor SEO. Zet NEXT_PUBLIC_SITE_URL in Vercel zodra er een
-// eigen domein is (bv. https://www.detavia.nl); anders valt hij terug op de Vercel-URL.
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://detavia.vercel.app").replace(/\/$/, "");
+// Centrale site-config voor SEO. Standaard het live domein; te overschrijven met
+// NEXT_PUBLIC_SITE_URL in Vercel indien nodig.
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.detavia.nl").replace(/\/$/, "");
 
 // Calendly-link voor het boeken van een kennismaking. Zet NEXT_PUBLIC_CALENDLY_URL
 // in Vercel (of vervang de fallback) zodra de definitieve Calendly-URL bekend is.

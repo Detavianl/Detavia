@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-29 - Site-URL standaard op www.detavia.nl
+- **Wat is gewijzigd:**
+  - SITE_URL-default in lib/site.ts van detavia.vercel.app naar https://www.detavia.nl gezet, zodat sitemap, canonical-tags, social previews en het mailer-logo het echte domein gebruiken zonder dat er een Vercel-env nodig is (NEXT_PUBLIC_SITE_URL kan het nog steeds overschrijven).
+- **Waarom:**
+  - Domein is live; klant wilde dat ik dit regel (Vercel-env kan ik niet zetten, dus via de code-default opgelost).
+- **Geraakte bestanden:**
+  - lib/site.ts.
+
+
 ## 2026-06-29 - Domein detavia.nl live gekoppeld aan Vercel
 - **Wat is gedaan:**
   - Domein detavia.nl (registrar TransIP) gekoppeld aan Vercel. Nameservers teruggezet naar TransIP (ns0/ns1/ns2). DNS-records: @ A -> 76.76.21.21, www CNAME -> 03d43c388aefcab8.vercel-dns-017.com; AAAA en wildcards verwijderd; alle mailrecords (MX/SPF/DKIM/autoconfig/autodiscover/x-transip-mail-auth/_dmarc) ongemoeid.
