@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-29 - Account terug naar super_admin + rollen geverifieerd
+- **Wat is gewijzigd:**
+  - admin_users-account (Badr, user_id cb56c8db) teruggezet van recruiter naar super_admin en naam "Testrecruiter" -> "Badr".
+  - 3 testplaatsingen gekoppeld aan deze recruiter zodat de rekenhulp (uren-kolom) zichtbaar werd tijdens de uitleg.
+  - Rollensysteem geverifieerd (geen code-wijziging nodig): DB-constraint super_admin/admin/recruiter, getAdmin leest rol uit admin_users, requireRole dwingt hierarchie af, /admin/team (super_admin) beheert rollen. Live bevestigd: super_admin ziet alles + Marge-instellingen + Team.
+- **Waarom:**
+  - Klant wilde het account terug op super_admin en zeker weten dat de rollen echt werken.
+- **Geraakte bestanden:**
+  - Geen code; alleen data (admin_users.role/naam en placements.recruiter_id) op de live DB.
+
+
 ## 2026-06-29 - Rekenhulp uren op Verdiensten (per kandidaat)
 - **Wat is gebouwd/gewijzigd:**
   - Verdiensten heeft nu een bewerkbare Uren-kolom (client-component VerdienstenTabel). Recruiter vult per eigen kandidaat de gemaakte uren in; live berekening per regel van "Recruiter totaal" (recruiter/u x uren) en "Te factureren" (verkoop/u x uren, excl. btw), met een totaalregel onderaan en KPI's (totaal uren, totale verdienste, totaal te factureren).
