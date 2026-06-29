@@ -17,7 +17,6 @@ export const metadata: Metadata = {
   authors: [{ name: SITE_NAME }],
   creator: SITE_NAME,
   publisher: SITE_NAME,
-  alternates: { canonical: "/" },
   robots: {
     index: true,
     follow: true,

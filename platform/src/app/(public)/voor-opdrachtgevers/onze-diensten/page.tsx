@@ -1,13 +1,11 @@
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
 import TeamSpots from "@/components/TeamSpots";
 import InlineContactForm from "@/components/InlineContactForm";
 
-export const metadata = {
-  title: "Onze diensten",
-  description: "Detachering, werving & selectie en interim. DetaVia ontzorgt opdrachtgevers in het sociaal domein op de manier die past.",
-};
+export const metadata = pageMeta({ title: "Onze diensten", description: "Detachering, werving & selectie en interim. DetaVia ontzorgt opdrachtgevers in het sociaal domein op de manier die past.", path: "/voor-opdrachtgevers/onze-diensten" });
 
 const diensten = [
   { t: "Detachering", d: "Onze professional, jouw opdracht. Wij blijven werkgever en regelen contract, begeleiding en facturatie. Jij houdt grip op de opdracht.", href: "/voor-opdrachtgevers" },

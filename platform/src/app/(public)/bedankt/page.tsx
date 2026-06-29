@@ -1,6 +1,7 @@
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata = { title: "Bedankt | DetaVia" };
+export const metadata = { ...pageMeta({ title: "Bedankt", description: "Bedankt voor je bericht. We nemen snel persoonlijk contact met je op.", path: "/bedankt" }), robots: { index: false, follow: false } };
 
 export default function Bedankt() {
   return (

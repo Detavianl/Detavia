@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-29 - SEO-fixes: canonicals, titels en OpenGraph per pagina
+- **Wat is gewijzigd:**
+  - Nieuwe helper lib/seo.ts (pageMeta) die per pagina een zelfverwijzende canonical + unieke OpenGraph/Twitter (titel + url) levert, met behoud van het og-beeld.
+  - Root-canonical "/" verwijderd uit layout, zodat subpagina's niet meer naar de homepage canonicaliseren.
+  - Alle publieke pagina's omgebouwd naar pageMeta: canonical nu zelfverwijzend (contact, voor-opdrachtgevers + subpagina's, academy, zzp, werken-bij, verhalen, solliciteren, vacatures, juridische pagina's) en de dubbele "| DetaVia" uit de titels gehaald. /bedankt op noindex. Verhaal-detail kreeg generateMetadata (canonical + og).
+- **Waarom:**
+  - SEO-audit: foute canonicals (wezen naar homepage), dubbele merknaam in titels, en identieke og op alle pagina's.
+- **Geraakte bestanden:**
+  - lib/seo.ts (nieuw), app/layout.tsx, en de metadata van ~16 (public)-paginas incl. verhalen/[slug].
+
 ## 2026-06-29 - Testvacature vervangen + contactgegevens opgeschoond
 - **Wat is gewijzigd:**
   - Testvacature "Klantmanager Werk en Inkomen" vervangen door "Klantmanager Inburgering" (vakgebied beleid = Inburgering, eigen slug, omschrijving/taken/eisen) in de live DB.

@@ -1,7 +1,8 @@
+import { pageMeta } from "@/lib/seo";
 import VacatureZoeker from "@/components/VacatureZoeker";
 import { loadVacatures } from "@/lib/vacatures";
 
-export const metadata = { title: "Vacatures in het sociaal domein", alternates: { canonical: "/vacatures" } };
+export const metadata = pageMeta({ title: "Vacatures in het sociaal domein", description: "Bekijk alle openstaande opdrachten in het sociaal domein bij DetaVia.", path: "/vacatures" });
 export const dynamic = "force-dynamic";
 
 export default async function VacaturesPage() {

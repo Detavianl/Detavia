@@ -1,10 +1,8 @@
+import { pageMeta } from "@/lib/seo";
 import { submitContact } from "../actions";
 import CalendlyButton from "@/components/CalendlyButton";
 
-export const metadata = {
-  title: "Voor opdrachtgevers | DetaVia",
-  description: "Snel de juiste professionals in het sociaal domein. Vraag vrijblijvend een professional aan bij DetaVia.",
-};
+export const metadata = pageMeta({ title: "Voor opdrachtgevers", description: "Snel de juiste professionals in het sociaal domein. Vraag vrijblijvend een professional aan bij DetaVia.", path: "/voor-opdrachtgevers" });
 
 const redenen = [
   { t: "Specialist in het sociaal domein", d: "Leerplicht, Werk, Inkomen, Participatie, Schuldhulp en inburgering. Wij kennen de praktijk en de mensen." },

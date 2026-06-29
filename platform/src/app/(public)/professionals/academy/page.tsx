@@ -1,11 +1,9 @@
+import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
 import InlineContactForm from "@/components/InlineContactForm";
 
-export const metadata = {
-  title: "DetaVia Academy",
-  description: "Blijf groeien in het sociaal domein met trainingen, intervisie en kennissessies van de DetaVia Academy.",
-};
+export const metadata = pageMeta({ title: "DetaVia Academy", description: "Blijf groeien in het sociaal domein met trainingen, intervisie en kennissessies van de DetaVia Academy.", path: "/professionals/academy" });
 
 const aanbod = [
   { t: "Vakinhoudelijke trainingen", d: "Up-to-date blijven op Leerplicht, Werk, Inkomen, Participatie en Schuldhulp, met trainers uit de praktijk." },

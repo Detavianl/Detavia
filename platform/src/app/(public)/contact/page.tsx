@@ -1,8 +1,9 @@
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { submitContact } from "../actions";
 import CalendlyButton from "@/components/CalendlyButton";
 
-export const metadata = { title: "Contact & veelgestelde vragen | DetaVia" };
+export const metadata = pageMeta({ title: "Contact & veelgestelde vragen", description: "Vragen of klaar voor je volgende stap? Neem contact op met DetaVia, specialist in detachering in het sociaal domein.", path: "/contact" });
 
 const faq = [
   ["Voor wie is DetaVia bedoeld?", "Voor professionals in het sociaal domein, van starter tot ervaren consulent of adviseur, die via detachering willen werken aan opdrachten met impact."],

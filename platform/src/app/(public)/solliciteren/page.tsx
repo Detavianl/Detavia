@@ -1,7 +1,8 @@
+import { pageMeta } from "@/lib/seo";
 import { submitSollicitatie } from "../actions";
 import { VAKGEBIEDEN } from "@/lib/ats";
 
-export const metadata = { title: "Solliciteren | DetaVia" };
+export const metadata = pageMeta({ title: "Solliciteren", description: "Solliciteer direct of stuur een open sollicitatie naar DetaVia, detachering in het sociaal domein.", path: "/solliciteren" });
 
 export default async function Solliciteren({ searchParams }: { searchParams: Promise<{ titel?: string; vacature_id?: string }> }) {
   const { titel = "", vacature_id = "" } = await searchParams;

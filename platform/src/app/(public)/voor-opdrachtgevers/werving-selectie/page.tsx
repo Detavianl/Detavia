@@ -1,11 +1,9 @@
+import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
 import InlineContactForm from "@/components/InlineContactForm";
 
-export const metadata = {
-  title: "Werving & selectie",
-  description: "Op zoek naar een vaste kracht in het sociaal domein? DetaVia vindt en selecteert de juiste kandidaat voor jouw team.",
-};
+export const metadata = pageMeta({ title: "Werving & selectie", description: "Op zoek naar een vaste kracht in het sociaal domein? DetaVia vindt en selecteert de juiste kandidaat voor jouw team.", path: "/voor-opdrachtgevers/werving-selectie" });
 
 const stappen = [
   { t: "Scherp profiel", d: "We brengen samen in kaart wie je zoekt: vakinhoudelijk en qua persoonlijkheid en teamfit." },

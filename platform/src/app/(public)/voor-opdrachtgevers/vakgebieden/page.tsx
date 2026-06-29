@@ -1,11 +1,9 @@
+import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
 import InlineContactForm from "@/components/InlineContactForm";
 
-export const metadata = {
-  title: "Vakgebieden",
-  description: "Specialisten in het hele sociaal domein: Leerplicht, Werk, Inkomen, Participatie, Schuldhulpverlening en Inburgering.",
-};
+export const metadata = pageMeta({ title: "Vakgebieden", description: "Specialisten in het hele sociaal domein: Leerplicht, Werk, Inkomen, Participatie, Schuldhulpverlening en Inburgering.", path: "/voor-opdrachtgevers/vakgebieden" });
 
 const vakgebieden = [
   { t: "Leerplicht", d: "Leerplichtambtenaren en RMC-medewerkers die schoolverzuim aanpakken en jongeren terugleiden naar onderwijs of werk." },

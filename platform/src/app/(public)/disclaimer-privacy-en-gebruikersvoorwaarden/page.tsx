@@ -1,10 +1,7 @@
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata = {
-  title: "Disclaimer, privacy- en gebruikersvoorwaarden | DetaVia",
-  description: "Disclaimer, privacyverklaring en gebruikersvoorwaarden van DetaVia B.V.",
-  alternates: { canonical: "/disclaimer-privacy-en-gebruikersvoorwaarden" },
-};
+export const metadata = pageMeta({ title: "Disclaimer, privacy- en gebruikersvoorwaarden", description: "Disclaimer, privacyverklaring en gebruikersvoorwaarden van DetaVia B.V.", path: "/disclaimer-privacy-en-gebruikersvoorwaarden" });
 
 export default function DisclaimerPrivacy() {
   return (

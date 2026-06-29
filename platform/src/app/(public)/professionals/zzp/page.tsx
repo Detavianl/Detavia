@@ -1,12 +1,10 @@
+import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
 import TeamSpots from "@/components/TeamSpots";
 import InlineContactForm from "@/components/InlineContactForm";
 
-export const metadata = {
-  title: "Voor ZZP'ers",
-  description: "Als zelfstandige aan de slag in het sociaal domein via DetaVia. Mooie opdrachten, een warm netwerk en volledige ontzorging.",
-};
+export const metadata = pageMeta({ title: "Voor ZZP'ers", description: "Als zelfstandige aan de slag in het sociaal domein via DetaVia. Mooie opdrachten, een warm netwerk en volledige ontzorging.", path: "/professionals/zzp" });
 
 const punten = [
   { t: "Opdrachten die passen", d: "Wij kennen de markt in het sociaal domein en koppelen je aan opdrachten die aansluiten bij jouw expertise en tarief." },

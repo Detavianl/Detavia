@@ -1,8 +1,5 @@
-export const metadata = {
-  title: "Algemene voorwaarden | DetaVia",
-  description: "De algemene voorwaarden van DetaVia B.V. voor detachering en bemiddeling in het sociaal domein.",
-  alternates: { canonical: "/algemene-voorwaarden" },
-};
+import { pageMeta } from "@/lib/seo";
+export const metadata = pageMeta({ title: "Algemene voorwaarden", description: "De algemene voorwaarden van DetaVia B.V. voor detachering en bemiddeling in het sociaal domein.", path: "/algemene-voorwaarden" });
 
 export default function AlgemeneVoorwaarden() {
   return (

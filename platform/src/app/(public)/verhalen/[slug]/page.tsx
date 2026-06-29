@@ -1,8 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { pageMeta } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.from("blog_posts").select("titel, excerpt").eq("slug", slug).eq("status", "gepubliceerd").single();
+    if (data) return pageMeta({ title: data.titel, description: data.excerpt || `${data.titel} - een verhaal van DetaVia.`, path: `/verhalen/${slug}` });
+  } catch { /* niet gekoppeld */ }
+  return { title: "Verhaal niet gevonden" };
+}
 
 export default async function VerhaalDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

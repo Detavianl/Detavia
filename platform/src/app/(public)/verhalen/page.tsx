@@ -1,7 +1,8 @@
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
-export const metadata = { title: "Verhalen & blog | DetaVia" };
+export const metadata = pageMeta({ title: "Verhalen & blog", description: "Ervaringsverhalen en kennis uit het sociaal domein, van de mensen achter DetaVia.", path: "/verhalen" });
 export const dynamic = "force-dynamic";
 
 type Post = { slug: string; titel: string; categorie: string; excerpt: string; cover_path: string | null; published_at: string | null };
