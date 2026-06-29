@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-29 - cao-consistentie + adres in structured data
+- **Wat is gewijzigd:**
+  - Alle zichtbare "CAO" vervangen door "cao" (Taalunie): voor-opdrachtgevers kicker, certificering-cao titel + kicker, menu-item.
+  - Structured data uitgebreid: Organization is nu ook LocalBusiness met PostalAddress (Argonweg 72, 1362 AD Almere, NL), email info@detavia.nl en image. Goed voor lokale/merk-zoekopdrachten.
+- **Waarom:**
+  - SEO-audit: cao-spelling consistent; adres/LocalBusiness toevoegen aan structured data.
+- **Geraakte bestanden:**
+  - app/layout.tsx, app/(public)/voor-opdrachtgevers/page.tsx, app/(public)/voor-opdrachtgevers/certificering-cao/page.tsx, components/SiteHeader.tsx.
+
 ## 2026-06-29 - SEO-fixes: canonicals, titels en OpenGraph per pagina
 - **Wat is gewijzigd:**
   - Nieuwe helper lib/seo.ts (pageMeta) die per pagina een zelfverwijzende canonical + unieke OpenGraph/Twitter (titel + url) levert, met behoud van het og-beeld.

@@ -3,7 +3,7 @@ import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
 import InlineContactForm from "@/components/InlineContactForm";
 
-export const metadata = pageMeta({ title: "Certificering & CAO", description: "Werken met DetaVia betekent kwaliteit en zekerheid: correcte cao-beloning, nette contracten en alles goed geregeld.", path: "/voor-opdrachtgevers/certificering-cao" });
+export const metadata = pageMeta({ title: "Certificering & cao", description: "Werken met DetaVia betekent kwaliteit en zekerheid: correcte cao-beloning, nette contracten en alles goed geregeld.", path: "/voor-opdrachtgevers/certificering-cao" });
 
 const punten = [
   "Beloning volgens de geldende cao",
@@ -22,7 +22,7 @@ export default function CertificeringCao() {
   return (
     <>
       <PageHero
-        kicker="Certificering & CAO"
+        kicker="Certificering & cao"
         title="Kwaliteit en zekerheid"
         intro="Werken met DetaVia betekent werken volgens de regels van het vak. Onze professionals worden netjes beloond volgens cao en jij weet zeker dat alles goed geregeld is."
       />

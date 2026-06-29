@@ -113,7 +113,7 @@ export default function VoorOpdrachtgevers() {
       <section id="cao" className="mx-auto max-w-[1180px] scroll-mt-24 px-5 py-20 sm:px-10">
         <div className="grid gap-10 md:grid-cols-2 md:items-center">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[.16em] opacity-60">Certificering &amp; CAO</p>
+            <p className="text-xs font-bold uppercase tracking-[.16em] opacity-60">Certificering &amp; cao</p>
             <h2 className="display mt-2 text-3xl sm:text-4xl">Kwaliteit en zekerheid</h2>
             <p className="mt-4 max-w-[46ch] text-lg text-muted">Werken met DetaVia betekent werken volgens de regels van het vak. Onze professionals worden netjes en volgens cao beloond, en jij weet zeker dat alles goed geregeld is.</p>
           </div>

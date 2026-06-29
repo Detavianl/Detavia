@@ -42,11 +42,20 @@ export const metadata: Metadata = {
 
 const orgJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["Organization", "LocalBusiness"],
   name: SITE_NAME,
   url: SITE_URL,
   logo: `${SITE_URL}/img/logo_blue.svg`,
+  image: `${SITE_URL}/img/office-worker-960x640.jpg`,
   description: SITE_DESCRIPTION,
+  email: "info@detavia.nl",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Argonweg 72",
+    postalCode: "1362 AD",
+    addressLocality: "Almere",
+    addressCountry: "NL",
+  },
   knowsAbout: ["Leerplicht", "Werk", "Inkomen", "Participatiewet", "Schuldhulpverlening", "Inburgering", "Sociaal domein"],
   areaServed: { "@type": "Country", name: "Nederland" },
 };

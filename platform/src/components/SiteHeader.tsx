@@ -38,7 +38,7 @@ const opdrachtgevers: Menu = {
     { href: "/voor-opdrachtgevers/onze-diensten", label: "Onze diensten", desc: "Detachering, werving en interim" },
     { href: "/voor-opdrachtgevers/vakgebieden", label: "Vakgebieden", desc: "Leerplicht, Werk, Inkomen, Participatie en meer" },
     { href: "/voor-opdrachtgevers/werving-selectie", label: "Werving & selectie", desc: "De juiste vaste kracht" },
-    { href: "/voor-opdrachtgevers/certificering-cao", label: "Certificering & CAO", desc: "Kwaliteit en zekerheid" },
+    { href: "/voor-opdrachtgevers/certificering-cao", label: "Certificering & cao", desc: "Kwaliteit en zekerheid" },
     { href: "/contact", label: "Contact", desc: "Direct met ons in gesprek" },
   ],
 };
