@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-29 - Rekenhulp uren op Verdiensten (per kandidaat)
+- **Wat is gebouwd/gewijzigd:**
+  - Verdiensten heeft nu een bewerkbare Uren-kolom (client-component VerdienstenTabel). Recruiter vult per eigen kandidaat de gemaakte uren in; live berekening per regel van "Recruiter totaal" (recruiter/u x uren) en "Te factureren" (verkoop/u x uren, excl. btw), met een totaalregel onderaan en KPI's (totaal uren, totale verdienste, totaal te factureren).
+  - Ingevulde uren worden in de browser bewaard (localStorage). Geen facturatiesysteem, puur een rekenhulp.
+- **Waarom:**
+  - Klant wil dat recruiters per eigen kandidaat uren kunnen invullen en direct zien wat hun verdienste is en hoeveel er gefactureerd moet worden.
+- **Geraakte bestanden:**
+  - components/VerdienstenTabel.tsx (nieuw), app/admin/verdiensten/page.tsx.
+
+
 ## 2026-06-29 - Uren + Facturen + portalen verwijderd, recruiter-veld op plaatsing
 - **Wat is gebouwd/gewijzigd:**
   - Volledige uren- en facturen-functionaliteit verwijderd (keuze klant: alles incl. portalen): admin /admin/uren en /admin/facturen, de professional- en opdrachtgever-portalen (/portaal, /opdrachtgever), invoice-libs, hours-componenten, factureerUren, inviteProfessional, inviteClient, won-deal-factuur, urenoverzicht op plaatsing-detail, notitie-entiteit "invoice". Nav, middleware en robots opgeschoond. Auth-routing simpel (login -> /admin).

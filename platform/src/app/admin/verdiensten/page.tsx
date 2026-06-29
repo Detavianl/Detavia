@@ -2,7 +2,8 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
 import { isDemo } from "@/lib/demo";
-import { loadMargeConfig, berekenMarge, euro2 } from "@/lib/marge";
+import { loadMargeConfig, berekenMarge } from "@/lib/marge";
+import VerdienstenTabel, { type VerdienstRow } from "@/components/VerdienstenTabel";
 
 export const dynamic = "force-dynamic";
 
@@ -38,8 +39,17 @@ export default async function VerdienstenPage({ searchParams }: { searchParams: 
   if (isRecruiter) rows = rows.filter((r) => recOf(r) === admin.user_id);
   else if (sp.recruiter) rows = rows.filter((r) => recOf(r) === sp.recruiter);
 
-  const data = rows.map((r) => ({ r, m: berekenMarge(r.uurtarief, r.kostprijs, config) }));
-  const gem = (sel: (x: { m: ReturnType<typeof berekenMarge> }) => number) => (data.length ? data.reduce((a, x) => a + sel(x), 0) / data.length : 0);
+  const tabelRows: VerdienstRow[] = rows.map((r) => {
+    const m = berekenMarge(r.uurtarief, r.kostprijs, config);
+    return {
+      id: r.id,
+      kandidaat: r.candidate?.naam ?? "—",
+      recruiterNaam: naam(recOf(r)),
+      weggezet: `${r.functie}${r.company?.naam ? ` · ${r.company.naam}` : ""}`,
+      verkoop: m.verkoop, inkoop: m.inkoop, brutoMarge: m.brutoMarge,
+      overhead: m.overhead, nettowinst: m.nettowinst, recruiter: m.recruiter, teLaag: m.teLaag,
+    };
+  });
 
   return (
     <div className="p-8">
@@ -62,50 +72,7 @@ export default async function VerdienstenPage({ searchParams }: { searchParams: 
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <Kpi label="Plaatsingen" value={String(data.length)} />
-        <Kpi label="Gem. recruitervergoeding /u" value={euro2(gem((x) => x.m.recruiter))} accent />
-        {!isRecruiter && <Kpi label="Gem. nettowinst /u" value={euro2(gem((x) => x.m.nettowinst))} />}
-      </div>
-
-      <div className="mt-8 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
-        <table className="w-full min-w-[760px] text-left text-sm">
-          <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-muted">
-            <tr>
-              <th className="px-4 py-3">Kandidaat</th>
-              {!isRecruiter && <th className="px-4 py-3">Recruiter</th>}
-              <th className="px-4 py-3">Weggezet bij</th>
-              <th className="px-4 py-3 text-right">Verkoop /u</th>
-              <th className="px-4 py-3 text-right">Inkoop /u</th>
-              <th className="px-4 py-3 text-right">Bruto marge</th>
-              <th className="px-4 py-3 text-right">Overhead</th>
-              <th className="px-4 py-3 text-right">Nettowinst</th>
-              <th className="px-4 py-3 text-right">Recruiter /u</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map(({ r, m }) => (
-              <tr key={r.id} className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50">
-                <td className="px-4 py-3"><Link href={`/admin/plaatsingen/${r.id}`} className="font-bold text-cobalt">{r.candidate?.naam ?? "—"}</Link></td>
-                {!isRecruiter && <td className="px-4 py-3">{naam(recOf(r))}</td>}
-                <td className="px-4 py-3">{r.functie}{r.company?.naam ? ` · ${r.company.naam}` : ""}</td>
-                <td className="px-4 py-3 text-right">{euro2(m.verkoop)}</td>
-                <td className="px-4 py-3 text-right">{euro2(m.inkoop)}</td>
-                <td className="px-4 py-3 text-right">{euro2(m.brutoMarge)}</td>
-                <td className="px-4 py-3 text-right text-muted">{euro2(m.overhead)}</td>
-                <td className="px-4 py-3 text-right text-muted">{euro2(m.nettowinst)}</td>
-                <td className="px-4 py-3 text-right font-bold text-cobalt">{m.teLaag ? <span className="text-red-500">€ 0,00</span> : euro2(m.recruiter)}</td>
-              </tr>
-            ))}
-            {data.length === 0 && <tr><td colSpan={isRecruiter ? 8 : 9} className="px-5 py-10 text-center text-muted">Nog geen plaatsingen.</td></tr>}
-          </tbody>
-        </table>
-      </div>
-      <p className="mt-4 text-xs text-muted">Recruiter /u = bruto marge − overhead − nettowinst (minimaal € 0). Bij een te lage marge krijgt de recruiter € 0. Bedragen zijn per gewerkt uur.</p>
+      <VerdienstenTabel rows={tabelRows} isRecruiter={isRecruiter} />
     </div>
   );
-}
-
-function Kpi({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
-  return <div className="rounded-2xl border border-neutral-200 bg-white p-5"><div className={`text-xl font-extrabold ${accent ? "text-cobalt" : ""}`}>{value}</div><div className="mt-1 text-sm font-semibold text-muted">{label}</div></div>;
 }
