@@ -32,9 +32,9 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  // /admin en /portaal vereisen een ingelogde gebruiker (rolcheck gebeurt server-side)
+  // /admin vereist een ingelogde gebruiker (rolcheck gebeurt server-side)
   const path = request.nextUrl.pathname;
-  const beschermd = path.startsWith("/admin") || path.startsWith("/portaal") || path.startsWith("/opdrachtgever");
+  const beschermd = path.startsWith("/admin");
   if (beschermd && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";

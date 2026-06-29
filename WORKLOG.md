@@ -1,5 +1,18 @@
 # Worklog
 
+## 2026-06-29 - Uren + Facturen + portalen verwijderd, recruiter-veld op plaatsing
+- **Wat is gebouwd/gewijzigd:**
+  - Volledige uren- en facturen-functionaliteit verwijderd (keuze klant: alles incl. portalen): admin /admin/uren en /admin/facturen, de professional- en opdrachtgever-portalen (/portaal, /opdrachtgever), invoice-libs, hours-componenten, factureerUren, inviteProfessional, inviteClient, won-deal-factuur, urenoverzicht op plaatsing-detail, notitie-entiteit "invoice". Nav, middleware en robots opgeschoond. Auth-routing simpel (login -> /admin).
+  - Verdiensten ontkoppeld van de hours-tabel: toont nu de opbouw per uur (geen uren-totalen meer) en rekent af op recruiter_id.
+  - Recruiter-veld op de plaatsing: nieuwe kolom placements.recruiter_id (migratie 0020, met backfill = eigenaar kandidaat). Plaatsingsformulier heeft nu een Recruiter-keuze die standaard de eigenaar van de gekozen kandidaat invult en per plaatsing aanpasbaar is, met waarschuwing als er geen recruiter gekoppeld is. Verdiensten en de privacy-scoping van de plaatsing-detail gebruiken recruiter_id (fallback eigenaar).
+- **Waarom:**
+  - Klant: uren/facturen worden niet gebruikt; en verdiensten moeten altijd bij de juiste recruiter terechtkomen, ongeacht wie het formulier invult.
+- **Geraakte bestanden:**
+  - Verwijderd: app/admin/uren/*, app/admin/facturen/*, app/portaal/*, app/opdrachtgever/*, lib/invoice*.ts, lib/professional-context.ts, lib/client-context.ts, components/{InvoiceActions,HoursReviewButtons,ClientHoursButtons,DeleteHoursButton,PlacementActions,InviteClientButton}.tsx.
+  - Gewijzigd: middleware.ts, robots.ts, components/AdminNav.tsx, components/QuickNotes.tsx, components/PlacementForm.tsx, app/login/actions.ts, app/admin/activity-actions.ts, app/admin/crm/actions.ts, app/admin/crm/bedrijven/[id]/page.tsx, app/admin/plaatsingen/{actions.ts,nieuw/page.tsx,[id]/page.tsx}, app/admin/verdiensten/page.tsx, lib/demo.ts.
+  - Migratie: supabase/migrations/0020_placement_recruiter.sql (uitgevoerd op live DB).
+
+
 ## 2026-06-27 - Nepdata (3 vacatures + 3 verhalen) + backend getest
 - **Wat is gebouwd/gewijzigd:**
   - 3 nepvacatures (Leerplichtambtenaar/Almere, Klantmanager Werk en Inkomen/Utrecht, Consulent Participatie/Zwolle) en 3 nepverhalen in Supabase gezet via de service-role REST API (met omschrijving, taken, eisen resp. content_html, excerpt, gepubliceerd).

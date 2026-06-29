@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
       // Niet-publieke delen weren uit de index.
-      disallow: ["/admin", "/portaal", "/opdrachtgever", "/login", "/bedankt", "/geen-toegang"],
+      disallow: ["/admin", "/login", "/bedankt", "/geen-toegang"],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
     host: SITE_URL,

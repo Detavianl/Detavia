@@ -5,7 +5,6 @@ import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
 import { isDemo } from "@/lib/demo";
 import { logAudit } from "@/lib/audit";
-import { createInvoiceForWonDeal } from "@/lib/invoice-create";
 import { DEAL_EVENT, type DealStage } from "@/lib/crm";
 
 const s = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
@@ -21,36 +20,7 @@ export async function moveDeal(id: string, stage: DealStage) {
   await logAudit(admin, "deal", id, "fase gewijzigd", event);
   // herkent automatisch de klant-gebeurtenis en plaatst die in de wijzigingslog van het bedrijf
   if (data?.company_id) await logAudit(admin, "company", data.company_id, event, data.titel ?? "");
-
-  // Bij gewonnen: automatisch een conceptfactuur aanmaken
-  if (stage === "gewonnen") {
-    await createInvoiceForWonDeal(supabase, id);
-    if (data?.company_id) await logAudit(admin, "company", data.company_id, "Factuur aangemaakt", data.titel ?? "");
-    revalidatePath("/admin/facturen");
-  }
   revalidatePath("/admin/crm/deals");
-}
-
-// Nodigt een contactpersoon uit voor het opdrachtgever-portaal (urengoedkeuring).
-export async function inviteClient(contactId: string) {
-  const admin = await requireAdmin();
-  if (isDemo()) return;
-  const supabase = await createClient();
-  const { data: ct } = await supabase.from("contacts").select("email, naam, company_id").eq("id", contactId).single();
-  if (!ct?.email) throw new Error("Contact heeft geen e-mailadres.");
-
-  const { createAdminClient } = await import("@/lib/supabase/admin");
-  const sb = createAdminClient();
-  const { data, error } = await sb.auth.admin.inviteUserByEmail(ct.email);
-  let userId = data?.user?.id;
-  if (error || !userId) {
-    const { data: list } = await sb.auth.admin.listUsers();
-    userId = list?.users.find((u) => u.email?.toLowerCase() === ct.email.toLowerCase())?.id;
-    if (!userId) throw new Error("Kon de opdrachtgever niet uitnodigen.");
-  }
-  await sb.from("contacts").update({ portaal_user_id: userId }).eq("id", contactId);
-  if (ct.company_id) await logAudit(admin, "company", ct.company_id, "Opdrachtgever uitgenodigd", ct.naam ?? ct.email);
-  revalidatePath(`/admin/crm/bedrijven/${ct.company_id}`);
 }
 
 export async function updateCompanyFollowup(id: string, eigenaar: string, actie: string, datum: string) {

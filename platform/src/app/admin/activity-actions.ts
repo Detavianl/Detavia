@@ -4,12 +4,11 @@ import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/admin-context";
 import { isDemo } from "@/lib/demo";
 
-type Entity = "candidate" | "company" | "placement" | "invoice" | "vacature";
+type Entity = "candidate" | "company" | "placement" | "vacature";
 
 // Pad dat ververst moet worden per generieke entiteit.
 const PAD: Record<string, (id: string) => string> = {
   placement: (id) => `/admin/plaatsingen/${id}`,
-  invoice: (id) => `/admin/facturen/${id}`,
   vacature: (id) => `/admin/vacatures/${id}`,
 };
 
@@ -43,7 +42,7 @@ export async function addNote(entity: Entity, id: string, tekst: string) {
     await supabase.from("crm_activities").insert({ company_id: id, type: "notitie", onderwerp: tekst, created_by: admin.user_id });
     revalidatePath(`/admin/crm/bedrijven/${id}`);
   } else {
-    // generieke entiteiten (plaatsing, factuur, vacature) -> notes-tabel
+    // generieke entiteiten (plaatsing, vacature) -> notes-tabel
     await supabase.from("notes").insert({ entity_type: entity, entity_id: id, body: tekst, author_id: admin.user_id, author_naam: admin.naam ?? "" });
     revalidatePath(PAD[entity]?.(id) ?? "/admin");
   }

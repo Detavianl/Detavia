@@ -3,7 +3,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { addNote, editNote, deleteNote } from "@/app/admin/activity-actions";
 
-type Entity = "candidate" | "company" | "placement" | "invoice" | "vacature";
+type Entity = "candidate" | "company" | "placement" | "vacature";
 type Note = { id?: string; tekst: string; created_at: string; gebruiker?: string | null; mine?: boolean };
 
 function formatDatum(iso: string): string {
