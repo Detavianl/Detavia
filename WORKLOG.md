@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-06-29 - Domein detavia.nl live gekoppeld aan Vercel
+- **Wat is gedaan:**
+  - Domein detavia.nl (registrar TransIP) gekoppeld aan Vercel. Nameservers teruggezet naar TransIP (ns0/ns1/ns2). DNS-records: @ A -> 76.76.21.21, www CNAME -> 03d43c388aefcab8.vercel-dns-017.com; AAAA en wildcards verwijderd; alle mailrecords (MX/SPF/DKIM/autoconfig/autodiscover/x-transip-mail-auth/_dmarc) ongemoeid.
+  - Geverifieerd: detavia.nl 308 -> www.detavia.nl (Vercel), www.detavia.nl 200 met SSL, titel correct, MX intact. www is hoofdadres.
+- **Nog te doen door klant:**
+  - In Vercel NEXT_PUBLIC_SITE_URL = https://www.detavia.nl zetten + redeployen (voor sitemap/canonical/OG/mailer-logo). Eventueel detavia.nl als primair domein kiezen.
+- **Geraakte bestanden:**
+  - Geen code; DNS/domeinconfiguratie.
+
+
 ## 2026-06-29 - Account terug naar super_admin + rollen geverifieerd
 - **Wat is gewijzigd:**
   - admin_users-account (Badr, user_id cb56c8db) teruggezet van recruiter naar super_admin en naam "Testrecruiter" -> "Badr".
