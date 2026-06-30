@@ -1,15 +1,11 @@
 "use client";
 import { useState } from "react";
 
-export type TeamMember = { naam: string; functie: string; foto: string; email: string; telefoon: string; plaats?: string };
+export type TeamMember = { naam: string; functie: string; foto: string; email: string; telefoon: string; plaats?: string; pos?: string };
 
-// Placeholder-team (random foto's, namen, mail en nummer). Vervang door echte
-// gegevens zodra die er zijn.
+// Huidige team. Aanvullen zodra er meer leden zijn.
 const DEFAULT: TeamMember[] = [
-  { naam: "Sanne de Vries", functie: "Recruiter", foto: "/img/team-2.jpg", email: "sanne@detavia.nl", telefoon: "080xxxxxx", plaats: "Almere" },
-  { naam: "Minhtri Nguyen", functie: "Recruiter", foto: "/img/team-minhtri.jpg", email: "minhtri@detavia.nl", telefoon: "+31 6 13225638", plaats: "Almere" },
-  { naam: "Lisa Bakker", functie: "Consultant", foto: "/img/team-3.jpg", email: "lisa@detavia.nl", telefoon: "080xxxxxx", plaats: "Almere" },
-  { naam: "Daan Visser", functie: "Recruiter", foto: "/img/team-4.jpg", email: "daan@detavia.nl", telefoon: "080xxxxxx", plaats: "Almere" },
+  { naam: "Minhtri Nguyen", functie: "Recruiter", foto: "/img/team-minhtri.jpg", email: "minhtri@detavia.nl", telefoon: "+31 6 13225638", plaats: "Almere", pos: "center 30%" },
 ];
 
 const hidden = { backfaceVisibility: "hidden" as const, WebkitBackfaceVisibility: "hidden" as const };
@@ -50,7 +46,7 @@ export default function TeamCards({
                 {/* VOORKANT */}
                 <div className="absolute inset-0 flex flex-col overflow-hidden rounded-[22px] border border-neutral-200 bg-white shadow-lg" style={hidden}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={m.foto} alt={m.naam} className="h-[64%] w-full object-cover object-top" />
+                  <img src={m.foto} alt={m.naam} className="h-[64%] w-full object-cover" style={{ objectPosition: m.pos ?? "top" }} />
                   <div className="flex flex-1 flex-col p-4">
                     <h3 className="text-lg font-bold leading-tight">{m.naam}</h3>
                     <div className="mt-0.5 text-sm font-bold text-cobalt">{m.functie}</div>
