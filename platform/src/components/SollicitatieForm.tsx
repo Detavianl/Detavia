@@ -5,7 +5,7 @@ import { submitSollicitatie } from "@/app/(public)/actions";
 
 const BRONNEN = ["Google", "Facebook", "Instagram", "YouTube", "TikTok", "LinkedIn", "Indeed", "Via vrienden of familie", "Opdrachtgever", "Anders"];
 
-export default function SollicitatieForm({ vacatureId = "", titel = "" }: { vacatureId?: string; titel?: string }) {
+export default function SollicitatieForm({ vacatureId = "", titel = "", backHref = "", backLabel = "Terug" }: { vacatureId?: string; titel?: string; backHref?: string; backLabel?: string }) {
   const [bron, setBron] = useState("");
   const [cvNaam, setCvNaam] = useState("");
   const [sleep, setSleep] = useState(false);
@@ -26,6 +26,11 @@ export default function SollicitatieForm({ vacatureId = "", titel = "" }: { vaca
       <input type="hidden" name="vacature_id" value={vacatureId} />
       <input type="hidden" name="vacature_titel" value={titel} />
 
+      {titel && (
+        <div className="mb-5 rounded-xl bg-cobalt/[0.06] px-4 py-3 text-sm font-semibold text-cobalt ring-1 ring-cobalt/15">
+          Sollicitatie voor: <span className="font-bold">{titel}</span>
+        </div>
+      )}
       <h2 className="text-xl font-bold">Jouw gegevens</h2>
       <p className="mt-1 text-sm text-muted">Superleuk dat je wilt solliciteren bij DetaVia. Eerst hebben we wat gegevens van je nodig. Velden met <span className="font-bold text-cobalt">*</span> zijn verplicht.</p>
 
@@ -72,7 +77,10 @@ export default function SollicitatieForm({ vacatureId = "", titel = "" }: { vaca
           <span>Ik ga akkoord met de <Link href="/algemene-voorwaarden" className="text-cobalt hover:underline">voorwaarden</Link> en de <Link href="/disclaimer-privacy-en-gebruikersvoorwaarden" className="text-cobalt hover:underline">privacyverklaring</Link>. *</span>
         </label>
 
-        <button className="justify-self-start rounded-full bg-cobalt px-7 py-3 font-bold text-white transition hover:-translate-y-0.5">Solliciteren</button>
+        <div className="flex flex-wrap items-center gap-4">
+          <button className="rounded-full bg-cobalt px-7 py-3 font-bold text-white transition hover:-translate-y-0.5">Solliciteren</button>
+          {backHref && <Link href={backHref} className="text-sm font-semibold text-muted transition hover:text-cobalt">← {backLabel}</Link>}
+        </div>
       </div>
     </form>
   );

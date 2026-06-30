@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-30 - Sollicitatie: vacature tonen + terug-knop
+- **Wat is gewijzigd:**
+  - Sollicitatiepagina toont nu duidelijk voor welke vacature je solliciteert (chip in hero + banner in het formulier) en heeft een terug-link: naar de vacature (als vacature_id bekend) of naar /vacatures. Ook een terug-link naast de verzendknop.
+- **Waarom:**
+  - Klant: op het formulier moet duidelijk blijven voor welke vacature wordt gesolliciteerd en men moet eenvoudig terug kunnen.
+- **Geraakte bestanden:**
+  - app/(public)/solliciteren/page.tsx, components/SollicitatieForm.tsx.
+
 ## 2026-06-30 - "Hoe heb je ons gevonden?" als gestructureerd veld
 - **Wat is gewijzigd:**
   - Nieuwe kolom candidates.gevonden_via (migratie 0021). Het sollicitatieformulier schrijft de kanaalkeuze (LinkedIn/Google/Indeed/...) nu naar dit aparte veld i.p.v. de vrije notitie; bij "Anders" komt de toelichting nog wel in de notitie. Getoond op de kandidaatpagina in de backend (naast Bron). Klaar voor een rapportage/dashboard.
