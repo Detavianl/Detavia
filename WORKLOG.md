@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-30 - Resend-domein geverifieerd: verzendadres op info@detavia.nl
+- **Wat is gewijzigd:**
+  - detavia.nl is geverifieerd in Resend (DKIM + send MX + send SPF live in DNS). Test-verzending naar een willekeurig adres slaagde.
+  - Standaard verzendadres van de mailer (sendMail) van onboarding@resend.dev naar "DetaVia <info@detavia.nl>" gezet, zodat de live mailer vanaf het eigen domein verstuurt (RESEND_FROM kan het nog overschrijven).
+- **Waarom:**
+  - Domein gekoppeld; mailer moet vanaf het echte domein naar elke ontvanger kunnen sturen.
+- **Geraakte bestanden:**
+  - src/lib/email.ts (+ .env.local lokaal).
+
 ## 2026-06-30 - Backend-audit: formulier-overflow opgelost
 - **Wat is gewijzigd:**
   - Gemelde fout (salaris min/max liepen over elkaar op het vacatureformulier) opgelost: inputs/selects kregen w-full en grid-cellen min-w-0. Zelfde overflow proactief gefixt op deal-, contact-, bedrijf- en kandidaatformulier.

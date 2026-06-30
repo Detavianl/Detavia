@@ -7,7 +7,7 @@ export type SendResult = { ok: true; id?: string } | { ok: false; error: string 
 export async function sendMail(input: { to: string; subject: string; html: string; bcc?: string[] }): Promise<SendResult> {
   const key = process.env.RESEND_API_KEY;
   if (!key) return { ok: false, error: "RESEND_API_KEY niet gezet." };
-  const from = process.env.RESEND_FROM || "DetaVia <onboarding@resend.dev>";
+  const from = process.env.RESEND_FROM || "DetaVia <info@detavia.nl>";
   try {
     const resend = new Resend(key);
     const { data, error } = await resend.emails.send({
