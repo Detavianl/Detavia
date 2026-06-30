@@ -7,19 +7,25 @@ import { isDemo } from "@/lib/demo";
 // We valideren minimaal en houden het simpel; geen jobboard.
 
 export async function submitSollicitatie(formData: FormData) {
-  const naam = String(formData.get("naam") ?? "").trim();
-  const email = String(formData.get("email") ?? "").trim();
+  const g = (k: string) => String(formData.get(k) ?? "").trim();
+  const naam = [g("voornaam"), g("tussenvoegsel"), g("achternaam")].filter(Boolean).join(" ").trim() || g("naam");
+  const email = g("email");
   if (!naam || !email) throw new Error("Naam en e-mail zijn verplicht");
   if (isDemo()) redirect("/bedankt");
 
   const supabase = createAdminClient();
 
+  // "Hoe heb je ons gevonden?" -> in de notitie zodat het in het ATS zichtbaar is.
+  const via = g("gevonden_via");
+  const gevonden = via === "Anders" ? (g("gevonden_anders") || "Anders") : via;
+  const notitie = [vacatureNotitie(formData), gevonden ? `Gevonden via: ${gevonden}` : ""].filter(Boolean).join(" · ");
+
   const { data: cand, error } = await supabase.from("candidates").insert({
     naam, email,
-    telefoon: String(formData.get("telefoon") ?? "").trim(),
-    woonplaats: String(formData.get("woonplaats") ?? "").trim(),
-    vakgebied: String(formData.get("vakgebied") ?? "") || null,
-    notitie: vacatureNotitie(formData),
+    telefoon: g("telefoon"),
+    woonplaats: g("woonplaats"),
+    vakgebied: g("vakgebied") || null,
+    notitie,
     bron: "formulier",
   }).select("id").single();
   if (error) throw new Error(error.message);

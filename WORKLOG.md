@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-30 - next/image-pass + sollicitatieformulier in joinuz-stijl
+- **Wat is gebouwd/gewijzigd:**
+  - next/image-pass voor alle content-foto's (homepage-hero, over-ons x2, voor-opdrachtgevers-hero, verhalen-lijst + detail covers, team-kaart foto, vacature-contactpersoon). SVG-logo's en e-maillogo blijven gewone <img>. next.config remotePatterns voor Supabase Storage covers.
+  - Sollicitatieformulier 1:1 overgenomen van joinuz, in DetaVia-stijl: nieuw client-component SollicitatieForm met voornaam/tussenvoegsel/achternaam, e-mail, telefoon, "Hoe heb je ons gevonden?" (dropdown + conditioneel veld bij Anders), cv-sleepzone (drag & drop) en akkoord-checkbox (voorwaarden + privacy). submitSollicitatie verwerkt de nieuwe velden; "gevonden via" komt in de notitie. Na versturen -> /bedankt (bestond al).
+- **Waarom:**
+  - SEO/perf (next/image) en klantverzoek: sollicitatieformulier zoals joinuz, in DetaVia-stijl.
+- **Geraakte bestanden:**
+  - next.config.ts, components/SollicitatieForm.tsx (nieuw), app/(public)/solliciteren/page.tsx, app/(public)/actions.ts, en next/image in app/(public)/{page, over-ons/page, voor-opdrachtgevers/page, verhalen/page, verhalen/[slug]/page, vacatures/[id]/page}.tsx + components/TeamCards.tsx.
+
 ## 2026-06-30 - Visuele audit-fixes + SEO-descriptions/H1
 - **Wat is gewijzigd:**
   - InlineContactForm: items-center -> items-start, zodat de kop niet meer in het midden zweeft (raakte onze-diensten, academy, zzp, vakgebieden, werving, certificering-cao).
