@@ -45,6 +45,7 @@ export async function saveVacature(formData: FormData) {
     omschrijving: String(formData.get("omschrijving") ?? "").trim(),
     status: String(formData.get("status") ?? "open"),
     company_id: String(formData.get("company_id") ?? "") || null,
+    recruiter_id: String(formData.get("recruiter_id") ?? "") || null,
     salaris_periode: String(formData.get("salaris_periode") ?? "maand"),
     inactief_op: String(formData.get("inactief_op") ?? "").trim() || null,
     taken: String(formData.get("taken") ?? "").trim(),

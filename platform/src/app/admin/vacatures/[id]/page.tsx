@@ -11,15 +11,17 @@ export default async function BewerkVacature({ params }: { params: Promise<{ id:
   const { id } = await params;
   const admin = await requireAdmin();
   const supabase = await createClient();
-  const [{ data }, { data: companies }, notes] = await Promise.all([
+  const [{ data }, { data: companies }, { data: team }, notes] = await Promise.all([
     supabase.from("vacatures").select("*").eq("id", id).single(),
     supabase.from("companies").select("id, naam").order("naam"),
+    supabase.from("admin_users").select("user_id, naam, role").order("naam"),
     loadNotes("vacature", id),
   ]);
   if (!data) notFound();
+  const recruiters = (team ?? []).filter((t) => ["recruiter", "admin", "super_admin"].includes(t.role)).map((t) => ({ id: t.user_id, naam: t.naam }));
   return (
     <>
-      <VacatureForm vacature={data} companies={companies ?? []} />
+      <VacatureForm vacature={data} companies={companies ?? []} recruiters={recruiters} />
       <section className="mx-8 mb-8 max-w-2xl rounded-2xl border border-neutral-200 bg-white p-6">
         <h2 className="mb-3 text-lg font-bold">Interne notities</h2>
         <QuickNotes entity="vacature" entityId={id} items={notes} currentUser={admin.naam} demo={false} />

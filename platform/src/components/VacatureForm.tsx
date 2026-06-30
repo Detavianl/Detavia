@@ -10,10 +10,10 @@ type V = {
   uren_min?: number; uren_max?: number; salaris_min?: number | null; salaris_max?: number | null;
   type?: string; top?: boolean; omschrijving?: string; status?: string; company_id?: string | null;
   taken?: string; eisen?: string[] | null; opdrachtgever?: string; startdatum?: string; duur?: string;
-  salaris_periode?: string; inactief_op?: string | null;
+  salaris_periode?: string; inactief_op?: string | null; recruiter_id?: string | null;
 };
 
-export default function VacatureForm({ vacature, companies = [] }: { vacature?: V; companies?: { id: string; naam: string }[] }) {
+export default function VacatureForm({ vacature, companies = [], recruiters = [] }: { vacature?: V; companies?: { id: string; naam: string }[]; recruiters?: { id: string; naam: string }[] }) {
   const v = vacature ?? {};
 
   // Status apart, zodat de toggle-knop hem aanpast zonder direct op te slaan.
@@ -97,11 +97,19 @@ export default function VacatureForm({ vacature, companies = [] }: { vacature?: 
               </select></label>
             <Field label="Plaats" name="plaats" defaultValue={v.plaats} />
           </div>
-          <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Bedrijf (opdrachtgever)</span>
-            <select name="company_id" defaultValue={v.company_id ?? ""} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
-              <option value="">— geen / nog onbekend —</option>
-              {companies.map((c) => <option key={c.id} value={c.id}>{c.naam}</option>)}
-            </select></label>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Bedrijf (opdrachtgever)</span>
+              <select name="company_id" defaultValue={v.company_id ?? ""} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+                <option value="">— geen / nog onbekend —</option>
+                {companies.map((c) => <option key={c.id} value={c.id}>{c.naam}</option>)}
+              </select></label>
+            <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Recruiter</span>
+              <select name="recruiter_id" defaultValue={v.recruiter_id ?? ""} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+                <option value="">— geen (terugval: Team DetaVia) —</option>
+                {recruiters.map((r) => <option key={r.id} value={r.id}>{r.naam}</option>)}
+              </select>
+              <span className="text-xs text-neutral-500">Ondertekent de bevestigingsmail aan sollicitanten.</span></label>
+          </div>
           <div className="grid gap-5 sm:grid-cols-2">
             <Field label="Uren min (per week)" name="uren_min" type="number" defaultValue={v.uren_min ?? 32} />
             <Field label="Uren max (per week)" name="uren_max" type="number" defaultValue={v.uren_max ?? 36} />

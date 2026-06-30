@@ -2,6 +2,8 @@
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isDemo } from "@/lib/demo";
+import { sendMail } from "@/lib/email";
+import { renderTemplate } from "@/lib/mail-templates";
 
 // Publieke instroom loopt via de service-role client (RLS staat publieke writes niet toe).
 // We valideren minimaal en houden het simpel; geen jobboard.
@@ -44,11 +46,15 @@ export async function submitSollicitatie(formData: FormData) {
     }
   }
 
-  // ATS-kaart in 'nieuw'. vacature_id kan een slug of UUID zijn -> altijd naar UUID.
-  let vacature_id = String(formData.get("vacature_id") ?? "").trim() || null;
-  if (vacature_id && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(vacature_id)) {
-    const { data: vac } = await supabase.from("vacatures").select("id").eq("slug", vacature_id).maybeSingle();
-    vacature_id = vac?.id ?? null;
+  // Vacature ophalen (slug of UUID) voor ATS-koppeling + bevestigingsmail.
+  const vacRef = String(formData.get("vacature_id") ?? "").trim();
+  let vacature_id: string | null = null;
+  let vacatureTitel = g("vacature_titel");
+  let recruiterId: string | null = null;
+  if (vacRef) {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(vacRef);
+    const { data: vac } = await supabase.from("vacatures").select("id, titel, recruiter_id").eq(isUuid ? "id" : "slug", vacRef).maybeSingle();
+    if (vac) { vacature_id = vac.id; vacatureTitel = vac.titel || vacatureTitel; recruiterId = vac.recruiter_id; }
   }
   await supabase.from("applications").insert({ candidate_id: cand.id, vacature_id, stage: "nieuw" });
 
@@ -57,6 +63,21 @@ export async function submitSollicitatie(formData: FormData) {
     entity: "candidate", entity_id: cand.id, actie: "Gesolliciteerd",
     details: vacatureNotitie(formData).replace(/^Sollicitatie op: /, ""), user_naam: "Sollicitatieformulier",
   });
+
+  // Bevestigingsmail naar de sollicitant (mag de sollicitatie niet blokkeren).
+  try {
+    let recruiterNaam = "Team DetaVia";
+    if (recruiterId) {
+      const { data: r } = await supabase.from("admin_users").select("naam").eq("user_id", recruiterId).maybeSingle();
+      if (r?.naam) recruiterNaam = r.naam;
+    }
+    const mail = renderTemplate("sollicitatie-bevestiging", {
+      voornaam: g("voornaam") || naam.split(" ")[0] || "daar",
+      vacature: vacatureTitel || "een functie in het sociaal domein",
+      recruiter: recruiterNaam,
+    });
+    if (mail) await sendMail({ to: email, subject: mail.onderwerp, html: mail.html });
+  } catch { /* stil falen: mail is niet kritiek */ }
 
   redirect("/bedankt");
 }

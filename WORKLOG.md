@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-30 - Recruiter op vacature + automatische sollicitatiebevestiging
+- **Wat is gebouwd:**
+  - Recruiter-veld op de vacature (migratie 0022 vacatures.recruiter_id). Keuze in het vacatureformulier (nieuw + bewerken laden admin_users); saveVacature slaat recruiter_id op. Terugval "Team DetaVia" als leeg.
+  - Automatische bevestigingsmail na een sollicitatie: submitSollicitatie haalt de vacature (slug/UUID) op met titel + recruiter, vult het sjabloon "sollicitatie-bevestiging" (renderTemplate) en verstuurt via Resend naar de sollicitant. Placeholders: {{voornaam}} (formulier), {{vacature}} (vacaturetitel, terugval "een functie in het sociaal domein"), {{recruiter}} (recruiter van de vacature, terugval "Team DetaVia"). Mail faalt stil, blokkeert de sollicitatie niet.
+- **Waarom:**
+  - Klant: recruiter koppelen aan vacature + bevestigingsmail automatisch versturen met ingevulde placeholders.
+- **Geraakte bestanden:**
+  - supabase/migrations/0022_vacature_recruiter.sql (uitgevoerd), components/VacatureForm.tsx, app/admin/vacatures/{nieuw/page.tsx,[id]/page.tsx,actions.ts}, lib/mail-templates.ts, app/(public)/actions.ts.
+
 ## 2026-06-30 - Mailer-preview: vacature benoemd in bevestigingsmail
 - **Wat is gewijzigd:**
   - Sollicitatiebevestiging-sjabloon noemt nu de vacature: placeholder {{vacature}} toegevoegd ("...gesolliciteerd op {{vacature}} bij DetaVia...") incl. placeholder-uitleg in de preview.

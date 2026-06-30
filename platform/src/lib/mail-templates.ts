@@ -25,6 +25,14 @@ function shell(body: string): string {
 </div>`;
 }
 
+// Vult de placeholders {{...}} van een sjabloon met echte waarden.
+export function renderTemplate(key: string, vars: Record<string, string>): { onderwerp: string; html: string } | null {
+  const t = MAIL_TEMPLATES.find((x) => x.key === key);
+  if (!t) return null;
+  const fill = (s: string) => s.replace(/\{\{(\w+)\}\}/g, (_, k) => vars[k] ?? "");
+  return { onderwerp: fill(t.onderwerp), html: fill(t.html) };
+}
+
 export const MAIL_TEMPLATES: MailTemplate[] = [
   {
     key: "sollicitatie-bevestiging",
