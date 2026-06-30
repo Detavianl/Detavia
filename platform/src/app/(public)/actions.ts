@@ -15,16 +15,18 @@ export async function submitSollicitatie(formData: FormData) {
 
   const supabase = createAdminClient();
 
-  // "Hoe heb je ons gevonden?" -> in de notitie zodat het in het ATS zichtbaar is.
+  // "Hoe heb je ons gevonden?" -> gestructureerd in kolom gevonden_via (voor rapportage).
+  // Bij "Anders" bewaren we de vrije toelichting in de notitie.
   const via = g("gevonden_via");
-  const gevonden = via === "Anders" ? (g("gevonden_anders") || "Anders") : via;
-  const notitie = [vacatureNotitie(formData), gevonden ? `Gevonden via: ${gevonden}` : ""].filter(Boolean).join(" · ");
+  const andersDetail = via === "Anders" ? g("gevonden_anders") : "";
+  const notitie = [vacatureNotitie(formData), andersDetail ? `Gevonden via (anders): ${andersDetail}` : ""].filter(Boolean).join(" · ");
 
   const { data: cand, error } = await supabase.from("candidates").insert({
     naam, email,
     telefoon: g("telefoon"),
     woonplaats: g("woonplaats"),
     vakgebied: g("vakgebied") || null,
+    gevonden_via: via || null,
     notitie,
     bron: "formulier",
   }).select("id").single();

@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-30 - "Hoe heb je ons gevonden?" als gestructureerd veld
+- **Wat is gewijzigd:**
+  - Nieuwe kolom candidates.gevonden_via (migratie 0021). Het sollicitatieformulier schrijft de kanaalkeuze (LinkedIn/Google/Indeed/...) nu naar dit aparte veld i.p.v. de vrije notitie; bij "Anders" komt de toelichting nog wel in de notitie. Getoond op de kandidaatpagina in de backend (naast Bron). Klaar voor een rapportage/dashboard.
+- **Waarom:**
+  - Klant wil dit als vast veld kunnen terugvinden en straks in een dashboard rapporteren.
+- **Geraakte bestanden:**
+  - supabase/migrations/0021_gevonden_via.sql (uitgevoerd), app/(public)/actions.ts, app/admin/kandidaten/[id]/page.tsx.
+
 ## 2026-06-30 - next/image-pass + sollicitatieformulier in joinuz-stijl
 - **Wat is gebouwd/gewijzigd:**
   - next/image-pass voor alle content-foto's (homepage-hero, over-ons x2, voor-opdrachtgevers-hero, verhalen-lijst + detail covers, team-kaart foto, vacature-contactpersoon). SVG-logo's en e-maillogo blijven gewone <img>. next.config remotePatterns voor Supabase Storage covers.

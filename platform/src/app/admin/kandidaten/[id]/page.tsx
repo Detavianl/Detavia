@@ -92,6 +92,7 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
               <Info label="Rijbewijs" value={c.rijbewijs ? "Ja" : "Nee"} />
               <Info label="LinkedIn" value={c.linkedin} link />
               <Info label="Bron" value={c.bron} />
+              <Info label="Gevonden via" value={c.gevonden_via} />
             </dl>
           </Section>
 
