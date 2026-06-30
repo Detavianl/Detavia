@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-30 - Team: alleen Minhtri + hoofd gecentreerd
+- **Wat is gewijzigd:**
+  - Team-visitekaartjes teruggebracht tot 1 lid (Minhtri Nguyen); de 3 placeholders zijn overal weg (gedeelde set, dus op alle teampagina's).
+  - Foto-uitsnede per lid instelbaar gemaakt (optioneel pos-veld, default "top"); Minhtri op "center 30%" zodat zijn hoofd gecentreerd in de kaart staat.
+- **Waarom:**
+  - Klant: voorlopig alleen Minhtri tonen en zijn hoofd centraal houden.
+- **Geraakte bestanden:**
+  - components/TeamCards.tsx.
+
 ## 2026-06-30 - Eerste echt teamlid (Minhtri Nguyen) op plek 2
 - **Wat is gewijzigd:**
   - Plek 2 van de team-visitekaartjes ingevuld met echt teamlid: Minhtri Nguyen, Recruiter, +31 6 13225638, minhtri@detavia.nl, met zijn foto (public/img/team-minhtri.jpg, geoptimaliseerd). tel-link strip nu spaties.
