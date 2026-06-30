@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { pageMeta } from "@/lib/seo";
 import { submitContact } from "../actions";
 import CalendlyButton from "@/components/CalendlyButton";
@@ -44,8 +45,9 @@ export default function VoorOpdrachtgevers() {
               <CalendlyButton className="cursor-pointer rounded-full border-2 border-white px-6 py-3.5 font-bold text-white">Boek een kennismaking</CalendlyButton>
             </div>
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/img/office-worker-960x640.jpg" alt="Samenwerken in het sociaal domein" className="order-first aspect-[4/3] w-full rounded-[22px] object-cover shadow-2xl md:order-none" />
+          <div className="relative order-first aspect-[4/3] w-full overflow-hidden rounded-[22px] shadow-2xl md:order-none">
+            <Image src="/img/office-worker-960x640.jpg" alt="Samenwerken in het sociaal domein" fill priority sizes="(max-width: 768px) 100vw, 45vw" className="object-cover" />
+          </div>
         </div>
       </section>
 

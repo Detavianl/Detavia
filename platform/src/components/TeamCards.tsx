@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 
 export type TeamMember = { naam: string; functie: string; foto: string; email: string; telefoon: string; plaats?: string; pos?: string };
 
@@ -45,8 +46,9 @@ export default function TeamCards({
               >
                 {/* VOORKANT */}
                 <div className="absolute inset-0 flex flex-col overflow-hidden rounded-[22px] border border-neutral-200 bg-white shadow-lg" style={hidden}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={m.foto} alt={m.naam} className="h-[64%] w-full object-cover" style={{ objectPosition: m.pos ?? "top" }} />
+                  <div className="relative h-[64%] w-full">
+                    <Image src={m.foto} alt={m.naam} fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover" style={{ objectPosition: m.pos ?? "top" }} />
+                  </div>
                   <div className="flex flex-1 flex-col p-4">
                     <h3 className="text-lg font-bold leading-tight">{m.naam}</h3>
                     <div className="mt-0.5 text-sm font-bold text-cobalt">{m.functie}</div>

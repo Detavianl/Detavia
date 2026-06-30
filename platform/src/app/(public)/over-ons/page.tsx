@@ -1,3 +1,4 @@
+import Image from "next/image";
 import PageCta from "@/components/PageCta";
 import TeamCards from "@/components/TeamCards";
 import { pageMeta } from "@/lib/seo";
@@ -26,8 +27,9 @@ export default function OverOns() {
               <a href="/voor-opdrachtgevers" className="rounded-full border-2 border-white px-6 py-3.5 font-bold text-white">Voor opdrachtgevers</a>
             </div>
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/img/team-meeting-600x448.jpg" alt="Het team van DetaVia in overleg" className="order-first aspect-[4/3] w-full rounded-[22px] object-cover shadow-2xl md:order-none" />
+          <div className="relative order-first aspect-[4/3] w-full overflow-hidden rounded-[22px] shadow-2xl md:order-none">
+            <Image src="/img/team-meeting-600x448.jpg" alt="Het team van DetaVia in overleg" fill priority sizes="(max-width: 768px) 100vw, 45vw" className="object-cover" />
+          </div>
         </div>
       </section>
 
@@ -40,8 +42,9 @@ export default function OverOns() {
             <p className="mt-6 text-lg text-muted">Bij DetaVia geloven we dat goed werk in het sociaal domein begint bij de juiste mensen op de juiste plek. Daarom richten we ons uitsluitend op het sociaal domein, niets anders. Die volledige focus zorgt voor diepe vakkennis, een sterk netwerk en matches die echt kloppen.</p>
             <p className="mt-3.5 text-lg text-muted">We zijn laagdrempelig, betrouwbaar en betrokken. Niet de grootste, wel de partner die je écht kent.</p>
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/img/office-worker-960x640.jpg" alt="Samenwerken in het sociaal domein" className="aspect-[4/3] w-full rounded-[22px] object-cover" />
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[22px]">
+            <Image src="/img/office-worker-960x640.jpg" alt="Samenwerken in het sociaal domein" fill sizes="(max-width: 768px) 100vw, 45vw" className="object-cover" />
+          </div>
         </div>
       </section>
 

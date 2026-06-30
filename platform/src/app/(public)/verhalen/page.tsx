@@ -1,5 +1,6 @@
 import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = pageMeta({ title: "Verhalen & blog", description: "Ervaringsverhalen, praktijkvoorbeelden en kennis uit het sociaal domein, verteld door de professionals en opdrachtgevers van DetaVia.", path: "/verhalen" });
@@ -39,8 +40,9 @@ export default async function Verhalen() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {posts.map((p) => (
               <Link key={p.slug} href={`/verhalen/${p.slug}`} className="flex flex-col overflow-hidden rounded-[22px] border-[1.5px] border-neutral-200 transition hover:-translate-y-1 hover:shadow-xl">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.cover_path ?? "/img/office-worker-960x640.jpg"} alt="" className="aspect-[16/10] w-full object-cover" />
+                <div className="relative aspect-[16/10] w-full overflow-hidden">
+                  <Image src={p.cover_path ?? "/img/office-worker-960x640.jpg"} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+                </div>
                 <div className="flex flex-1 flex-col gap-2.5 p-6">
                   <span className="text-xs font-bold uppercase tracking-wider text-cobalt">{p.categorie}</span>
                   <h3 className="text-xl font-bold leading-tight">{p.titel}</h3>

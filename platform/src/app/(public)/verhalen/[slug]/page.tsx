@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { pageMeta } from "@/lib/seo";
@@ -31,8 +32,9 @@ export default async function VerhaalDetail({ params }: { params: Promise<{ slug
       <span className="mt-6 block text-xs font-bold uppercase tracking-wider text-cobalt">{post.categorie}</span>
       <h1 className="display mt-2 text-4xl sm:text-5xl">{post.titel}</h1>
       {post.cover_path && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={post.cover_path} alt="" className="mt-8 aspect-[16/9] w-full rounded-[22px] object-cover" />
+        <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-[22px]">
+          <Image src={post.cover_path} alt="" fill sizes="(max-width: 768px) 100vw, 760px" className="object-cover" />
+        </div>
       )}
       <div className="prose-detavia mt-8" dangerouslySetInnerHTML={{ __html: post.content_html }} />
     </article>

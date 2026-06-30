@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import OpdrachtgeverMarquee from "@/components/OpdrachtgeverMarquee";
 import { loadVacatures } from "@/lib/vacatures";
 import { VAKGEBIEDEN, urenLabel } from "@/lib/vacatures-demo";
@@ -28,10 +29,9 @@ export default async function Home() {
               <Link href="/voor-opdrachtgevers" className="rounded-full border-2 border-black px-6 py-3.5 font-bold">Vraag een professional aan</Link>
             </div>
           </div>
-          <div className="order-first md:order-none">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/img/hero-vrouw-wit-overhemd.jpg" alt="Lachende professional in het sociaal domein"
-                 className="aspect-[4/5] w-full rounded-[22px] object-cover shadow-2xl" />
+          <div className="relative order-first aspect-[4/5] w-full overflow-hidden rounded-[22px] shadow-2xl md:order-none">
+            <Image src="/img/hero-vrouw-wit-overhemd.jpg" alt="Lachende professional in het sociaal domein"
+                   fill priority sizes="(max-width: 768px) 100vw, 40vw" className="object-cover" />
           </div>
         </div>
       </section>

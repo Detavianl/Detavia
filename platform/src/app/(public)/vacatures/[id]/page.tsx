@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { VAKGEBIEDEN, salarisLabel, urenLabel } from "@/lib/vacatures-demo";
 import { loadVacatures } from "@/lib/vacatures";
@@ -155,8 +156,7 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
             <div className="mt-7 border-t border-neutral-200 pt-6">
               <p className="text-xs font-bold uppercase tracking-wider opacity-60">Je contactpersoon</p>
               <div className="mt-3 flex items-center gap-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/img/team-minhtri.jpg" alt="Minhtri Nguyen" className="h-14 w-14 shrink-0 rounded-full object-cover" style={{ objectPosition: "center 25%" }} />
+                <Image src="/img/team-minhtri.jpg" alt="Minhtri Nguyen" width={56} height={56} className="h-14 w-14 shrink-0 rounded-full object-cover" style={{ objectPosition: "center 25%" }} />
                 <div>
                   <p className="font-bold">Minhtri Nguyen</p>
                   <p className="text-sm text-muted">Recruiter</p>
