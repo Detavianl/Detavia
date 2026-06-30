@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-30 - Backend: Mailer-preview met vaste sjablonen (HTML kopieerbaar)
+- **Wat is gebouwd:**
+  - Nieuw admin-kopje "Mailer-preview" (/admin/mailer-preview) met de voorgemaakte mailsjablonen in DetaVia-huisstijl. Voor nu 1 sjabloon: sollicitatiebevestiging (DetaVia tone of voice), met placeholders {{voornaam}} en {{recruiter}} (gekoppelde recruiter van de vacature). Per sjabloon: wanneer, onderwerp, placeholder-uitleg, live preview (iframe), "Kopieer HTML"-knop en uitklapbare ruwe HTML.
+  - lib/mail-templates.ts met de sjablonen + DetaVia e-mail-shell.
+- **Waarom:**
+  - Klant wil de voorgemaakte mails in de backend kunnen bekijken en de HTML kunnen kopieren.
+- **Geraakte bestanden:**
+  - lib/mail-templates.ts (nieuw), app/admin/mailer-preview/page.tsx (nieuw), components/CopyButton.tsx (nieuw), components/AdminNav.tsx.
+
 ## 2026-06-30 - Resend-domein geverifieerd: verzendadres op info@detavia.nl
 - **Wat is gewijzigd:**
   - detavia.nl is geverifieerd in Resend (DKIM + send MX + send SPF live in DNS). Test-verzending naar een willekeurig adres slaagde.
