@@ -2,7 +2,7 @@ import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
-import TeamSpots from "@/components/TeamSpots";
+import TeamCards from "@/components/TeamCards";
 import InlineContactForm from "@/components/InlineContactForm";
 
 export const metadata = pageMeta({ title: "Onze diensten", description: "Detachering, werving & selectie en interim. DetaVia ontzorgt opdrachtgevers in het sociaal domein op de manier die past.", path: "/voor-opdrachtgevers/onze-diensten" });
@@ -51,15 +51,9 @@ export default function OnzeDiensten() {
         </div>
       </section>
 
-      <TeamSpots
+      <TeamCards
         title="Je accountteam"
         intro="Vaste contactpersonen die jouw organisatie en de markt kennen, zo schakelen we snel."
-        spots={[
-          { naam: "[ Naam ]", functie: "[ Accountmanager ]" },
-          { naam: "[ Naam ]", functie: "[ Accountmanager ]" },
-          { naam: "[ Naam ]", functie: "[ Recruiter ]" },
-          { naam: "[ Naam ]", functie: "[ Recruiter ]" },
-        ]}
       />
 
       <InlineContactForm

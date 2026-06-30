@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-30 - Team-visitekaartjes (flip-kaarten, Stiek-idee in DetaVia-stijl)
+- **Wat is gebouwd:**
+  - Nieuw component TeamCards: flip-visitekaartjes (klik = kaart draait om). Voorkant foto + naam + functie + "Bekijk kaartje"; achterkant cobalt visitekaartje met wit DetaVia-logo, naam, functie, telefoon, e-mail en plaats. Geinspireerd op de Stiek-teamkaarten, in DetaVia-huisstijl (3D-flip via inline transform, contactlinks met stopPropagation).
+  - Vervangt de oude TeamSpots-placeholders op onze-diensten, werken-bij-detavia en zzp. Placeholderdata: 4 random Pexels-portretten (public/img/team-1..4.jpg), fake namen, mail (naam@detavia.nl) en nummer (080xxxxxx). TeamSpots verwijderd.
+- **Waarom:**
+  - Klant wil dezelfde visitekaartjes als bij Stiek, in DetaVia-stijl, met random placeholders.
+- **Geraakte bestanden:**
+  - components/TeamCards.tsx (nieuw), components/TeamSpots.tsx (verwijderd), public/img/team-1..4.jpg (nieuw), app/(public)/voor-opdrachtgevers/onze-diensten/page.tsx, app/(public)/professionals/werken-bij-detavia/page.tsx, app/(public)/professionals/zzp/page.tsx.
+
 ## 2026-06-29 - cao-consistentie + adres in structured data
 - **Wat is gewijzigd:**
   - Alle zichtbare "CAO" vervangen door "cao" (Taalunie): voor-opdrachtgevers kicker, certificering-cao titel + kicker, menu-item.

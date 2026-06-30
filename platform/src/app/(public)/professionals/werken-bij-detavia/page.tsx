@@ -1,7 +1,7 @@
 import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
-import TeamSpots from "@/components/TeamSpots";
+import TeamCards from "@/components/TeamCards";
 import InlineContactForm from "@/components/InlineContactForm";
 
 export const metadata = pageMeta({ title: "Werken bij DetaVia", description: "Detacheren in het sociaal domein met persoonlijke begeleiding, opdrachten die passen en goede voorwaarden volgens cao.", path: "/professionals/werken-bij-detavia" });
@@ -57,7 +57,7 @@ export default function WerkenBijDetavia() {
         </div>
       </section>
 
-      <TeamSpots intro="Korte lijnen en een vast gezicht. Dit zijn de consultants die met je meedenken over je loopbaan." />
+      <TeamCards intro="Korte lijnen en een vast gezicht. Dit zijn de consultants die met je meedenken over je loopbaan." />
 
       <InlineContactForm
         soort="professional"

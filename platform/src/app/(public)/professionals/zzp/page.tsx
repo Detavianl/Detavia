@@ -1,7 +1,7 @@
 import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import PageCta from "@/components/PageCta";
-import TeamSpots from "@/components/TeamSpots";
+import TeamCards from "@/components/TeamCards";
 import InlineContactForm from "@/components/InlineContactForm";
 
 export const metadata = pageMeta({ title: "Voor ZZP'ers", description: "Als zelfstandige aan de slag in het sociaal domein via DetaVia. Mooie opdrachten, een warm netwerk en volledige ontzorging.", path: "/professionals/zzp" });
@@ -53,15 +53,9 @@ export default function Zzp() {
         </div>
       </section>
 
-      <TeamSpots
+      <TeamCards
         title="Je vaste aanspreekpunt"
         intro="Als zelfstandige werk je samen met een vaste consultant die de markt kent en je opdrachten op maat aanbiedt."
-        spots={[
-          { naam: "[ Naam ]", functie: "[ Consultant ZZP ]" },
-          { naam: "[ Naam ]", functie: "[ Consultant ZZP ]" },
-          { naam: "[ Naam ]", functie: "[ Recruiter ]" },
-          { naam: "[ Naam ]", functie: "[ Recruiter ]" },
-        ]}
       />
 
       <InlineContactForm
