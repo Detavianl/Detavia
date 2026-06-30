@@ -18,8 +18,8 @@ export default async function NieuwContact() {
         <Field label="Naam" name="naam" required />
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Functie" name="functie" />
-          <label className="grid gap-1.5"><span className="text-sm font-bold">Bedrijf</span>
-            <select name="company_id" className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+          <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Bedrijf</span>
+            <select name="company_id" className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
               <option value="">— kies bedrijf —</option>
               {companies.map((c) => <option key={c.id} value={c.id}>{c.naam}</option>)}
             </select></label>
@@ -35,6 +35,6 @@ export default async function NieuwContact() {
   );
 }
 function Field({ label, name, type = "text", required = false, placeholder }: { label: string; name: string; type?: string; required?: boolean; placeholder?: string }) {
-  return (<label className="grid gap-1.5"><span className="text-sm font-bold">{label}{required && " *"}</span>
-    <input name={name} type={type} required={required} placeholder={placeholder} className="rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>);
+  return (<label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">{label}{required && " *"}</span>
+    <input name={name} type={type} required={required} placeholder={placeholder} className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>);
 }

@@ -91,14 +91,14 @@ export default function VacatureForm({ vacature, companies = [] }: { vacature?: 
           {v.id && <input type="hidden" name="id" value={v.id} />}
           <Field label="Titel" name="titel" defaultValue={v.titel} required />
           <div className="grid gap-5 sm:grid-cols-2">
-            <label className="grid gap-1.5"><span className="text-sm font-bold">Vakgebied</span>
-              <select name="vakgebied" defaultValue={v.vakgebied ?? "wmo"} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+            <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Vakgebied</span>
+              <select name="vakgebied" defaultValue={v.vakgebied ?? "wmo"} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
                 {Object.entries(VAKGEBIEDEN).map(([k, l]) => <option key={k} value={k}>{l}</option>)}
               </select></label>
             <Field label="Plaats" name="plaats" defaultValue={v.plaats} />
           </div>
-          <label className="grid gap-1.5"><span className="text-sm font-bold">Bedrijf (opdrachtgever)</span>
-            <select name="company_id" defaultValue={v.company_id ?? ""} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+          <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Bedrijf (opdrachtgever)</span>
+            <select name="company_id" defaultValue={v.company_id ?? ""} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
               <option value="">— geen / nog onbekend —</option>
               {companies.map((c) => <option key={c.id} value={c.id}>{c.naam}</option>)}
             </select></label>
@@ -109,8 +109,8 @@ export default function VacatureForm({ vacature, companies = [] }: { vacature?: 
           <div className="grid gap-5 sm:grid-cols-3">
             <Field label="Salaris min (€)" name="salaris_min" type="number" step="0.01" defaultValue={v.salaris_min ?? ""} />
             <Field label="Salaris max (€)" name="salaris_max" type="number" step="0.01" defaultValue={v.salaris_max ?? ""} />
-            <label className="grid gap-1.5"><span className="text-sm font-bold">Salaris per</span>
-              <select name="salaris_periode" defaultValue={v.salaris_periode ?? "maand"} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+            <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Salaris per</span>
+              <select name="salaris_periode" defaultValue={v.salaris_periode ?? "maand"} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
                 <option value="uur">per uur</option>
                 <option value="week">per week</option>
                 <option value="4weken">per 4 weken</option>
@@ -119,29 +119,29 @@ export default function VacatureForm({ vacature, companies = [] }: { vacature?: 
           </div>
           <p className="-mt-2 text-xs text-neutral-500">Laat salaris leeg voor &quot;Tarief in overleg&quot;. Bij een uurtarief mag je centen gebruiken (bv. 62,50).</p>
           <div className="grid gap-5 sm:grid-cols-3">
-            <label className="grid gap-1.5"><span className="text-sm font-bold">Type</span>
-              <select name="type" defaultValue={v.type ?? "Detachering"} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+            <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Type</span>
+              <select name="type" defaultValue={v.type ?? "Detachering"} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
                 <option>Detachering</option><option>ZZP</option><option>Werving & selectie</option>
               </select></label>
-            <label className="grid gap-1.5"><span className="text-sm font-bold">Status</span>
-              <select name="status" value={status} onChange={(e) => setStatus(e.target.value)} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+            <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Status</span>
+              <select name="status" value={status} onChange={(e) => setStatus(e.target.value)} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
                 <option value="open">Open (zichtbaar)</option><option value="gesloten">Gesloten (inactief)</option>
               </select></label>
-            <label className="grid gap-1.5"><span className="text-sm font-bold">Automatisch inactief op</span>
-              <input name="inactief_op" type="date" defaultValue={v.inactief_op ?? ""} className="rounded-xl border-2 border-neutral-200 px-4 py-3" />
+            <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Automatisch inactief op</span>
+              <input name="inactief_op" type="date" defaultValue={v.inactief_op ?? ""} className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" />
               <span className="text-xs text-neutral-500">Optioneel. Vanaf deze datum verdwijnt de vacature.</span></label>
           </div>
-          <label className="grid gap-1.5"><span className="text-sm font-bold">Korte omschrijving</span>
+          <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Korte omschrijving</span>
             <span className="text-xs text-neutral-500">Korte intro die in het overzicht en bovenaan de vacature staat.</span>
-            <textarea name="omschrijving" rows={3} defaultValue={v.omschrijving} className="rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>
+            <textarea name="omschrijving" rows={3} defaultValue={v.omschrijving} className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>
 
-          <label className="grid gap-1.5"><span className="text-sm font-bold">Wat ga je doen?</span>
+          <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Wat ga je doen?</span>
             <span className="text-xs text-neutral-500">De uitgebreide taakomschrijving op de detailpagina.</span>
-            <textarea name="taken" rows={5} defaultValue={v.taken} className="rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>
+            <textarea name="taken" rows={5} defaultValue={v.taken} className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>
 
-          <label className="grid gap-1.5"><span className="text-sm font-bold">Wat je meebrengt (eisen)</span>
+          <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Wat je meebrengt (eisen)</span>
             <span className="text-xs text-neutral-500">Eén eis per regel. Verschijnen als lijst met vinkjes.</span>
-            <textarea name="eisen" rows={6} defaultValue={(v.eisen ?? []).join("\n")} className="rounded-xl border-2 border-neutral-200 px-4 py-3" placeholder={"Een afgeronde hbo-opleiding\nMinimaal 1 jaar ervaring in het sociaal domein\n..."} /></label>
+            <textarea name="eisen" rows={6} defaultValue={(v.eisen ?? []).join("\n")} className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" placeholder={"Een afgeronde hbo-opleiding\nMinimaal 1 jaar ervaring in het sociaal domein\n..."} /></label>
 
           <div className="grid gap-5 sm:grid-cols-3">
             <Field label="Opdrachtgever (weergavenaam)" name="opdrachtgever" defaultValue={v.opdrachtgever} />
@@ -167,9 +167,9 @@ export default function VacatureForm({ vacature, companies = [] }: { vacature?: 
 
 function Field({ label, name, type = "text", defaultValue, required, step }: { label: string; name: string; type?: string; defaultValue?: string | number | null; required?: boolean; step?: string }) {
   return (
-    <label className="grid gap-1.5">
+    <label className="grid min-w-0 gap-1.5">
       <span className="text-sm font-bold">{label}</span>
-      <input name={name} type={type} step={step} required={required} defaultValue={defaultValue ?? ""} className="rounded-xl border-2 border-neutral-200 px-4 py-3" />
+      <input name={name} type={type} step={step} required={required} defaultValue={defaultValue ?? ""} className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" />
     </label>
   );
 }

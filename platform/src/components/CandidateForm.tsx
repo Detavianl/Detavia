@@ -70,10 +70,10 @@ export default function CandidateForm({ candidate, action, isEdit }: {
             <Select label="Status" name="status" defaultValue={v.status ?? "actief"} options={Object.entries(KANDIDAAT_STATUS)} />
             <div className="hidden sm:block" />
             {!isEdit && (
-              <label className="grid gap-1.5 sm:col-span-2">
+              <label className="grid min-w-0 gap-1.5 sm:col-span-2">
                 <span className="text-sm font-bold">Eerste notitie (optioneel)</span>
                 <span className="text-xs text-neutral-500">Verschijnt als notitie bij de kandidaat. Meer notities voeg je toe op de kandidaatpagina.</span>
-                <textarea name="notitie" rows={3} className="rounded-xl border-2 border-neutral-200 px-4 py-3" />
+                <textarea name="notitie" rows={3} className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" />
               </label>
             )}
           </Grid>
@@ -97,17 +97,17 @@ function Grid({ children }: { children: React.ReactNode }) {
 }
 function Field({ label, name, type = "text", required = false, placeholder, className = "", defaultValue }: { label: string; name: string; type?: string; required?: boolean; placeholder?: string; className?: string; defaultValue?: string | number | null }) {
   return (
-    <label className={`grid gap-1.5 ${className}`}>
+    <label className={`grid min-w-0 gap-1.5 ${className}`}>
       <span className="text-sm font-bold">{label}{required && " *"}</span>
-      <input name={name} type={type} required={required} placeholder={placeholder} defaultValue={defaultValue ?? ""} className="rounded-xl border-2 border-neutral-200 px-4 py-3" />
+      <input name={name} type={type} required={required} placeholder={placeholder} defaultValue={defaultValue ?? ""} className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" />
     </label>
   );
 }
 function Select({ label, name, options, defaultValue }: { label: string; name: string; options: [string, string][]; defaultValue?: string }) {
   return (
-    <label className="grid gap-1.5">
+    <label className="grid min-w-0 gap-1.5">
       <span className="text-sm font-bold">{label}</span>
-      <select name={name} defaultValue={defaultValue} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+      <select name={name} defaultValue={defaultValue} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
         {options.map(([val, l]) => <option key={val} value={val}>{l}</option>)}
       </select>
     </label>
