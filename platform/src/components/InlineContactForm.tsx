@@ -12,7 +12,7 @@ type Props = {
 export default function InlineContactForm({ soort, title, text, button, organisatie }: Props) {
   return (
     <section className="bg-neutral-50">
-      <div className="mx-auto grid max-w-[1180px] items-center gap-10 px-5 py-20 sm:px-10 md:grid-cols-2">
+      <div className="mx-auto grid max-w-[1180px] items-start gap-10 px-5 py-20 sm:px-10 md:grid-cols-2">
         <div>
           <h2 className="display text-3xl sm:text-4xl">{title}</h2>
           <p className="mt-3 max-w-[44ch] text-lg text-muted">{text}</p>

@@ -2,7 +2,7 @@ import { pageMeta } from "@/lib/seo";
 import VacatureZoeker from "@/components/VacatureZoeker";
 import { loadVacatures } from "@/lib/vacatures";
 
-export const metadata = pageMeta({ title: "Vacatures in het sociaal domein", description: "Bekijk alle openstaande opdrachten in het sociaal domein bij DetaVia.", path: "/vacatures" });
+export const metadata = pageMeta({ title: "Vacatures in het sociaal domein", description: "Bekijk alle openstaande vacatures en opdrachten in het sociaal domein bij DetaVia. Filter op vakgebied, plaats en uren en solliciteer direct.", path: "/vacatures" });
 export const dynamic = "force-dynamic";
 
 export default async function VacaturesPage() {

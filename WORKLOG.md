@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-06-30 - Visuele audit-fixes + SEO-descriptions/H1
+- **Wat is gewijzigd:**
+  - InlineContactForm: items-center -> items-start, zodat de kop niet meer in het midden zweeft (raakte onze-diensten, academy, zzp, vakgebieden, werving, certificering-cao).
+  - Verhalen toonden 3x dezelfde cover; 3 verschillende cover_path's gezet in de DB.
+  - Sollicitatiepagina aangekleed: cobalt hero + intro, formulier in een nette kaart (velden ongewijzigd).
+  - SEO: vacature-detail via pageMeta (eigen og + ingekorte description ~155); vacatures- en verhalen-lijst descriptions verrijkt; homepage-H1 nu "De betrouwbare partner voor detachering in het sociaal domein" (kernzoekwoord in H1).
+- **Waarom:**
+  - Visuele kwaaltjes uit de audit + resterende SEO-punten (descriptions, H1). Telefoonnummer en next/image volgen later.
+- **Geraakte bestanden:**
+  - components/InlineContactForm.tsx, app/(public)/solliciteren/page.tsx, app/(public)/vacatures/page.tsx, app/(public)/vacatures/[id]/page.tsx, app/(public)/verhalen/page.tsx, app/(public)/page.tsx. Data: blog_posts cover_path.
+
 ## 2026-06-30 - Resterende [ ]-placeholders voor e-mail/telefoon opgelost
 - **Wat is gewijzigd:**
   - InlineContactForm (gebruikt op meerdere pagina's): telefoon -> 080xxxxxx, e-mail -> info@detavia.nl (haakjes + dummy tel:+31000000000 weg).

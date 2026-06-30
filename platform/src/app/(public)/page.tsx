@@ -21,7 +21,7 @@ export default async function Home() {
         <div className="mx-auto grid max-w-[1180px] grid-cols-1 items-center gap-10 px-5 py-16 sm:px-10 md:grid-cols-[1.15fr_.85fr]">
           <div>
             <p className="text-xs font-bold uppercase tracking-[.16em] opacity-60">Specialist in het sociaal domein</p>
-            <h1 className="display mt-3 text-4xl sm:text-6xl">De betrouwbare partner in jouw carrièregroei</h1>
+            <h1 className="display mt-3 text-4xl sm:text-6xl">De betrouwbare partner voor detachering in het sociaal domein</h1>
             <p className="mt-6 max-w-[42ch] text-lg font-medium">Werken waar het écht telt. DetaVia verbindt professionals in het sociaal domein met opdrachten die passen bij wie je bent, en bij wie je wilt worden.</p>
             <div className="mt-8 flex flex-wrap gap-3.5">
               <Link href="/vacatures" className="rounded-full bg-black px-6 py-3.5 font-bold text-white">Bekijk vacatures</Link>

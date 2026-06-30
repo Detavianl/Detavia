@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { VAKGEBIEDEN, salarisLabel, urenLabel } from "@/lib/vacatures-demo";
 import { loadVacatures } from "@/lib/vacatures";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { pageMeta } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -13,11 +14,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const v = match(await loadVacatures(), id);
   if (!v) return { title: "Vacature niet gevonden" };
-  return {
-    title: `${v.titel} in ${v.plaats}`,
-    description: v.omschrijving,
-    alternates: { canonical: `/vacatures/${v.slug ?? v.id}` },
-  };
+  const desc = `${v.titel} in ${v.plaats} via DetaVia, detachering in het sociaal domein. ${v.omschrijving}`.replace(/\s+/g, " ").trim().slice(0, 155);
+  return pageMeta({ title: `${v.titel} in ${v.plaats}`, description: desc, path: `/vacatures/${v.slug ?? v.id}` });
 }
 
 const meebrengen = [
