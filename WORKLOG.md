@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-30 - Mailer-preview: vacature benoemd in bevestigingsmail
+- **Wat is gewijzigd:**
+  - Sollicitatiebevestiging-sjabloon noemt nu de vacature: placeholder {{vacature}} toegevoegd ("...gesolliciteerd op {{vacature}} bij DetaVia...") incl. placeholder-uitleg in de preview.
+- **Waarom:**
+  - Klant wil dat de vacature in de bevestigingsmail wordt genoemd.
+- **Geraakte bestanden:**
+  - lib/mail-templates.ts.
+
 ## 2026-06-30 - Backend: Mailer-preview met vaste sjablonen (HTML kopieerbaar)
 - **Wat is gebouwd:**
   - Nieuw admin-kopje "Mailer-preview" (/admin/mailer-preview) met de voorgemaakte mailsjablonen in DetaVia-huisstijl. Voor nu 1 sjabloon: sollicitatiebevestiging (DetaVia tone of voice), met placeholders {{voornaam}} en {{recruiter}} (gekoppelde recruiter van de vacature). Per sjabloon: wanneer, onderwerp, placeholder-uitleg, live preview (iframe), "Kopieer HTML"-knop en uitklapbare ruwe HTML.

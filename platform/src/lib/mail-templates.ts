@@ -33,11 +33,12 @@ export const MAIL_TEMPLATES: MailTemplate[] = [
     onderwerp: "We hebben je sollicitatie ontvangen",
     placeholders: [
       { code: "{{voornaam}}", uitleg: "Voornaam van de sollicitant" },
+      { code: "{{vacature}}", uitleg: "De vacature waarop is gesolliciteerd" },
       { code: "{{recruiter}}", uitleg: "De recruiter die aan de vacature gekoppeld is" },
     ],
     html: shell(`
     <p style="${P}">Beste {{voornaam}},</p>
-    <p style="${P}">Wat leuk dat je hebt gesolliciteerd bij DetaVia. We hebben je sollicitatie in goede orde ontvangen, en daar zijn we blij mee.</p>
+    <p style="${P}">Wat leuk dat je hebt gesolliciteerd op <strong>{{vacature}}</strong> bij DetaVia. We hebben je sollicitatie in goede orde ontvangen, en daar zijn we blij mee.</p>
     <p style="${P}">We bekijken je gegevens met aandacht en nemen binnen een paar werkdagen persoonlijk contact met je op. Dan maken we rustig kennis en kijken we samen welke opdracht in het sociaal domein echt bij jou past, bij wie je bent en bij wat je wilt.</p>
     <p style="${P}">Heb je in de tussentijd een vraag? Reageer gerust op deze mail, we denken graag met je mee.</p>
     <p style="font-size:15px;color:#454b57;line-height:1.65;margin:18px 0 0;">Met vriendelijke groet,</p>
