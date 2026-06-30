@@ -54,4 +54,21 @@ export const MAIL_TEMPLATES: MailTemplate[] = [
     <p style="font-size:13px;color:#9aa1ad;margin:2px 0 0;">DetaVia</p>
     `),
   },
+  {
+    key: "uitnodiging-beheer",
+    naam: "Uitnodiging beheer",
+    wanneer: "Voor een nieuw teamlid, nadat je iemand uitnodigt via Team. De rol/functie wordt benoemd.",
+    onderwerp: "Je bent uitgenodigd voor het DetaVia-beheer",
+    placeholders: [
+      { code: "{{rol}}", uitleg: "De rol/functie waarvoor iemand is uitgenodigd (super-admin, admin of recruiter)" },
+    ],
+    html: shell(`
+    <h1 style="font-size:22px;font-weight:800;color:#0a1733;margin:0 0 12px;">Welkom bij het DetaVia-beheer</h1>
+    <p style="${P}">Je bent uitgenodigd als <strong>{{rol}}</strong> om mee te werken in het beheer van DetaVia, het platform voor detachering in het sociaal domein.</p>
+    <p style="${P}">Klik op de knop hieronder om je account te activeren en een wachtwoord in te stellen.</p>
+    <p style="margin:0 0 22px;"><a href="#" style="display:inline-block;background:#0047FF;color:#ffffff;border-radius:999px;padding:14px 30px;font-weight:700;font-size:14px;text-decoration:none;">Account activeren</a></p>
+    <p style="font-size:15px;color:#454b57;line-height:1.65;margin:18px 0 0;">Met vriendelijke groet,</p>
+    <p style="font-size:15px;color:#0a1733;font-weight:700;margin:2px 0 0;">Team DetaVia</p>
+    `),
+  },
 ];
