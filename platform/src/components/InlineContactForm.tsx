@@ -17,8 +17,8 @@ export default function InlineContactForm({ soort, title, text, button, organisa
           <h2 className="display text-3xl sm:text-4xl">{title}</h2>
           <p className="mt-3 max-w-[44ch] text-lg text-muted">{text}</p>
           <dl className="mt-8 grid gap-3 text-sm">
-            <div><dt className="font-bold">Telefoon</dt><dd><a href="tel:+31000000000" className="text-cobalt hover:underline">[ telefoonnummer ]</a></dd></div>
-            <div><dt className="font-bold">E-mail</dt><dd><a href="mailto:info@detavia.nl" className="text-cobalt hover:underline">[ info@detavia.nl ]</a></dd></div>
+            <div><dt className="font-bold">Telefoon</dt><dd><a href="tel:080xxxxxx" className="text-cobalt hover:underline">080xxxxxx</a></dd></div>
+            <div><dt className="font-bold">E-mail</dt><dd><a href="mailto:info@detavia.nl" className="text-cobalt hover:underline">info@detavia.nl</a></dd></div>
           </dl>
         </div>
         <form action={submitContact} className="rounded-[22px] bg-white p-8 shadow-sm">

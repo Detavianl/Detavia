@@ -157,12 +157,12 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
             <div className="mt-7 border-t border-neutral-200 pt-6">
               <p className="text-xs font-bold uppercase tracking-wider opacity-60">Je contactpersoon</p>
               <div className="mt-3 flex items-center gap-3">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-[1.5px] border-dashed border-cobalt/30 bg-cobalt/[0.05]">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="h-7 w-7 text-cobalt/40"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6" /></svg>
-                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/img/team-minhtri.jpg" alt="Minhtri Nguyen" className="h-14 w-14 shrink-0 rounded-full object-cover" style={{ objectPosition: "center 25%" }} />
                 <div>
-                  <p className="font-bold">[ Naam ]</p>
-                  <p className="text-sm text-muted">[ Consultant ]</p>
+                  <p className="font-bold">Minhtri Nguyen</p>
+                  <p className="text-sm text-muted">Recruiter</p>
+                  <p className="mt-0.5 text-sm"><a href="mailto:minhtri@detavia.nl" className="text-cobalt hover:underline">minhtri@detavia.nl</a></p>
                 </div>
               </div>
             </div>

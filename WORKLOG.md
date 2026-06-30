@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-30 - Resterende [ ]-placeholders voor e-mail/telefoon opgelost
+- **Wat is gewijzigd:**
+  - InlineContactForm (gebruikt op meerdere pagina's): telefoon -> 080xxxxxx, e-mail -> info@detavia.nl (haakjes + dummy tel:+31000000000 weg).
+  - Vacature-detail "Je contactpersoon": placeholder [ Naam ]/[ Consultant ] vervangen door Minhtri Nguyen (foto, Recruiter, mailto). Geen [ ]-placeholders meer in de hele codebase.
+- **Waarom:**
+  - Klant: op sommige plekken stonden e-mail/telefoon nog tussen [ ].
+- **Geraakte bestanden:**
+  - components/InlineContactForm.tsx, app/(public)/vacatures/[id]/page.tsx.
+
 ## 2026-06-30 - Team: alleen Minhtri + hoofd gecentreerd
 - **Wat is gewijzigd:**
   - Team-visitekaartjes teruggebracht tot 1 lid (Minhtri Nguyen); de 3 placeholders zijn overal weg (gedeelde set, dus op alle teampagina's).
