@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-30 - Sollicitatie: vacature-slug -> UUID voor ATS-koppeling
+- **Wat is gewijzigd:**
+  - "Solliciteer direct"-link geeft nu de vacature-slug mee (mooiere terug-URL). submitSollicitatie vertaalt een slug naar het UUID voordat de ATS-kaart (applications) wordt aangemaakt, zodat de vacaturekoppeling altijd klopt (voorheen faalde de koppeling stil als er een slug i.p.v. UUID binnenkwam).
+- **Waarom:**
+  - Robuuste ATS-koppeling + consistente/mooie terug-link op de sollicitatiepagina.
+- **Geraakte bestanden:**
+  - app/(public)/actions.ts, app/(public)/vacatures/[id]/page.tsx.
+
 ## 2026-06-30 - Sollicitatie: vacature tonen + terug-knop
 - **Wat is gewijzigd:**
   - Sollicitatiepagina toont nu duidelijk voor welke vacature je solliciteert (chip in hero + banner in het formulier) en heeft een terug-link: naar de vacature (als vacature_id bekend) of naar /vacatures. Ook een terug-link naast de verzendknop.

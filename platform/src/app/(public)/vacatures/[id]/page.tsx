@@ -41,7 +41,7 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
   const slug = v.slug ?? v.id;
   const takenIsHtml = !!v.taken && /<[a-z][\s\S]*>/i.test(v.taken);
   const related = all.filter((x) => x.vakgebied === v.vakgebied && x.id !== v.id).slice(0, 3);
-  const solliciteerHref = `/solliciteren?vacature_id=${v.id}&titel=${encodeURIComponent(v.titel)}`;
+  const solliciteerHref = `/solliciteren?vacature_id=${v.slug ?? v.id}&titel=${encodeURIComponent(v.titel)}`;
 
   // Structured data voor Google Jobs (JobPosting)
   const jobJsonLd = {

@@ -44,8 +44,12 @@ export async function submitSollicitatie(formData: FormData) {
     }
   }
 
-  // ATS-kaart in 'nieuw'
-  const vacature_id = String(formData.get("vacature_id") ?? "") || null;
+  // ATS-kaart in 'nieuw'. vacature_id kan een slug of UUID zijn -> altijd naar UUID.
+  let vacature_id = String(formData.get("vacature_id") ?? "").trim() || null;
+  if (vacature_id && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(vacature_id)) {
+    const { data: vac } = await supabase.from("vacatures").select("id").eq("slug", vacature_id).maybeSingle();
+    vacature_id = vac?.id ?? null;
+  }
   await supabase.from("applications").insert({ candidate_id: cand.id, vacature_id, stage: "nieuw" });
 
   // wijzigingslog: levenscyclus-gebeurtenis "Gesolliciteerd"
