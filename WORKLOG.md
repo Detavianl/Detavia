@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-30 - Backend-audit: formulier-overflow opgelost
+- **Wat is gewijzigd:**
+  - Gemelde fout (salaris min/max liepen over elkaar op het vacatureformulier) opgelost: inputs/selects kregen w-full en grid-cellen min-w-0. Zelfde overflow proactief gefixt op deal-, contact-, bedrijf- en kandidaatformulier.
+  - Hele backend gescreenshot + gecontroleerd (super-admin): geen horizontale overflow meer op enige adminpagina; dashboard, funnel, ATS, lijsten en formulieren ogen netjes.
+- **Waarom:**
+  - Klant vroeg backend-audit; velden die over elkaar heen liepen moesten eruit.
+- **Geraakte bestanden:**
+  - components/VacatureForm.tsx, components/CandidateForm.tsx, app/admin/crm/{deals,contacten,bedrijven}/nieuw/page.tsx.
+
 ## 2026-06-30 - Sollicitatie: vacature-slug -> UUID voor ATS-koppeling
 - **Wat is gewijzigd:**
   - "Solliciteer direct"-link geeft nu de vacature-slug mee (mooiere terug-URL). submitSollicitatie vertaalt een slug naar het UUID voordat de ATS-kaart (applications) wordt aangemaakt, zodat de vacaturekoppeling altijd klopt (voorheen faalde de koppeling stil als er een slug i.p.v. UUID binnenkwam).
