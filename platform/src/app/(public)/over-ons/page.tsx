@@ -1,10 +1,8 @@
 import PageCta from "@/components/PageCta";
+import TeamCards from "@/components/TeamCards";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = {
-  title: "Over DetaVia",
-  description: "DetaVia is uitsluitend gespecialiseerd in het sociaal domein. Persoonlijk, betrouwbaar en met diepe vakkennis verbinden we professionals en opdrachtgevers.",
-  alternates: { canonical: "/over-ons" },
-};
+export const metadata = pageMeta({ title: "Over DetaVia", description: "DetaVia is uitsluitend gespecialiseerd in het sociaal domein. Persoonlijk, betrouwbaar en met diepe vakkennis verbinden we professionals en opdrachtgevers.", path: "/over-ons" });
 
 const waarden = [
   { t: "Betrokken, ook na de start", d: "We blijven betrokken nadat de nieuwe collega is gestart. Juist die blijvende betrokkenheid na de plaatsing maakt voor ons het verschil, voor de professional en voor de opdracht." },
@@ -62,6 +60,8 @@ export default function OverOns() {
           </div>
         </div>
       </section>
+
+      <TeamCards title="Ons team" intro="De mensen achter DetaVia. Korte lijnen, een vast gezicht en altijd betrokken, ook na de plaatsing." />
 
       {/* STATS */}
       <section className="mx-auto max-w-[1180px] px-5 pt-20 sm:px-10">

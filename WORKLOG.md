@@ -1,5 +1,14 @@
 # Worklog
 
+## 2026-06-30 - Team-visitekaartjes ook op Over ons
+- **Wat is gewijzigd:**
+  - TeamCards (flip-visitekaartjes) toegevoegd op de Over ons-pagina ("Ons team"), tussen de kernwaarden en de stats.
+  - Over ons meteen op pageMeta gezet (zelfverwijzende canonical + unieke og), die ontbrak nog.
+- **Waarom:**
+  - Klant: het team ook op Over ons tonen (logische plek voor het hele team).
+- **Geraakte bestanden:**
+  - app/(public)/over-ons/page.tsx.
+
 ## 2026-06-30 - Team-visitekaartjes (flip-kaarten, Stiek-idee in DetaVia-stijl)
 - **Wat is gebouwd:**
   - Nieuw component TeamCards: flip-visitekaartjes (klik = kaart draait om). Voorkant foto + naam + functie + "Bekijk kaartje"; achterkant cobalt visitekaartje met wit DetaVia-logo, naam, functie, telefoon, e-mail en plaats. Geinspireerd op de Stiek-teamkaarten, in DetaVia-huisstijl (3D-flip via inline transform, contactlinks met stopPropagation).
