@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-06-30 - Eerste echt teamlid (Minhtri Nguyen) op plek 2
+- **Wat is gewijzigd:**
+  - Plek 2 van de team-visitekaartjes ingevuld met echt teamlid: Minhtri Nguyen, Recruiter, +31 6 13225638, minhtri@detavia.nl, met zijn foto (public/img/team-minhtri.jpg, geoptimaliseerd). tel-link strip nu spaties.
+- **Waarom:**
+  - Klant leverde eerste echte teamlid aan.
+- **Geraakte bestanden:**
+  - components/TeamCards.tsx, public/img/team-minhtri.jpg (nieuw).
+
 ## 2026-06-30 - Team-visitekaartjes ook op Over ons
 - **Wat is gewijzigd:**
   - TeamCards (flip-visitekaartjes) toegevoegd op de Over ons-pagina ("Ons team"), tussen de kernwaarden en de stats.

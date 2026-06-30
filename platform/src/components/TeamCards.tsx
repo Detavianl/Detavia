@@ -7,7 +7,7 @@ export type TeamMember = { naam: string; functie: string; foto: string; email: s
 // gegevens zodra die er zijn.
 const DEFAULT: TeamMember[] = [
   { naam: "Sanne de Vries", functie: "Recruiter", foto: "/img/team-2.jpg", email: "sanne@detavia.nl", telefoon: "080xxxxxx", plaats: "Almere" },
-  { naam: "Mehmet Yildiz", functie: "Accountmanager", foto: "/img/team-1.jpg", email: "mehmet@detavia.nl", telefoon: "080xxxxxx", plaats: "Almere" },
+  { naam: "Minhtri Nguyen", functie: "Recruiter", foto: "/img/team-minhtri.jpg", email: "minhtri@detavia.nl", telefoon: "+31 6 13225638", plaats: "Almere" },
   { naam: "Lisa Bakker", functie: "Consultant", foto: "/img/team-3.jpg", email: "lisa@detavia.nl", telefoon: "080xxxxxx", plaats: "Almere" },
   { naam: "Daan Visser", functie: "Recruiter", foto: "/img/team-4.jpg", email: "daan@detavia.nl", telefoon: "080xxxxxx", plaats: "Almere" },
 ];
@@ -69,7 +69,7 @@ export default function TeamCards({
                   <div className="relative text-sm font-bold text-yellow">{m.functie}</div>
                   <div className="relative my-3 h-[2px] w-10 rounded bg-yellow" />
                   <div className="relative grid gap-2 text-sm">
-                    <a href={`tel:${m.telefoon}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-2.5 text-white/90 hover:text-white"><Phone /> {m.telefoon}</a>
+                    <a href={`tel:${m.telefoon.replace(/\s/g, "")}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-2.5 text-white/90 hover:text-white"><Phone /> {m.telefoon}</a>
                     <a href={`mailto:${m.email}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-2.5 text-white/90 hover:text-white"><Mail /> {m.email}</a>
                     {m.plaats && <span className="flex items-center gap-2.5 text-white/90"><Pin /> {m.plaats}</span>}
                   </div>
