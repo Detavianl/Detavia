@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { VAKGEBIEDEN, NIVEAUS, KANDIDAAT_STATUS } from "@/lib/ats";
+import SubmitButton from "@/components/SubmitButton";
+
+type Team = { user_id: string; naam: string };
 
 type C = {
   id?: string; naam?: string; email?: string | null; telefoon?: string | null; woonplaats?: string | null;
@@ -32,10 +35,14 @@ function deelTelefoon(t?: string | null) {
   return { code: "+31", nummer: s };
 }
 
-export default function CandidateForm({ candidate, action, isEdit }: {
+export default function CandidateForm({ candidate, action, isEdit, canEditOwner = false, team = [], eigenaar = "", eigenaarNaam = "" }: {
   candidate?: C;
   action: (formData: FormData) => void | Promise<void>;
   isEdit?: boolean;
+  canEditOwner?: boolean;
+  team?: Team[];
+  eigenaar?: string;
+  eigenaarNaam?: string;
 }) {
   const v = candidate ?? {};
   const n = deelNaam(v.naam);
@@ -47,7 +54,7 @@ export default function CandidateForm({ candidate, action, isEdit }: {
           <Link href={isEdit && v.id ? `/admin/kandidaten/${v.id}` : "/admin/kandidaten"} className="text-sm font-semibold text-cobalt">← {isEdit ? "Kandidaat" : "Talentpool"}</Link>
           <h1 className="display text-2xl">{isEdit ? "Kandidaat bewerken" : "Nieuwe kandidaat"}</h1>
         </div>
-        <button className="rounded-full bg-cobalt px-6 py-2.5 font-bold text-white">{isEdit ? "Opslaan" : "Opslaan + in funnel"}</button>
+        <SubmitButton className="rounded-full bg-cobalt px-6 py-2.5 font-bold text-white">{isEdit ? "Opslaan" : "Opslaan + in funnel"}</SubmitButton>
       </div>
 
       {isEdit && v.id && <input type="hidden" name="id" value={v.id} />}
@@ -72,6 +79,22 @@ export default function CandidateForm({ candidate, action, isEdit }: {
             </label>
             <Field label="Woonplaats" name="woonplaats" defaultValue={v.woonplaats} />
             <Field label="LinkedIn" name="linkedin" placeholder="https://linkedin.com/in/…" defaultValue={v.linkedin} />
+            {canEditOwner ? (
+              <label className="grid min-w-0 gap-1.5">
+                <span className="text-sm font-bold">Eigenaar</span>
+                <select name="eigenaar" defaultValue={eigenaar} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+                  <option value="">— niemand —</option>
+                  {team.map((t) => <option key={t.user_id} value={t.user_id}>{t.naam}</option>)}
+                </select>
+                <span className="text-xs text-muted">Als super-admin kun je de eigenaar wijzigen. Standaard is dit de aanmaker.</span>
+              </label>
+            ) : (
+              <label className="grid min-w-0 gap-1.5">
+                <span className="text-sm font-bold">Eigenaar</span>
+                <input value={eigenaarNaam || "Jij (automatisch)"} disabled className="w-full rounded-xl border-2 border-neutral-200 bg-neutral-50 px-4 py-3 text-muted" />
+                <span className="text-xs text-muted">Automatisch gekoppeld. Alleen een super-admin kan dit wijzigen.</span>
+              </label>
+            )}
           </Grid>
         </Card>
 

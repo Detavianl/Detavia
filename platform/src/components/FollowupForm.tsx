@@ -5,9 +5,9 @@ import { updateCompanyFollowup } from "@/app/admin/crm/actions";
 
 type Team = { user_id: string; naam: string };
 
-export default function FollowupForm({ id, eigenaar, actie, datum, team, demo, entity = "candidate" }: {
+export default function FollowupForm({ id, eigenaar, actie, datum, team, demo, entity = "candidate", canEditOwner = true }: {
   id: string; eigenaar: string; actie: string; datum: string; team: Team[]; demo?: boolean;
-  entity?: "candidate" | "company";
+  entity?: "candidate" | "company"; canEditOwner?: boolean;
 }) {
   const [e, setE] = useState(eigenaar);
   const [a, setA] = useState(actie);
@@ -28,10 +28,11 @@ export default function FollowupForm({ id, eigenaar, actie, datum, team, demo, e
     <div className="grid gap-3">
       <label className="grid gap-1.5">
         <span className="text-xs font-bold uppercase tracking-wide text-muted">Eigenaar</span>
-        <select value={e} onChange={(ev) => setE(ev.target.value)} className="rounded-lg border-2 border-neutral-200 px-3 py-2">
+        <select value={e} onChange={(ev) => setE(ev.target.value)} disabled={!canEditOwner} className="rounded-lg border-2 border-neutral-200 px-3 py-2 disabled:bg-neutral-50 disabled:text-muted">
           <option value="">— niemand —</option>
           {team.map((t) => <option key={t.user_id} value={t.user_id}>{t.naam}</option>)}
         </select>
+        {!canEditOwner && <span className="text-xs text-muted">Alleen een super-admin kan de eigenaar wijzigen.</span>}
       </label>
       <label className="grid gap-1.5">
         <span className="text-xs font-bold uppercase tracking-wide text-muted">Volgende actie</span>

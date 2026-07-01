@@ -19,9 +19,15 @@ export async function createCandidate(formData: FormData) {
   const expertise = str(formData, "expertise").split(",").map((s) => s.trim()).filter(Boolean);
   const eersteNotitie = str(formData, "notitie").trim();
 
+  // Eigenaar: standaard de aanmaker; alleen een super-admin mag een andere
+  // eigenaar (of "niemand") kiezen via het formulier.
+  let eigenaar: string | null = admin.user_id;
+  if (admin.role === "super_admin") eigenaar = str(formData, "eigenaar") || null;
+
   // alle velden uit het formulier, één keer
   const fields = {
     naam,
+    eigenaar,
     email: str(formData, "email"),
     telefoon: telefoonUitDelen(formData),
     woonplaats: str(formData, "woonplaats"),
@@ -86,11 +92,14 @@ export async function updateFollowup(id: string, eigenaar: string, actie: string
   const admin = await requireAdmin();
   if (isDemo()) return;
   const supabase = await createClient();
-  await supabase.from("candidates").update({
-    eigenaar: eigenaar || null,
+  // Alleen een super-admin mag de eigenaar wijzigen; anderen passen enkel de
+  // volgende actie/datum aan en laten de eigenaar ongemoeid.
+  const upd: Record<string, unknown> = {
     volgende_actie: actie || null,
     volgende_actie_datum: datum || null,
-  }).eq("id", id);
+  };
+  if (admin.role === "super_admin") upd.eigenaar = eigenaar || null;
+  await supabase.from("candidates").update(upd).eq("id", id);
   await logAudit(admin, "candidate", id, "gewijzigd", "opvolging");
   revalidatePath(`/admin/kandidaten/${id}`);
   revalidatePath("/admin/kandidaten");
@@ -159,7 +168,7 @@ function telefoonUitDelen(fd: FormData) {
 
 // Bewerk een bestaande kandidaat.
 export async function updateCandidate(formData: FormData) {
-  await requireAdmin();
+  const admin = await requireAdmin();
   const id = str(formData, "id");
   const naam = naamUitDelen(formData);
   if (!id || !naam) throw new Error("Naam is verplicht");
@@ -188,7 +197,10 @@ export async function updateCandidate(formData: FormData) {
     expertise: str(formData, "expertise").split(",").map((s) => s.trim()).filter(Boolean),
   };
   const supabase = await createClient();
-  const { error } = await supabase.from("candidates").update(fields).eq("id", id);
+  // Eigenaar alleen door een super-admin laten wijzigen; anders ongemoeid laten.
+  const upd: Record<string, unknown> = { ...fields };
+  if (admin.role === "super_admin") upd.eigenaar = str(formData, "eigenaar") || null;
+  const { error } = await supabase.from("candidates").update(upd).eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath(`/admin/kandidaten/${id}`);
   revalidatePath("/admin/kandidaten");

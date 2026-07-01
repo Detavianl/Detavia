@@ -129,7 +129,7 @@ export default async function KandidaatDetail({ params }: { params: Promise<{ id
 
         <div className="flex flex-col gap-6 lg:w-80 lg:shrink-0">
           <Section title="Eigenaar & opvolging">
-            <FollowupForm id={c.id} eigenaar={c.eigenaar ?? ""} actie={c.volgende_actie ?? ""} datum={c.volgende_actie_datum ?? ""} team={team} demo={demo} />
+            <FollowupForm id={c.id} eigenaar={c.eigenaar ?? ""} actie={c.volgende_actie ?? ""} datum={c.volgende_actie_datum ?? ""} team={team} demo={demo} canEditOwner={admin?.role === "super_admin"} />
           </Section>
 
           <Section title="Documenten">
