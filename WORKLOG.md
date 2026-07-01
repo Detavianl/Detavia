@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-07-01 - Sollicitatieformulier: mooiere vacaturekaart (2-koloms, DetaVia-stijl)
+- **Wat is gewijzigd:**
+  - /solliciteren nu 2-koloms (form links, sticky vacaturekaart rechts) als er via een vacature wordt gesolliciteerd; op mobiel staat de kaart bovenaan. Vacaturekaart met cobalt-kop + geel accent + Topvacature-badge en icoonregels (Locatie/Salaris/Uren/Dienstverband) + link naar de volledige vacature. Dubbele "Sollicitatie voor"-balk uit het formulier gehaald.
+- **Waarom:**
+  - Klant wil de vacaturesamenvatting mooier + de zijruimte benutten, in DetaVia-stijl.
+- **Geraakte bestanden:**
+  - app/(public)/solliciteren/page.tsx, components/SollicitatieForm.tsx.
+
 ## 2026-07-01 - Vacature-samenvatting op het sollicitatieformulier
 - **Wat is gebouwd:**
   - Op /solliciteren wordt nu, als er via een vacature wordt gesolliciteerd, een korte samenvattingskaart getoond boven het formulier: titel, korte omschrijving, en locatie/salaris/uren (joinuz-stijl). Vacature wordt server-side opgehaald (slug of id). Hero-chip verwijderd (samenvatting vervangt die).

@@ -26,11 +26,6 @@ export default function SollicitatieForm({ vacatureId = "", titel = "", backHref
       <input type="hidden" name="vacature_id" value={vacatureId} />
       <input type="hidden" name="vacature_titel" value={titel} />
 
-      {titel && (
-        <div className="mb-5 rounded-xl bg-cobalt/[0.06] px-4 py-3 text-sm font-semibold text-cobalt ring-1 ring-cobalt/15">
-          Sollicitatie voor: <span className="font-bold">{titel}</span>
-        </div>
-      )}
       <h2 className="text-xl font-bold">Jouw gegevens</h2>
       <p className="mt-1 text-sm text-muted">Superleuk dat je wilt solliciteren bij DetaVia. Eerst hebben we wat gegevens van je nodig. Velden met <span className="font-bold text-cobalt">*</span> zijn verplicht.</p>
 
