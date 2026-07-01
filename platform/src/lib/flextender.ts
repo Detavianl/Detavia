@@ -135,10 +135,10 @@ function sectiesVan(html: string): { key: string; label: string; html: string }[
   return out;
 }
 
-const SCHOON = {
+const SCHOON: sanitizeHtml.IOptions = {
   allowedTags: ["p", "br", "ul", "ol", "li", "strong", "em", "b", "i"],
   allowedAttributes: {},
-} as const;
+};
 
 // Zet vrije-tekst met <br>/nummering om naar losse eisen-regels.
 function eisenVan(html: string): string[] {
