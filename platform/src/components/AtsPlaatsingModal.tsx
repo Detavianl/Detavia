@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { berekenMarge, euro2, type MargeConfig } from "@/lib/marge-calc";
+import { brutoVoor, euroMaand, schaalOpties, tredeOpties, type Schaal } from "@/lib/schalen-util";
 import { plaatsVanuitAts } from "@/app/admin/ats/actions";
 import type { AtsCard } from "@/lib/ats";
 
@@ -9,11 +11,12 @@ type Opt = { id: string; naam: string };
 // Popup die verschijnt zodra een kaart naar "Geplaatst" wordt gesleept: hier
 // wordt de plaatsing direct aangemaakt, met velden voorgevuld uit de vacature
 // en de kandidaat. Zo hoeft de recruiter dit niet los nog eens in te voeren.
-export default function AtsPlaatsingModal({ card, companies, recruiters, config, onDone, onCancel }: {
+export default function AtsPlaatsingModal({ card, companies, recruiters, config, schalen = [], onDone, onCancel }: {
   card: AtsCard;
   companies: Opt[];
   recruiters: Opt[];
   config: MargeConfig;
+  schalen?: Schaal[];
   onDone: () => void;
   onCancel: () => void;
 }) {
@@ -22,11 +25,15 @@ export default function AtsPlaatsingModal({ card, companies, recruiters, config,
   const [recruiterId, setRecruiterId] = useState(card.vacature?.recruiter_id ?? card.candidate?.eigenaar ?? "");
   const [verkoop, setVerkoop] = useState("");
   const [inkoop, setInkoop] = useState("");
+  const [uren, setUren] = useState("");
+  const [schaal, setSchaal] = useState("");
+  const [trede, setTrede] = useState("");
   const [start, setStart] = useState("");
   const [eind, setEind] = useState("");
   const [bezig, setBezig] = useState(false);
   const [fout, setFout] = useState("");
 
+  const bruto = brutoVoor(schalen, schaal, trede);
   const m = berekenMarge(Number(verkoop) || 0, Number(inkoop) || 0, config);
   const heeftInput = (Number(verkoop) || 0) > 0;
   const recruiterOnbekend = !!recruiterId && !recruiters.some((r) => r.id === recruiterId);
@@ -45,6 +52,10 @@ export default function AtsPlaatsingModal({ card, companies, recruiters, config,
         recruiter_id: recruiterId,
         start_datum: start,
         eind_datum: eind,
+        uren_per_week: uren,
+        schaal,
+        trede,
+        schaal_bruto: bruto != null ? String(bruto) : "",
       });
       onDone();
     } catch (err) {
@@ -90,6 +101,28 @@ export default function AtsPlaatsingModal({ card, companies, recruiters, config,
                 <input type="number" step="0.01" value={verkoop} onChange={(e) => setVerkoop(e.target.value)} placeholder="84,00" className="w-full rounded-xl border-2 border-neutral-200 px-4 py-2.5" /></label>
               <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Inkooptarief (€/uur)</span>
                 <input type="number" step="0.01" value={inkoop} onChange={(e) => setInkoop(e.target.value)} placeholder="44,98" className="w-full rounded-xl border-2 border-neutral-200 px-4 py-2.5" /></label>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Uren per week</span>
+                <input type="number" step="0.5" min="0" value={uren} onChange={(e) => setUren(e.target.value)} placeholder="bv. 32" className="w-full rounded-xl border-2 border-neutral-200 px-4 py-2.5" /></label>
+              <div className="grid min-w-0 content-start gap-1.5">
+                <span className="text-sm font-bold">Schaal &amp; trede</span>
+                <div className="flex gap-2">
+                  <select value={schaal} onChange={(e) => { setSchaal(e.target.value); setTrede(""); }} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-3 py-2.5">
+                    <option value="">Schaal…</option>
+                    {schaalOpties(schalen).map((s) => <option key={s} value={s}>Schaal {s}</option>)}
+                  </select>
+                  <select value={trede} onChange={(e) => setTrede(e.target.value)} disabled={!schaal} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-3 py-2.5 disabled:bg-neutral-50">
+                    <option value="">Trede…</option>
+                    {tredeOpties(schalen, schaal).map((t) => <option key={t} value={t}>Trede {t}</option>)}
+                  </select>
+                </div>
+                <span className="text-xs text-muted">
+                  {bruto != null ? <>Bruto: <b>{euroMaand(bruto)}</b> p/m. </> : schalen.length === 0 ? <>Nog geen schalen. </> : <>Kies schaal + trede. </>}
+                  <Link href="/admin/instellingen/schalen" className="font-semibold text-cobalt hover:underline">Beheren →</Link>
+                </span>
+              </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">

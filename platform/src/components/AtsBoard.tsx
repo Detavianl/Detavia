@@ -8,10 +8,11 @@ import { STAGES, VAKGEBIEDEN, type AtsCard, type StageKey } from "@/lib/ats";
 import { moveApplication } from "@/app/admin/ats/actions";
 import AtsPlaatsingModal from "@/components/AtsPlaatsingModal";
 import type { MargeConfig } from "@/lib/marge-calc";
+import type { Schaal } from "@/lib/schalen-util";
 
 type Opt = { id: string; naam: string };
 
-export default function AtsBoard({ initial, companies = [], recruiters = [], config }: { initial: AtsCard[]; companies?: Opt[]; recruiters?: Opt[]; config: MargeConfig }) {
+export default function AtsBoard({ initial, companies = [], recruiters = [], config, schalen = [] }: { initial: AtsCard[]; companies?: Opt[]; recruiters?: Opt[]; config: MargeConfig; schalen?: Schaal[] }) {
   const [cards, setCards] = useState<AtsCard[]>(initial);
   const [activeId, setActiveId] = useState<string | null>(null);
   // Kaart die naar "Geplaatst" is gesleept en op de plaatsing-popup wacht.
@@ -58,6 +59,7 @@ export default function AtsBoard({ initial, companies = [], recruiters = [], con
           companies={companies}
           recruiters={recruiters}
           config={config}
+          schalen={schalen}
           onDone={() => {
             // Plaatsing is server-side gemaakt én verplaatst: kaart lokaal bijwerken.
             setCards((cs) => cs.map((c) => (c.id === plaatsCard.id ? { ...c, stage: "geplaatst" } : c)));

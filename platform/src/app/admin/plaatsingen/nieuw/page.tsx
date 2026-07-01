@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import PlacementForm from "@/components/PlacementForm";
 import { loadMargeConfig } from "@/lib/marge";
+import { loadSchalen } from "@/lib/schalen";
 import { isDemo, DEMO_CANDIDATES, DEMO_COMPANIES } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
@@ -25,5 +26,6 @@ export default async function NieuwePlaatsing() {
       .map((t) => ({ id: t.user_id, naam: t.naam }));
   }
   const config = await loadMargeConfig();
-  return <PlacementForm candidates={candidates} companies={companies} recruiters={recruiters} config={config} />;
+  const schalen = isDemo() ? [] : await loadSchalen();
+  return <PlacementForm candidates={candidates} companies={companies} recruiters={recruiters} config={config} schalen={schalen} />;
 }

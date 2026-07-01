@@ -21,6 +21,7 @@ export async function createPlacement(formData: FormData) {
     recruiterId = cand?.eigenaar ?? null;
   }
 
+  const numOrNull = (k: string) => (s(formData, k) === "" ? null : Number(s(formData, k)));
   const { error } = await supabase.from("placements").insert({
     candidate_id: candidateId,
     company_id: s(formData, "company_id") || null,
@@ -30,6 +31,10 @@ export async function createPlacement(formData: FormData) {
     recruiter_id: recruiterId,
     start_datum: s(formData, "start_datum") || null,
     eind_datum: s(formData, "eind_datum") || null,
+    uren_per_week: numOrNull("uren_per_week"),
+    schaal: numOrNull("schaal"),
+    trede: numOrNull("trede"),
+    schaal_bruto: numOrNull("schaal_bruto"),
   });
   if (error) throw new Error(error.message);
   revalidatePath("/admin/plaatsingen");

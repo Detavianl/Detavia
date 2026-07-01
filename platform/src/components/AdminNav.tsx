@@ -12,6 +12,7 @@ const items: Item[] = [
   { href: "/admin/kandidaten", label: "Talentpool" },
   { href: "/admin/plaatsingen", label: "Plaatsingen" },
   { href: "/admin/verdiensten", label: "Verdiensten" },
+  { href: "/admin/instellingen/schalen", label: "Schalen & tredes" },
   { header: "CRM" },
   { href: "/admin/crm/deals", label: "Deals" },
   { href: "/admin/crm/bedrijven", label: "Bedrijven" },

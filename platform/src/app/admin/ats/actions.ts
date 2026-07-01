@@ -27,6 +27,10 @@ export type PlaatsVanuitAtsInput = {
   recruiter_id: string;
   start_datum: string;
   eind_datum: string;
+  uren_per_week: string;
+  schaal: string;
+  trede: string;
+  schaal_bruto: string;
 };
 
 // Maakt in één keer een plaatsing aan én verplaatst de sollicitatie naar
@@ -43,6 +47,7 @@ export async function plaatsVanuitAts(input: PlaatsVanuitAtsInput) {
     recruiterId = cand?.eigenaar ?? null;
   }
   const num = (v: string) => { const t = (v ?? "").trim(); return t === "" ? 0 : Number(t); };
+  const numN = (v: string) => { const t = (v ?? "").trim(); return t === "" ? null : Number(t); };
 
   const { error: pErr } = await supabase.from("placements").insert({
     candidate_id: input.candidate_id,
@@ -53,6 +58,10 @@ export async function plaatsVanuitAts(input: PlaatsVanuitAtsInput) {
     recruiter_id: recruiterId,
     start_datum: input.start_datum?.trim() || null,
     eind_datum: input.eind_datum?.trim() || null,
+    uren_per_week: numN(input.uren_per_week),
+    schaal: numN(input.schaal),
+    trede: numN(input.trede),
+    schaal_bruto: numN(input.schaal_bruto),
   });
   if (pErr) throw new Error(pErr.message);
 

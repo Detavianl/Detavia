@@ -3,13 +3,18 @@ import Link from "next/link";
 import { useState } from "react";
 import { createPlacement } from "@/app/admin/plaatsingen/actions";
 import { berekenMarge, euro2, type MargeConfig } from "@/lib/marge-calc";
+import { brutoVoor, euroMaand, schaalOpties, tredeOpties, type Schaal } from "@/lib/schalen-util";
 
 type Opt = { id: string; naam: string };
 type Cand = { id: string; naam: string; eigenaar: string | null };
 
-export default function PlacementForm({ candidates, companies, recruiters, config }: { candidates: Cand[]; companies: Opt[]; recruiters: Opt[]; config: MargeConfig }) {
+export default function PlacementForm({ candidates, companies, recruiters, config, schalen = [] }: { candidates: Cand[]; companies: Opt[]; recruiters: Opt[]; config: MargeConfig; schalen?: Schaal[] }) {
   const [verkoop, setVerkoop] = useState("");
   const [inkoop, setInkoop] = useState("");
+  const [uren, setUren] = useState("");
+  const [schaal, setSchaal] = useState("");
+  const [trede, setTrede] = useState("");
+  const bruto = brutoVoor(schalen, schaal, trede);
   const [candidateId, setCandidateId] = useState(candidates[0]?.id ?? "");
   const eigenaarVan = (cid: string) => candidates.find((c) => c.id === cid)?.eigenaar ?? "";
   const [recruiterId, setRecruiterId] = useState(eigenaarVan(candidates[0]?.id ?? ""));
@@ -53,6 +58,30 @@ export default function PlacementForm({ candidates, companies, recruiters, confi
             <input name="uurtarief" type="number" step="0.01" value={verkoop} onChange={(e) => setVerkoop(e.target.value)} placeholder="84,00" className="rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>
           <label className="grid gap-1.5"><span className="text-sm font-bold">Inkooptarief kandidaat (€/uur)</span>
             <input name="kostprijs" type="number" step="0.01" value={inkoop} onChange={(e) => setInkoop(e.target.value)} placeholder="44,98" className="rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Uren per week</span>
+            <input name="uren_per_week" type="number" step="0.5" min="0" value={uren} onChange={(e) => setUren(e.target.value)} placeholder="bv. 32" className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" />
+            <span className="text-xs text-muted">Voor inzicht in part-time of full-time.</span>
+          </label>
+          <div className="grid min-w-0 content-start gap-1.5">
+            <span className="text-sm font-bold">Schaal &amp; trede</span>
+            <div className="flex gap-2">
+              <select name="schaal" value={schaal} onChange={(e) => { setSchaal(e.target.value); setTrede(""); }} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-3 py-3">
+                <option value="">Schaal…</option>
+                {schaalOpties(schalen).map((s) => <option key={s} value={s}>Schaal {s}</option>)}
+              </select>
+              <select name="trede" value={trede} onChange={(e) => setTrede(e.target.value)} disabled={!schaal} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-3 py-3 disabled:bg-neutral-50">
+                <option value="">Trede…</option>
+                {tredeOpties(schalen, schaal).map((t) => <option key={t} value={t}>Trede {t}</option>)}
+              </select>
+            </div>
+            <input type="hidden" name="schaal_bruto" value={bruto ?? ""} />
+            <span className="text-xs text-muted">
+              {bruto != null ? <>Bruto: <b>{euroMaand(bruto)}</b> p/m. </> : schalen.length === 0 ? <>Nog geen schalen ingevuld. </> : <>Kies schaal + trede voor het bruto maandbedrag. </>}
+              <Link href="/admin/instellingen/schalen" className="font-semibold text-cobalt hover:underline">Schalen beheren →</Link>
+            </span>
+          </div>
         </div>
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Startdatum" name="start_datum" type="date" />
