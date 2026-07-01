@@ -20,6 +20,18 @@ function deelNaam(naam?: string | null) {
   return { voornaam: delen[0], tussenvoegsel: delen.slice(1, -1).join(" "), achternaam: delen[delen.length - 1] };
 }
 
+// Landcodes voor het telefoonveld (Nederland, België, Duitsland).
+const LANDCODES: [string, string][] = [["+31", "🇳🇱 +31"], ["+32", "🇧🇪 +32"], ["+49", "🇩🇪 +49"]];
+
+// Splitst een opgeslagen telefoonnummer in landcode + nummer om voor te vullen.
+function deelTelefoon(t?: string | null) {
+  const s = (t ?? "").trim();
+  for (const [code] of LANDCODES) {
+    if (s.startsWith(code)) return { code, nummer: s.slice(code.length).trim() };
+  }
+  return { code: "+31", nummer: s };
+}
+
 export default function CandidateForm({ candidate, action, isEdit }: {
   candidate?: C;
   action: (formData: FormData) => void | Promise<void>;
@@ -27,6 +39,7 @@ export default function CandidateForm({ candidate, action, isEdit }: {
 }) {
   const v = candidate ?? {};
   const n = deelNaam(v.naam);
+  const tel = deelTelefoon(v.telefoon);
   return (
     <form action={action} className="mx-auto max-w-4xl p-8">
       <div className="sticky top-0 z-10 -mx-8 mb-6 flex items-center justify-between border-b border-neutral-200 bg-neutral-50/90 px-8 py-4 backdrop-blur">
@@ -48,7 +61,15 @@ export default function CandidateForm({ candidate, action, isEdit }: {
               <Field label="Achternaam" name="achternaam" required defaultValue={n.achternaam} />
             </div>
             <Field label="E-mail" name="email" type="email" defaultValue={v.email} />
-            <Field label="Telefoon" name="telefoon" defaultValue={v.telefoon} />
+            <label className="grid min-w-0 gap-1.5">
+              <span className="text-sm font-bold">Telefoon</span>
+              <div className="flex gap-2">
+                <select name="tel_landcode" defaultValue={tel.code} className="shrink-0 rounded-xl border-2 border-neutral-200 bg-white px-3 py-3">
+                  {LANDCODES.map(([code, label]) => <option key={code} value={code}>{label}</option>)}
+                </select>
+                <input name="tel_nummer" type="tel" defaultValue={tel.nummer} placeholder="6 12345678" className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" />
+              </div>
+            </label>
             <Field label="Woonplaats" name="woonplaats" defaultValue={v.woonplaats} />
             <Field label="LinkedIn" name="linkedin" placeholder="https://linkedin.com/in/…" defaultValue={v.linkedin} />
           </Grid>

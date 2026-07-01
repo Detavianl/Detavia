@@ -23,7 +23,7 @@ export async function createCandidate(formData: FormData) {
   const fields = {
     naam,
     email: str(formData, "email"),
-    telefoon: str(formData, "telefoon"),
+    telefoon: telefoonUitDelen(formData),
     woonplaats: str(formData, "woonplaats"),
     vakgebied: str(formData, "vakgebied") || null,
     linkedin: str(formData, "linkedin"),
@@ -148,6 +148,15 @@ function naamUitDelen(fd: FormData) {
   return delen.length ? delen.join(" ") : str(fd, "naam");
 }
 
+// Stelt het telefoonnummer samen uit landcode + nummer. Valt terug op een los
+// "telefoon"-veld voor achterwaartse compatibiliteit.
+function telefoonUitDelen(fd: FormData) {
+  const nummer = str(fd, "tel_nummer");
+  if (!nummer) return str(fd, "telefoon");
+  const code = str(fd, "tel_landcode") || "+31";
+  return `${code} ${nummer}`;
+}
+
 // Bewerk een bestaande kandidaat.
 export async function updateCandidate(formData: FormData) {
   await requireAdmin();
@@ -160,7 +169,7 @@ export async function updateCandidate(formData: FormData) {
   const fields = {
     naam,
     email: str(formData, "email"),
-    telefoon: str(formData, "telefoon"),
+    telefoon: telefoonUitDelen(formData),
     woonplaats: str(formData, "woonplaats"),
     vakgebied: str(formData, "vakgebied") || null,
     linkedin: str(formData, "linkedin"),
