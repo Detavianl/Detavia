@@ -54,6 +54,6 @@ export type AtsCard = {
   stage: StageKey;
   positie: number;
   notitie: string;
-  candidate: { id: string; naam: string; vakgebied: string | null; woonplaats: string | null } | null;
-  vacature: { titel: string } | null;
+  candidate: { id: string; naam: string; vakgebied: string | null; woonplaats: string | null; eigenaar?: string | null } | null;
+  vacature: { id?: string; titel: string; company_id?: string | null; recruiter_id?: string | null } | null;
 };

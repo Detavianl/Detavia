@@ -6,13 +6,26 @@ import {
 } from "@dnd-kit/core";
 import { STAGES, VAKGEBIEDEN, type AtsCard, type StageKey } from "@/lib/ats";
 import { moveApplication } from "@/app/admin/ats/actions";
+import AtsPlaatsingModal from "@/components/AtsPlaatsingModal";
+import type { MargeConfig } from "@/lib/marge-calc";
 
-export default function AtsBoard({ initial }: { initial: AtsCard[] }) {
+type Opt = { id: string; naam: string };
+
+export default function AtsBoard({ initial, companies = [], recruiters = [], config }: { initial: AtsCard[]; companies?: Opt[]; recruiters?: Opt[]; config: MargeConfig }) {
   const [cards, setCards] = useState<AtsCard[]>(initial);
   const [activeId, setActiveId] = useState<string | null>(null);
+  // Kaart die naar "Geplaatst" is gesleept en op de plaatsing-popup wacht.
+  const [plaatsCard, setPlaatsCard] = useState<AtsCard | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
   const activeCard = cards.find((c) => c.id === activeId) ?? null;
+
+  function verplaats(id: string, newStage: StageKey, vorige: StageKey) {
+    setCards((cs) => cs.map((c) => (c.id === id ? { ...c, stage: newStage } : c)));
+    moveApplication(id, newStage).catch(() => {
+      setCards((cs) => cs.map((c) => (c.id === id ? { ...c, stage: vorige } : c)));
+    });
+  }
 
   function onDragStart(e: DragStartEvent) {
     setActiveId(String(e.active.id));
@@ -24,10 +37,9 @@ export default function AtsBoard({ initial }: { initial: AtsCard[] }) {
     if (!newStage) return;
     const card = cards.find((c) => c.id === id);
     if (!card || card.stage === newStage) return;
-    setCards((cs) => cs.map((c) => (c.id === id ? { ...c, stage: newStage } : c)));
-    moveApplication(id, newStage).catch(() => {
-      setCards((cs) => cs.map((c) => (c.id === id ? { ...c, stage: card.stage } : c)));
-    });
+    // Naar "Geplaatst": eerst de plaatsing-popup, nog niet verplaatsen.
+    if (newStage === "geplaatst") { setPlaatsCard(card); return; }
+    verplaats(id, newStage, card.stage);
   }
 
   return (
@@ -40,6 +52,20 @@ export default function AtsBoard({ initial }: { initial: AtsCard[] }) {
       <DragOverlay dropAnimation={null}>
         {activeCard ? <CardView card={activeCard} overlay /> : null}
       </DragOverlay>
+      {plaatsCard && (
+        <AtsPlaatsingModal
+          card={plaatsCard}
+          companies={companies}
+          recruiters={recruiters}
+          config={config}
+          onDone={() => {
+            // Plaatsing is server-side gemaakt én verplaatst: kaart lokaal bijwerken.
+            setCards((cs) => cs.map((c) => (c.id === plaatsCard.id ? { ...c, stage: "geplaatst" } : c)));
+            setPlaatsCard(null);
+          }}
+          onCancel={() => setPlaatsCard(null)}
+        />
+      )}
     </DndContext>
   );
 }

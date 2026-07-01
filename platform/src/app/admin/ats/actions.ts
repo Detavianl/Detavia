@@ -17,6 +17,53 @@ export async function moveApplication(id: string, stage: StageKey) {
   revalidatePath("/admin/ats");
 }
 
+export type PlaatsVanuitAtsInput = {
+  applicationId: string;
+  candidate_id: string;
+  company_id: string;
+  functie: string;
+  uurtarief: string;
+  kostprijs: string;
+  recruiter_id: string;
+  start_datum: string;
+  eind_datum: string;
+};
+
+// Maakt in één keer een plaatsing aan én verplaatst de sollicitatie naar
+// "Geplaatst". Voorkomt dubbel werk vanuit het ATS-bord (geen redirect).
+export async function plaatsVanuitAts(input: PlaatsVanuitAtsInput) {
+  const admin = await requireAdmin();
+  if (isDemo()) return; // demo: niets opslaan, kaart verplaatst alleen in beeld
+  const supabase = await createClient();
+
+  // Recruiter: expliciet gekozen, anders de eigenaar van de kandidaat.
+  let recruiterId = input.recruiter_id?.trim() || null;
+  if (!recruiterId && input.candidate_id) {
+    const { data: cand } = await supabase.from("candidates").select("eigenaar").eq("id", input.candidate_id).single();
+    recruiterId = cand?.eigenaar ?? null;
+  }
+  const num = (v: string) => { const t = (v ?? "").trim(); return t === "" ? 0 : Number(t); };
+
+  const { error: pErr } = await supabase.from("placements").insert({
+    candidate_id: input.candidate_id,
+    company_id: input.company_id?.trim() || null,
+    functie: (input.functie ?? "").trim(),
+    uurtarief: num(input.uurtarief),
+    kostprijs: num(input.kostprijs),
+    recruiter_id: recruiterId,
+    start_datum: input.start_datum?.trim() || null,
+    eind_datum: input.eind_datum?.trim() || null,
+  });
+  if (pErr) throw new Error(pErr.message);
+
+  const { data, error: aErr } = await supabase.from("applications").update({ stage: "geplaatst" }).eq("id", input.applicationId).select("candidate_id").single();
+  if (aErr) throw new Error(aErr.message);
+  if (data?.candidate_id) await logAudit(admin, "candidate", data.candidate_id, CAND_EVENT["geplaatst"] ?? "geplaatst");
+
+  revalidatePath("/admin/ats");
+  revalidatePath("/admin/plaatsingen");
+}
+
 export async function setApplicationNote(id: string, notitie: string) {
   await requireAdmin();
   if (isDemo()) return;
