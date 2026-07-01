@@ -24,7 +24,7 @@ export default async function ContactenPage() {
       <div className="mt-8 overflow-hidden rounded-2xl border border-neutral-200 bg-white">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-muted">
-            <tr><th className="px-5 py-3">Naam</th><th className="px-5 py-3">Functie</th><th className="px-5 py-3">Bedrijf</th><th className="px-5 py-3">Contact</th></tr>
+            <tr><th className="px-5 py-3">Naam</th><th className="px-5 py-3">Functie</th><th className="px-5 py-3">Opdrachtgever</th><th className="px-5 py-3">Contact</th></tr>
           </thead>
           <tbody>
             {contacten.map((c) => (

@@ -39,12 +39,9 @@ export async function plaatsVanuitAts(input: PlaatsVanuitAtsInput) {
   if (isDemo()) return; // demo: niets opslaan, kaart verplaatst alleen in beeld
   const supabase = await createClient();
 
-  // Recruiter: expliciet gekozen, anders de eigenaar van de kandidaat.
-  let recruiterId = input.recruiter_id?.trim() || null;
-  if (!recruiterId && input.candidate_id) {
-    const { data: cand } = await supabase.from("candidates").select("eigenaar").eq("id", input.candidate_id).single();
-    recruiterId = cand?.eigenaar ?? null;
-  }
+  // Recruiter = de aanmaker; alleen een super-admin mag een andere kiezen.
+  let recruiterId: string | null = admin.user_id;
+  if (admin.role === "super_admin") recruiterId = input.recruiter_id?.trim() || null;
   const num = (v: string) => { const t = (v ?? "").trim(); return t === "" ? 0 : Number(t); };
   const numN = (v: string) => { const t = (v ?? "").trim(); return t === "" ? null : Number(t); };
 

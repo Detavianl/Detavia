@@ -8,7 +8,7 @@ import { euroMaand, euroUur, tredeOpties, tredeInfo, type Trede } from "@/lib/sc
 type Opt = { id: string; naam: string };
 type Cand = { id: string; naam: string; eigenaar: string | null };
 
-export default function PlacementForm({ candidates, companies, recruiters, config, tredes = [] }: { candidates: Cand[]; companies: Opt[]; recruiters: Opt[]; config: MargeConfig; tredes?: Trede[] }) {
+export default function PlacementForm({ candidates, companies, recruiters, config, tredes = [], currentUserId = "", currentUserNaam = "", canEditRecruiter = false }: { candidates: Cand[]; companies: Opt[]; recruiters: Opt[]; config: MargeConfig; tredes?: Trede[]; currentUserId?: string; currentUserNaam?: string; canEditRecruiter?: boolean }) {
   const [verkoop, setVerkoop] = useState("");
   const [inkoop, setInkoop] = useState("");
   const [uren, setUren] = useState("");
@@ -22,17 +22,12 @@ export default function PlacementForm({ candidates, companies, recruiters, confi
     if (info?.inkooptarief_uur != null) setInkoop(String(info.inkooptarief_uur));
   }
   const [candidateId, setCandidateId] = useState(candidates[0]?.id ?? "");
-  const eigenaarVan = (cid: string) => candidates.find((c) => c.id === cid)?.eigenaar ?? "";
-  const [recruiterId, setRecruiterId] = useState(eigenaarVan(candidates[0]?.id ?? ""));
-  const [recruiterAangeraakt, setRecruiterAangeraakt] = useState(false);
+  // Recruiter = standaard de ingelogde gebruiker (de aanmaker).
+  const [recruiterId, setRecruiterId] = useState(currentUserId);
   const m = berekenMarge(Number(verkoop) || 0, Number(inkoop) || 0, config);
   const heeftInput = (Number(verkoop) || 0) > 0;
 
-  function kiesKandidaat(id: string) {
-    setCandidateId(id);
-    // Zolang de gebruiker de recruiter niet handmatig heeft gewijzigd: volg de eigenaar.
-    if (!recruiterAangeraakt) setRecruiterId(eigenaarVan(id));
-  }
+  const kiesKandidaat = (id: string) => setCandidateId(id);
   const recruiterOnbekend = !!recruiterId && !recruiters.some((r) => r.id === recruiterId);
 
   return (
@@ -50,13 +45,20 @@ export default function PlacementForm({ candidates, companies, recruiters, confi
           <Sel label="Opdrachtgever" name="company_id" options={companies} leeg />
         </div>
         <label className="grid gap-1.5"><span className="text-sm font-bold">Recruiter (voor verdiensten)</span>
-          <select name="recruiter_id" value={recruiterId} onChange={(e) => { setRecruiterId(e.target.value); setRecruiterAangeraakt(true); }} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
-            <option value="">— geen recruiter gekoppeld —</option>
-            {recruiterOnbekend && <option value={recruiterId}>Huidige eigenaar (buiten lijst)</option>}
-            {recruiters.map((r) => <option key={r.id} value={r.id}>{r.naam}</option>)}
-          </select>
-          <span className="text-xs text-muted">Standaard de eigenaar van de gekozen kandidaat; pas aan als een andere recruiter deze plaatsing maakte. Hierop rekent Verdiensten af.</span>
-          {!recruiterId && <span className="text-xs font-semibold text-red-600">Let op: nog geen recruiter gekoppeld. Deze plaatsing telt dan bij niemands verdiensten mee.</span>}
+          {canEditRecruiter ? (
+            <>
+              <select name="recruiter_id" value={recruiterId} onChange={(e) => setRecruiterId(e.target.value)} className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+                <option value="">— geen recruiter gekoppeld —</option>
+                {recruiterOnbekend && <option value={recruiterId}>Huidige koppeling (buiten lijst)</option>}
+                {recruiters.map((r) => <option key={r.id} value={r.id}>{r.naam}</option>)}
+              </select>
+              <span className="text-xs text-muted">Als super-admin kun je een andere recruiter kiezen; standaard ben jij dat. Hierop rekent Verdiensten af.</span>
+              {!recruiterId && <span className="text-xs font-semibold text-red-600">Let op: nog geen recruiter gekoppeld. Deze plaatsing telt dan bij niemands verdiensten mee.</span>}
+            </>
+          ) : (
+            <input value={currentUserNaam || "Jij (automatisch)"} disabled className="rounded-xl border-2 border-neutral-200 bg-neutral-50 px-4 py-3 text-muted" />
+          )}
+          {!canEditRecruiter && <span className="text-xs text-muted">Automatisch aan jou gekoppeld. Alleen een super-admin kan dit voor een ander wijzigen.</span>}
         </label>
         <Field label="Functie" name="functie" placeholder="bv. Adviseur Sociaal Domein" />
         <div className="grid gap-5 sm:grid-cols-2">

@@ -2,11 +2,13 @@ import { createClient } from "@/lib/supabase/server";
 import PlacementForm from "@/components/PlacementForm";
 import { loadMargeConfig } from "@/lib/marge";
 import { loadTredes } from "@/lib/schalen";
+import { requireAdmin } from "@/lib/admin-context";
 import { isDemo, DEMO_CANDIDATES, DEMO_COMPANIES } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
 export default async function NieuwePlaatsing() {
+  const admin = await requireAdmin();
   let candidates: { id: string; naam: string; eigenaar: string | null }[];
   let companies: { id: string; naam: string }[];
   let recruiters: { id: string; naam: string }[] = [];
@@ -27,5 +29,5 @@ export default async function NieuwePlaatsing() {
   }
   const config = await loadMargeConfig();
   const tredes = isDemo() ? [] : await loadTredes();
-  return <PlacementForm candidates={candidates} companies={companies} recruiters={recruiters} config={config} tredes={tredes} />;
+  return <PlacementForm candidates={candidates} companies={companies} recruiters={recruiters} config={config} tredes={tredes} currentUserId={admin.user_id} currentUserNaam={admin.naam || admin.email} canEditRecruiter={admin.role === "super_admin"} />;
 }

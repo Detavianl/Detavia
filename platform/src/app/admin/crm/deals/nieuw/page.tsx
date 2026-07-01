@@ -18,9 +18,9 @@ export default async function NieuweDeal() {
       <div className="mt-8 grid gap-5">
         <Field label="Titel" name="titel" required placeholder="bijv. 2 leerplichtambtenaren Q3" />
         <div className="grid gap-5 sm:grid-cols-2">
-          <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Bedrijf</span>
+          <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Opdrachtgever</span>
             <select name="company_id" className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
-              <option value="">— kies bedrijf —</option>
+              <option value="">— kies opdrachtgever —</option>
               {companies.map((c) => <option key={c.id} value={c.id}>{c.naam}</option>)}
             </select></label>
           <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Vakgebied</span>

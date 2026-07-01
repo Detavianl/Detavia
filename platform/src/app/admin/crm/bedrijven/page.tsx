@@ -13,8 +13,8 @@ export default async function BedrijvenPage() {
   return (
     <div className="p-8">
       <div className="flex items-center justify-between">
-        <div><h1 className="display text-3xl">Bedrijven</h1><p className="mt-1 text-muted">{companies.length} opdrachtgevers</p></div>
-        <Link href="/admin/crm/bedrijven/nieuw" className="rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Nieuw bedrijf</Link>
+        <div><h1 className="display text-3xl">Opdrachtgevers</h1><p className="mt-1 text-muted">{companies.length} opdrachtgevers</p></div>
+        <Link href="/admin/crm/bedrijven/nieuw" className="rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Nieuwe opdrachtgever</Link>
       </div>
       <div className="mt-8 overflow-hidden rounded-2xl border border-neutral-200 bg-white">
         <table className="w-full text-left text-sm">
@@ -30,7 +30,7 @@ export default async function BedrijvenPage() {
                 <td className="px-5 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${c.status === "klant" ? "bg-green-100 text-green-700" : c.status === "prospect" ? "bg-yellow text-black" : "bg-neutral-100 text-muted"}`}>{COMPANY_STATUS[c.status] ?? c.status}</span></td>
               </tr>
             ))}
-            {companies.length === 0 && <tr><td colSpan={4} className="px-5 py-10 text-center text-muted">Nog geen bedrijven.</td></tr>}
+            {companies.length === 0 && <tr><td colSpan={4} className="px-5 py-10 text-center text-muted">Nog geen opdrachtgevers.</td></tr>}
           </tbody>
         </table>
       </div>

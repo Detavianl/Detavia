@@ -7,10 +7,12 @@ import { loadMargeConfig } from "@/lib/marge";
 import { DEFAULT_CONFIG } from "@/lib/marge-calc";
 import { loadTredes } from "@/lib/schalen";
 import type { Trede } from "@/lib/schalen-util";
+import { getAdmin } from "@/lib/admin-context";
 
 export const dynamic = "force-dynamic";
 
 export default async function AtsPage() {
+  const admin = await getAdmin();
   let cards: AtsCard[];
   let companies: { id: string; naam: string }[] = [];
   let recruiters: { id: string; naam: string }[] = [];
@@ -44,7 +46,7 @@ export default async function AtsPage() {
       <h1 className="display text-3xl">ATS</h1>
       <p className="mt-1 text-muted">Sleep kandidaten door de pijplijn.</p>
       <div className="mt-8">
-        <AtsBoard initial={cards} companies={companies} recruiters={recruiters} config={config} tredes={tredes} />
+        <AtsBoard initial={cards} companies={companies} recruiters={recruiters} config={config} tredes={tredes} currentUserId={admin?.user_id ?? ""} currentUserNaam={admin?.naam || admin?.email || ""} canEditRecruiter={admin?.role === "super_admin"} />
       </div>
     </div>
   );

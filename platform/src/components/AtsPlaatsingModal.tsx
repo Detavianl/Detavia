@@ -11,18 +11,22 @@ type Opt = { id: string; naam: string };
 // Popup die verschijnt zodra een kaart naar "Geplaatst" wordt gesleept: hier
 // wordt de plaatsing direct aangemaakt, met velden voorgevuld uit de vacature
 // en de kandidaat. Zo hoeft de recruiter dit niet los nog eens in te voeren.
-export default function AtsPlaatsingModal({ card, companies, recruiters, config, tredes = [], onDone, onCancel }: {
+export default function AtsPlaatsingModal({ card, companies, recruiters, config, tredes = [], currentUserId = "", currentUserNaam = "", canEditRecruiter = false, onDone, onCancel }: {
   card: AtsCard;
   companies: Opt[];
   recruiters: Opt[];
   config: MargeConfig;
   tredes?: Trede[];
+  currentUserId?: string;
+  currentUserNaam?: string;
+  canEditRecruiter?: boolean;
   onDone: () => void;
   onCancel: () => void;
 }) {
   const [functie, setFunctie] = useState(card.vacature?.titel ?? "");
   const [companyId, setCompanyId] = useState(card.vacature?.company_id ?? "");
-  const [recruiterId, setRecruiterId] = useState(card.vacature?.recruiter_id ?? card.candidate?.eigenaar ?? "");
+  // Recruiter = standaard de ingelogde gebruiker (de aanmaker).
+  const [recruiterId, setRecruiterId] = useState(currentUserId);
   const [verkoop, setVerkoop] = useState("");
   const [inkoop, setInkoop] = useState("");
   const [uren, setUren] = useState("");
@@ -92,12 +96,18 @@ export default function AtsPlaatsingModal({ card, companies, recruiters, config,
               </select></label>
 
             <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Recruiter (voor verdiensten)</span>
-              <select value={recruiterId} onChange={(e) => setRecruiterId(e.target.value)} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-2.5">
-                <option value="">— geen recruiter gekoppeld —</option>
-                {recruiterOnbekend && <option value={recruiterId}>Huidige koppeling (buiten lijst)</option>}
-                {recruiters.map((r) => <option key={r.id} value={r.id}>{r.naam}</option>)}
-              </select>
-              {!recruiterId && <span className="text-xs font-semibold text-red-600">Nog geen recruiter gekoppeld: deze plaatsing telt dan bij niemands verdiensten mee.</span>}
+              {canEditRecruiter ? (
+                <>
+                  <select value={recruiterId} onChange={(e) => setRecruiterId(e.target.value)} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-2.5">
+                    <option value="">— geen recruiter gekoppeld —</option>
+                    {recruiterOnbekend && <option value={recruiterId}>Huidige koppeling (buiten lijst)</option>}
+                    {recruiters.map((r) => <option key={r.id} value={r.id}>{r.naam}</option>)}
+                  </select>
+                  {!recruiterId && <span className="text-xs font-semibold text-red-600">Nog geen recruiter gekoppeld: telt bij niemands verdiensten mee.</span>}
+                </>
+              ) : (
+                <input value={currentUserNaam || "Jij (automatisch)"} disabled className="w-full rounded-xl border-2 border-neutral-200 bg-neutral-50 px-4 py-2.5 text-muted" />
+              )}
             </label>
 
             <div className="grid gap-4 sm:grid-cols-2">

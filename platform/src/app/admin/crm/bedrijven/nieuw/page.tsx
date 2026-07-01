@@ -5,8 +5,8 @@ import { COMPANY_TYPE, COMPANY_STATUS } from "@/lib/crm";
 export default function NieuwBedrijf() {
   return (
     <form action={createCompany} className="mx-auto max-w-2xl p-8">
-      <Link href="/admin/crm/bedrijven" className="text-sm font-semibold text-cobalt">← Bedrijven</Link>
-      <h1 className="display mt-2 text-3xl">Nieuw bedrijf</h1>
+      <Link href="/admin/crm/bedrijven" className="text-sm font-semibold text-cobalt">← Opdrachtgevers</Link>
+      <h1 className="display mt-2 text-3xl">Nieuwe opdrachtgever</h1>
       <div className="mt-8 grid gap-5">
         <Field label="Naam" name="naam" required />
         <div className="grid gap-5 sm:grid-cols-2">
@@ -15,7 +15,7 @@ export default function NieuwBedrijf() {
         </div>
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Plaats" name="plaats" />
-          <Field label="Branche" name="branche" />
+          <Field label="Domein" name="branche" />
         </div>
         <Field label="Website" name="website" placeholder="https://…" />
         <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Notitie</span>

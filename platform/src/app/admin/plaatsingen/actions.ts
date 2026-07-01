@@ -9,17 +9,14 @@ const s = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
 const n = (fd: FormData, k: string) => { const v = s(fd, k); return v === "" ? 0 : Number(v); };
 
 export async function createPlacement(formData: FormData) {
-  await requireAdmin();
+  const admin = await requireAdmin();
   if (isDemo()) redirect("/admin/plaatsingen");
   const supabase = await createClient();
   const candidateId = s(formData, "candidate_id");
 
-  // Recruiter: expliciet gekozen veld, anders de eigenaar van de kandidaat.
-  let recruiterId = s(formData, "recruiter_id") || null;
-  if (!recruiterId && candidateId) {
-    const { data: cand } = await supabase.from("candidates").select("eigenaar").eq("id", candidateId).single();
-    recruiterId = cand?.eigenaar ?? null;
-  }
+  // Recruiter = de aanmaker; alleen een super-admin mag een andere kiezen.
+  let recruiterId: string | null = admin.user_id;
+  if (admin.role === "super_admin") recruiterId = s(formData, "recruiter_id") || null;
 
   const numOrNull = (k: string) => (s(formData, k) === "" ? null : Number(s(formData, k)));
   const { error } = await supabase.from("placements").insert({

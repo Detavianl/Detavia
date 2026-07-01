@@ -54,7 +54,7 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
 
   return (
     <div className="p-8">
-      <Link href="/admin/crm/bedrijven" className="text-sm font-semibold text-cobalt">← Bedrijven</Link>
+      <Link href="/admin/crm/bedrijven" className="text-sm font-semibold text-cobalt">← Opdrachtgevers</Link>
 
       {/* Kop met kerngegevens */}
       <div className="mt-3 rounded-2xl border border-neutral-200 bg-white p-6">
