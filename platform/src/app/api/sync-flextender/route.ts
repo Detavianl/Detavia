@@ -1,80 +1,50 @@
 import { createAdminClient } from "@/lib/supabase/admin";
-import { fetchSociaalDomein } from "@/lib/flextender";
-import { slugify } from "@/lib/blog";
-import sanitizeHtml from "sanitize-html";
+import { fetchFlextenderRows } from "@/lib/flextender";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-const BRON = "flextender";
-
+// Toegestaan als de Authorization-bearer de service-role key of CRON_SECRET is.
 function authorized(req: Request) {
-  const key = (process.env.SUPABASE_SERVICE_ROLE_KEY ?? "").trim();
-  const auth = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "").trim();
-  return key.length > 10 && auth === key;
+  const bearer = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "").trim();
+  const srk = (process.env.SUPABASE_SERVICE_ROLE_KEY ?? "").trim();
+  const cron = (process.env.CRON_SECRET ?? "").trim();
+  return (srk.length > 10 && bearer === srk) || (cron.length > 6 && bearer === cron);
 }
 
 async function sync() {
-  const opdrachten = await fetchSociaalDomein(40);
+  const rows = await fetchFlextenderRows();
   const supabase = createAdminClient();
 
-  const rows = opdrachten.map((o) => ({
-    titel: o.titel,
-    slug: `${slugify(o.titel)}-fl${o.aanvraagnr}`,
-    bron: BRON,
-    extern_id: o.aanvraagnr,
-    vakgebied: o.vakgebied || "wmo",
-    plaats: o.plaats,
-    uren_min: o.uren_min,
-    uren_max: o.uren_max,
-    salaris_min: null as number | null,
-    salaris_max: null as number | null,
-    type: "Detachering",
-    top: false,
-    status: "open",
-    omschrijving: o.omschrijving,
-    taken: sanitizeHtml(o.taken, { allowedTags: ["p", "br", "ul", "ol", "li", "strong", "em"], allowedAttributes: {} }),
-    eisen: o.eisen,
-    opdrachtgever: o.opdrachtgever,
-    startdatum: o.startdatum,
-    duur: o.duur,
-  }));
-
-  let toegevoegd = 0;
-  if (rows.length > 0) {
+  let gesynct = 0;
+  if (rows.length) {
     const { data, error } = await supabase
-      .from("vacatures")
-      .upsert(rows, { onConflict: "slug" })
-      .select("id");
+      .from("flextender_opdrachten")
+      .upsert(rows.map((r) => ({ ...r, synced_at: new Date().toISOString() })), { onConflict: "avnummer" })
+      .select("avnummer");
     if (error) throw new Error(error.message);
-    toegevoegd = data?.length ?? 0;
+    gesynct = data?.length ?? 0;
   }
 
-  // Verwijder Flextender-vacatures die niet meer in de feed staan.
-  const huidige = opdrachten.map((o) => o.aanvraagnr);
-  const selectQ = supabase.from("vacatures").select("id").eq("bron", BRON);
-  const { data: bestaand } = huidige.length
-    ? await selectQ.not("extern_id", "in", `(${huidige.join(",")})`)
-    : await selectQ;
-  const teVerwijderen = (bestaand ?? []).map((r: { id: string }) => r.id);
-  if (teVerwijderen.length) {
-    await supabase.from("vacatures").delete().in("id", teVerwijderen);
-  }
+  // Opruimen: alles wat niet meer in de feed staat (gesloten/vervallen).
+  const huidige = rows.map((r) => r.avnummer);
+  const q = supabase.from("flextender_opdrachten").delete();
+  const { data: verwijderd } = huidige.length
+    ? await q.not("avnummer", "in", `(${huidige.join(",")})`).select("avnummer")
+    : await q.gte("avnummer", 0).select("avnummer");
 
-  return { gevonden: opdrachten.length, gesynct: toegevoegd, verwijderd: teVerwijderen.length };
+  return { gevonden: rows.length, gesynct, verwijderd: verwijderd?.length ?? 0 };
 }
 
 export async function POST(req: Request) {
   if (!authorized(req)) return Response.json({ error: "unauthorized" }, { status: 401 });
   try {
-    const result = await sync();
-    return Response.json({ ok: true, ...result });
+    return Response.json({ ok: true, ...(await sync()) });
   } catch (e) {
     return Response.json({ ok: false, error: e instanceof Error ? e.message : "fout" }, { status: 500 });
   }
 }
 
-// GET met dezelfde auth, zodat je het ook handmatig kunt triggeren.
 export async function GET(req: Request) {
   return POST(req);
 }
