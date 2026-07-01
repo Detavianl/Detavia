@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { isDemo } from "@/lib/demo";
 import { DEMO_VACATURES, type Vacature } from "@/lib/vacatures-demo";
+import { loadOpdrachtenAlsVacatures } from "@/lib/flextender";
 
 type Row = {
   id: string; titel: string; slug: string | null; vakgebied: string; plaats: string;
@@ -48,7 +49,11 @@ export async function loadVacatures(): Promise<Vacature[]> {
       .eq("status", "open")
       .or(`inactief_op.is.null,inactief_op.gte.${vandaag}`)
       .order("created_at", { ascending: false });
-    return (data ?? []).map(mapVacatureRow);
+    const eigen = (data ?? []).map(mapVacatureRow);
+    // Flextender-inhuuropdrachten (sociaal domein) meenemen als vacatures.
+    let flex: Vacature[] = [];
+    try { flex = await loadOpdrachtenAlsVacatures(); } catch { flex = []; }
+    return [...eigen, ...flex];
   } catch {
     return [];
   }
