@@ -121,15 +121,63 @@ function vakgebiedVan(titel: string): string {
   return "participatie";
 }
 
+// Splitst de Flextender-omschrijving in secties op basis van de <strong>-koppen.
+function sectiesVan(html: string): { key: string; label: string; html: string }[] {
+  const parts = html.split(/<strong>/i).slice(1);
+  const out: { key: string; label: string; html: string }[] = [];
+  for (const p of parts) {
+    const m = p.match(/^([\s\S]*?)<\/strong>([\s\S]*)$/i);
+    if (!m) continue;
+    const label = stripTags(m[1]).trim();
+    const key = label.toLowerCase().replace(/[^a-z]/g, "");
+    out.push({ key, label, html: m[2] });
+  }
+  return out;
+}
+
+const SCHOON = {
+  allowedTags: ["p", "br", "ul", "ol", "li", "strong", "em", "b", "i"],
+  allowedAttributes: {},
+} as const;
+
+// Zet vrije-tekst met <br>/nummering om naar losse eisen-regels.
+function eisenVan(html: string): string[] {
+  const tekst = html.replace(/<\/(p|li|div)>/gi, "\n").replace(/<br\s*\/?>/gi, "\n");
+  return stripTags(tekst)
+    .split(/\n+/)
+    .map((r) => r.replace(/^\s*\d{1,2}[.)]\s*/, "").replace(/[;.]\s*$/, "").trim())
+    .filter((r) => r.length > 4 && r.length < 300)
+    .slice(0, 12);
+}
+
 // Zet een Flextender-opdracht om naar een gewone Vacature, zodat die overal
 // identiek aan onze eigen vacatures wordt getoond (kaart, detailpagina, URL).
+// De lange tender-boilerplate wordt weggelaten: alleen de kandidaat-relevante
+// delen (organisatie, opdracht, competenties, werkdagen, vereisten).
 export function opdrachtNaarVacature(o: Opdracht): Vacature {
-  const taken = sanitizeHtml(o.omschrijving ?? "", {
-    allowedTags: ["p", "br", "ul", "ol", "li", "strong", "em", "b", "i", "h3", "h4", "a"],
-    allowedAttributes: { a: ["href", "target", "rel"] },
-    transformTags: { a: sanitizeHtml.simpleTransform("a", { target: "_blank", rel: "noopener noreferrer" }) },
-  });
-  const intro = stripTags(o.omschrijving ?? "").slice(0, 220);
+  const secties = sectiesVan(o.omschrijving ?? "");
+  const vind = (...zoek: string[]) => secties.find((s) => zoek.some((z) => s.key.includes(z)));
+
+  const organisatie = vind("organisatie");
+  const opdracht = secties.find((s) => s.key === "opdracht") ?? vind("opdracht", "werkzaamheden");
+  const competenties = vind("competenties");
+  const werkdagen = vind("werkdagen");
+  const vereisten = vind("vereisten", "knockout", "functieeisen", "minimumeisen");
+
+  // Body ("Wat ga je doen?"): opdracht + eventueel competenties/werkdagen.
+  const delen: string[] = [];
+  if (opdracht) delen.push(opdracht.html);
+  if (competenties) delen.push(`<h4>Competenties</h4>${competenties.html}`);
+  if (werkdagen) delen.push(`<h4>Werkdagen</h4>${werkdagen.html}`);
+  const takenRaw = delen.join("") || o.omschrijving || "";
+  const taken = sanitizeHtml(takenRaw, SCHOON);
+
+  // Intro ("Over deze opdracht"): korte organisatietekst of begin van de opdracht.
+  const introBron = organisatie?.html || opdracht?.html || o.omschrijving || "";
+  const intro = stripTags(introBron).slice(0, 300).replace(/\s+\S*$/, "") + "…";
+
+  const eisen = vereisten ? eisenVan(vereisten.html) : [];
+
   return {
     id: `fl-${o.avnummer}`,
     slug: slugify(`${o.opdracht}-${o.regio ?? ""}`) || `opdracht-${o.avnummer}`,
@@ -142,8 +190,9 @@ export function opdrachtNaarVacature(o: Opdracht): Vacature {
     type: "Detachering",
     top: false,
     datum: "",
-    omschrijving: intro || o.opdracht,
+    omschrijving: intro.length > 2 ? intro : o.opdracht,
     taken: taken || undefined,
+    eisen: eisen.length ? eisen : undefined,
     opdrachtgever: o.opdrachtgever ?? undefined,
     startdatum: o.aanvang ?? undefined,
     duur: o.duur ?? undefined,
