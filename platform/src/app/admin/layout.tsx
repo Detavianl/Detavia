@@ -7,7 +7,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const admin = await requireAdmin();
   return (
     <div className="flex min-h-screen bg-neutral-50">
-      <aside className="flex w-60 shrink-0 flex-col border-r border-neutral-200 bg-white p-4">
+      <aside className="sticky top-0 flex h-screen w-60 shrink-0 flex-col self-start overflow-y-auto border-r border-neutral-200 bg-white p-4">
         <Link href="/admin" className="mb-6 block">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/img/logo_blue.svg" alt="DetaVia" className="h-7" />

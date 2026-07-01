@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-07-01 - Backend: zijmenu sticky
+- **Wat is gewijzigd:**
+  - Admin-zijbalk (aside) is nu sticky (top-0, h-screen, self-start, eigen overflow) zodat het menu blijft staan bij het scrollen i.p.v. mee omhoog/omlaag te gaan.
+- **Waarom:**
+  - Klant: het backend-menu bewoog mee met de pagina.
+- **Geraakte bestanden:**
+  - app/admin/layout.tsx.
+
 ## 2026-07-01 - Sollicitatieformulier: mooiere vacaturekaart (2-koloms, DetaVia-stijl)
 - **Wat is gewijzigd:**
   - /solliciteren nu 2-koloms (form links, sticky vacaturekaart rechts) als er via een vacature wordt gesolliciteerd; op mobiel staat de kaart bovenaan. Vacaturekaart met cobalt-kop + geel accent + Topvacature-badge en icoonregels (Locatie/Salaris/Uren/Dienstverband) + link naar de volledige vacature. Dubbele "Sollicitatie voor"-balk uit het formulier gehaald.
