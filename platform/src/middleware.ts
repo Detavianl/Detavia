@@ -7,15 +7,17 @@ import { TOEGANG_COOKIE, TOEGANG_TOKEN } from "@/lib/toegang";
 export async function middleware(request: NextRequest) {
   const pad = request.nextUrl.pathname;
 
-  // Toegangspoort: zonder geldige cookie eerst naar /toegang.
-  // /uitnodiging is uitgezonderd zodat uitgenodigde beheerders hun account kunnen activeren.
-  const heeftToegang = request.cookies.get(TOEGANG_COOKIE)?.value === TOEGANG_TOKEN;
-  if (!heeftToegang && pad !== "/toegang" && !pad.startsWith("/uitnodiging")) {
-    const naar = request.nextUrl.clone();
-    naar.pathname = "/toegang";
-    naar.search = "";
-    naar.searchParams.set("next", pad + request.nextUrl.search);
-    return NextResponse.redirect(naar);
+  // Toegangspoort (pre-launch): alleen actief als SITE_LOCK=1 in de env staat.
+  // /toegang en /uitnodiging zijn altijd uitgezonderd.
+  if (process.env.SITE_LOCK === "1") {
+    const heeftToegang = request.cookies.get(TOEGANG_COOKIE)?.value === TOEGANG_TOKEN;
+    if (!heeftToegang && pad !== "/toegang" && !pad.startsWith("/uitnodiging")) {
+      const naar = request.nextUrl.clone();
+      naar.pathname = "/toegang";
+      naar.search = "";
+      naar.searchParams.set("next", pad + request.nextUrl.search);
+      return NextResponse.redirect(naar);
+    }
   }
 
   let response = NextResponse.next({ request });

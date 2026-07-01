@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-07-01 - Toegangscode-poort eraf (site openbaar)
+- **Wat is gewijzigd:**
+  - De pre-launch toegangspoort (code 0492) is uitgezet: de gate in de middleware werkt nu alleen nog als SITE_LOCK=1 in de env staat. Standaard (env niet gezet) is de site volledig openbaar en indexeerbaar. Herlocken kan later door SITE_LOCK=1 in Vercel te zetten.
+- **Waarom:**
+  - Klant wil live: de code-lock eraf zodat bezoekers en Google de site kunnen bereiken.
+- **Geraakte bestanden:**
+  - middleware.ts.
+
 ## 2026-07-01 - Eigen uitnodigingspagina (activatie + wachtwoord op detavia.nl)
 - **Wat is gebouwd:**
   - Nieuwe publieke pagina /uitnodiging (DetaVia-stijl): verifieert de Supabase-invite-token (verifyOtp met token_hash) en laat de uitgenodigde beheerder direct een wachtwoord instellen (updateUser), daarna door naar /admin. Zet meteen de toegangscode-cookie voor een geldige adminsessie (grantToegangAlsAdmin) zodat de nieuwe beheerder niet ook nog 0492 hoeft.
