@@ -18,8 +18,7 @@ const professionals: Menu = {
     cta: { href: "/vacatures", label: "Bekijk vacatures" },
   },
   items: [
-    { href: "/vacatures", label: "Vacatures", desc: "Onze eigen openstaande vacatures" },
-    { href: "/opdrachten", label: "Opdrachten", desc: "Inhuuropdrachten bij gemeenten (sociaal domein)" },
+    { href: "/vacatures", label: "Vacatures & opdrachten", desc: "Onze vacatures + inhuuropdrachten (sociaal domein)" },
     { href: "/professionals/werken-bij-detavia", label: "Werken bij DetaVia", desc: "Wat jij van ons mag verwachten" },
     { href: "/professionals/academy", label: "DetaVia Academy", desc: "Blijf groeien in je vak" },
     { href: "/professionals/zzp", label: "Voor ZZP'ers", desc: "Zelfstandig, maar nooit alleen" },

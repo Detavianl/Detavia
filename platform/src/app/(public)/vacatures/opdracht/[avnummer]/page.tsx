@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ avnummer:
   return pageMeta({
     title: o ? o.opdracht : "Opdracht",
     description: o ? `Inhuuropdracht ${o.opdracht}${o.opdrachtgever ? ` bij ${o.opdrachtgever}` : ""} in het sociaal domein. Reageer via DetaVia.` : "Opdracht in het sociaal domein.",
-    path: `/opdrachten/${avnummer}`,
+    path: `/vacatures/opdracht/${avnummer}`,
   });
 }
 
@@ -32,10 +32,10 @@ export default async function OpdrachtDetail({ params }: { params: Promise<{ avn
     <>
       <section className="bg-cobalt text-white">
         <div className="mx-auto max-w-[1120px] px-5 py-12 sm:px-10">
-          <Link href="/opdrachten" className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/80 transition hover:text-white">
-            <span aria-hidden>←</span> Terug naar opdrachten
+          <Link href="/vacatures" className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/80 transition hover:text-white">
+            <span aria-hidden>←</span> Terug naar vacatures &amp; opdrachten
           </Link>
-          <span className="mt-4 inline-block rounded-full bg-yellow px-3 py-1 text-xs font-extrabold text-black">Sociaal domein</span>
+          <span className="mt-4 inline-block rounded-full bg-yellow px-3 py-1 text-xs font-extrabold text-black">Inhuuropdracht · Sociaal domein</span>
           <h1 className="display mt-3 text-3xl leading-tight sm:text-5xl">{o.opdracht}</h1>
           {o.opdrachtgever && <p className="mt-2 text-lg font-medium text-white/90">{o.opdrachtgever}</p>}
         </div>
