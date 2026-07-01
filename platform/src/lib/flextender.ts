@@ -130,6 +130,11 @@ function sectiesVan(html: string): { key: string; label: string; html: string }[
     if (!m) continue;
     const label = stripTags(m[1]).trim();
     const key = label.toLowerCase().replace(/[^a-z]/g, "");
+    // Lege/opmaak-koppen (bv. <strong><br></strong>) horen bij de vorige sectie.
+    if (!key) {
+      if (out.length) out[out.length - 1].html += m[2];
+      continue;
+    }
     out.push({ key, label, html: m[2] });
   }
   return out;
@@ -145,9 +150,16 @@ function eisenVan(html: string): string[] {
   const tekst = html.replace(/<\/(p|li|div)>/gi, "\n").replace(/<br\s*\/?>/gi, "\n");
   return stripTags(tekst)
     .split(/\n+/)
-    .map((r) => r.replace(/^\s*\d{1,2}[.)]\s*/, "").replace(/[;.]\s*$/, "").trim())
-    .filter((r) => r.length > 4 && r.length < 300)
-    .slice(0, 12);
+    .map((r) =>
+      r
+        .replace(/^\s*\d{1,2}[.)]\s*/, "") // nummering weg
+        .replace(/,?\s*benoem dit? duidelijk in (het )?cv\.?/i, "") // tender-frase weg
+        .replace(/\s*\(\d+\s*punten\)/i, "") // "(10 punten)" weg
+        .replace(/[;.]\s*$/, "")
+        .trim(),
+    )
+    .filter((r) => r.length > 4 && r.length < 260)
+    .slice(0, 10);
 }
 
 // Zet een Flextender-opdracht om naar een gewone Vacature, zodat die overal
