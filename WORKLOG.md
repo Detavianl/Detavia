@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-07-01 - Eigen uitnodigingspagina (activatie + wachtwoord op detavia.nl)
+- **Wat is gebouwd:**
+  - Nieuwe publieke pagina /uitnodiging (DetaVia-stijl): verifieert de Supabase-invite-token (verifyOtp met token_hash) en laat de uitgenodigde beheerder direct een wachtwoord instellen (updateUser), daarna door naar /admin. Zet meteen de toegangscode-cookie voor een geldige adminsessie (grantToegangAlsAdmin) zodat de nieuwe beheerder niet ook nog 0492 hoeft.
+  - Toegangspoort in middleware uitgezonderd voor /uitnodiging.
+  - Hiermee wijst de uitnodigingslink naar detavia.nl i.p.v. supabase.co (mail-template moet nog naar {{ .SiteURL }}/uitnodiging?token_hash={{ .TokenHash }}&type=invite in Supabase).
+- **Waarom:**
+  - Klant wil dat de uitnodigingslink en het wachtwoord-scherm op het eigen domein staan.
+- **Geraakte bestanden:**
+  - app/uitnodiging/page.tsx + actions.ts (nieuw), middleware.ts.
+
 ## 2026-06-30 - Recruiter op vacature + automatische sollicitatiebevestiging
 - **Wat is gebouwd:**
   - Recruiter-veld op de vacature (migratie 0022 vacatures.recruiter_id). Keuze in het vacatureformulier (nieuw + bewerken laden admin_users); saveVacature slaat recruiter_id op. Terugval "Team DetaVia" als leeg.

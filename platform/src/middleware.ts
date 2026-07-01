@@ -8,8 +8,9 @@ export async function middleware(request: NextRequest) {
   const pad = request.nextUrl.pathname;
 
   // Toegangspoort: zonder geldige cookie eerst naar /toegang.
+  // /uitnodiging is uitgezonderd zodat uitgenodigde beheerders hun account kunnen activeren.
   const heeftToegang = request.cookies.get(TOEGANG_COOKIE)?.value === TOEGANG_TOKEN;
-  if (!heeftToegang && pad !== "/toegang") {
+  if (!heeftToegang && pad !== "/toegang" && !pad.startsWith("/uitnodiging")) {
     const naar = request.nextUrl.clone();
     naar.pathname = "/toegang";
     naar.search = "";
