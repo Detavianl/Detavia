@@ -11,12 +11,22 @@ type C = {
 
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 
+// Splitst een volledige naam in delen om de losse velden voor te vullen
+// (eerste woord = voornaam, laatste = achternaam, de rest = tussenvoegsel).
+function deelNaam(naam?: string | null) {
+  const delen = (naam ?? "").trim().split(/\s+/).filter(Boolean);
+  if (delen.length === 0) return { voornaam: "", tussenvoegsel: "", achternaam: "" };
+  if (delen.length === 1) return { voornaam: delen[0], tussenvoegsel: "", achternaam: "" };
+  return { voornaam: delen[0], tussenvoegsel: delen.slice(1, -1).join(" "), achternaam: delen[delen.length - 1] };
+}
+
 export default function CandidateForm({ candidate, action, isEdit }: {
   candidate?: C;
   action: (formData: FormData) => void | Promise<void>;
   isEdit?: boolean;
 }) {
   const v = candidate ?? {};
+  const n = deelNaam(v.naam);
   return (
     <form action={action} className="mx-auto max-w-4xl p-8">
       <div className="sticky top-0 z-10 -mx-8 mb-6 flex items-center justify-between border-b border-neutral-200 bg-neutral-50/90 px-8 py-4 backdrop-blur">
@@ -32,7 +42,11 @@ export default function CandidateForm({ candidate, action, isEdit }: {
       <div className="grid gap-6">
         <Card title="Persoonlijk" desc="Wie is de kandidaat en hoe bereik je diegene?">
           <Grid>
-            <Field className="sm:col-span-2" label="Naam" name="naam" required defaultValue={v.naam} />
+            <div className="grid gap-5 sm:col-span-2 sm:grid-cols-[1fr_0.6fr_1fr]">
+              <Field label="Voornaam" name="voornaam" required defaultValue={n.voornaam} />
+              <Field label="Tussenvoegsel" name="tussenvoegsel" defaultValue={n.tussenvoegsel} />
+              <Field label="Achternaam" name="achternaam" required defaultValue={n.achternaam} />
+            </div>
             <Field label="E-mail" name="email" type="email" defaultValue={v.email} />
             <Field label="Telefoon" name="telefoon" defaultValue={v.telefoon} />
             <Field label="Woonplaats" name="woonplaats" defaultValue={v.woonplaats} />

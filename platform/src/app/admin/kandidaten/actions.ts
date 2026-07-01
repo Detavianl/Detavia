@@ -9,7 +9,7 @@ import { logAudit } from "@/lib/audit";
 
 export async function createCandidate(formData: FormData) {
   const admin = await requireAdmin();
-  const naam = String(formData.get("naam") ?? "").trim();
+  const naam = naamUitDelen(formData);
   if (!naam) throw new Error("Naam is verplicht");
 
   const numOrNull = (k: string) => {
@@ -140,11 +140,19 @@ function str(fd: FormData, key: string) {
   return v == null ? "" : String(v).trim();
 }
 
+// Stelt de volledige naam samen uit de losse velden (voornaam, tussenvoegsel,
+// achternaam), net als het sollicitatieformulier. Valt terug op een eventueel
+// los "naam"-veld voor achterwaartse compatibiliteit.
+function naamUitDelen(fd: FormData) {
+  const delen = [str(fd, "voornaam"), str(fd, "tussenvoegsel"), str(fd, "achternaam")].filter(Boolean);
+  return delen.length ? delen.join(" ") : str(fd, "naam");
+}
+
 // Bewerk een bestaande kandidaat.
 export async function updateCandidate(formData: FormData) {
   await requireAdmin();
   const id = str(formData, "id");
-  const naam = str(formData, "naam");
+  const naam = naamUitDelen(formData);
   if (!id || !naam) throw new Error("Naam is verplicht");
   if (isDemo()) redirect(`/admin/kandidaten/${id}`);
 
