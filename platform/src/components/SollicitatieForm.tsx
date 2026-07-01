@@ -69,7 +69,7 @@ export default function SollicitatieForm({ vacatureId = "", titel = "", backHref
 
         <label className="flex items-start gap-2.5 text-sm">
           <input type="checkbox" name="akkoord" required className="mt-0.5 h-4 w-4 shrink-0 accent-cobalt" />
-          <span>Ik ga akkoord met de <Link href="/algemene-voorwaarden" className="text-cobalt hover:underline">voorwaarden</Link> en de <Link href="/disclaimer-privacy-en-gebruikersvoorwaarden" className="text-cobalt hover:underline">privacyverklaring</Link>. *</span>
+          <span>Ik ga akkoord met de <Link href="/algemene-voorwaarden" className="text-cobalt hover:underline">voorwaarden</Link> en het <Link href="/privacy-statement" className="text-cobalt hover:underline">Privacy Statement</Link>. *</span>
         </label>
 
         <div className="flex flex-wrap items-center gap-4">

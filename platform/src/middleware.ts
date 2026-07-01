@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
   // /toegang en /uitnodiging zijn altijd uitgezonderd.
   if (process.env.SITE_LOCK === "1") {
     const heeftToegang = request.cookies.get(TOEGANG_COOKIE)?.value === TOEGANG_TOKEN;
-    if (!heeftToegang && pad !== "/toegang" && !pad.startsWith("/uitnodiging")) {
+    if (!heeftToegang && pad !== "/toegang" && !pad.startsWith("/uitnodiging") && !pad.startsWith("/wachtwoord-")) {
       const naar = request.nextUrl.clone();
       naar.pathname = "/toegang";
       naar.search = "";

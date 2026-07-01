@@ -31,6 +31,9 @@ export async function createCandidate(formData: FormData) {
     email: str(formData, "email"),
     telefoon: telefoonUitDelen(formData),
     woonplaats: str(formData, "woonplaats"),
+    postcode: str(formData, "postcode"),
+    huisnummer: str(formData, "huisnummer"),
+    straat: str(formData, "straat"),
     vakgebied: str(formData, "vakgebied") || null,
     linkedin: str(formData, "linkedin"),
     bron: "handmatig",
@@ -166,6 +169,26 @@ function telefoonUitDelen(fd: FormData) {
   return `${code} ${nummer}`;
 }
 
+// Zoekt straat + woonplaats op bij een postcode + huisnummer via de PDOK
+// Locatieserver (officiële, gratis BAG-adressenservice van de overheid).
+export async function zoekAdres(postcode: string, huisnummer: string): Promise<{ straat: string; woonplaats: string } | null> {
+  await requireAdmin();
+  const pc = (postcode || "").replace(/\s+/g, "").toUpperCase();
+  const hn = (huisnummer || "").trim();
+  if (!/^\d{4}[A-Z]{2}$/.test(pc) || !hn) return null;
+  try {
+    const url = `https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${encodeURIComponent(`${pc} ${hn}`)}&fq=type:adres&rows=1`;
+    const r = await fetch(url, { headers: { Accept: "application/json" } });
+    if (!r.ok) return null;
+    const j = await r.json();
+    const doc = j?.response?.docs?.[0];
+    if (!doc) return null;
+    return { straat: doc.straatnaam ?? "", woonplaats: doc.woonplaatsnaam ?? "" };
+  } catch {
+    return null;
+  }
+}
+
 // Bewerk een bestaande kandidaat.
 export async function updateCandidate(formData: FormData) {
   const admin = await requireAdmin();
@@ -180,6 +203,9 @@ export async function updateCandidate(formData: FormData) {
     email: str(formData, "email"),
     telefoon: telefoonUitDelen(formData),
     woonplaats: str(formData, "woonplaats"),
+    postcode: str(formData, "postcode"),
+    huisnummer: str(formData, "huisnummer"),
+    straat: str(formData, "straat"),
     vakgebied: str(formData, "vakgebied") || null,
     linkedin: str(formData, "linkedin"),
     status: str(formData, "status") || "actief",

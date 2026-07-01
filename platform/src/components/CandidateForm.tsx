@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { VAKGEBIEDEN, NIVEAUS, KANDIDAAT_STATUS } from "@/lib/ats";
 import SubmitButton from "@/components/SubmitButton";
+import AdresVelden from "@/components/AdresVelden";
 
 type Team = { user_id: string; naam: string };
 
 type C = {
   id?: string; naam?: string; email?: string | null; telefoon?: string | null; woonplaats?: string | null;
+  postcode?: string | null; huisnummer?: string | null; straat?: string | null;
   linkedin?: string | null; niveau?: string | null; vakgebied?: string | null; huidige_functie?: string | null;
   huidige_werkgever?: string | null; opleidingsniveau?: string | null; regio?: string | null; talen?: string | null;
   rijbewijs?: boolean | null; expertise?: string[] | null; beschikbaar_per?: string | null; uren_beschikbaar?: number | null;
@@ -77,7 +79,7 @@ export default function CandidateForm({ candidate, action, isEdit, canEditOwner 
                 <input name="tel_nummer" type="tel" defaultValue={tel.nummer} placeholder="6 12345678" className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" />
               </div>
             </label>
-            <Field label="Woonplaats" name="woonplaats" defaultValue={v.woonplaats} />
+            <AdresVelden postcode={v.postcode} huisnummer={v.huisnummer} straat={v.straat} woonplaats={v.woonplaats} />
             <Field label="LinkedIn" name="linkedin" placeholder="https://linkedin.com/in/…" defaultValue={v.linkedin} />
             {canEditOwner ? (
               <label className="grid min-w-0 gap-1.5">

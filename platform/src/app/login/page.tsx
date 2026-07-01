@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -39,6 +40,7 @@ export default function LoginPage() {
           {fout && <p className="text-sm font-semibold text-red-600">{fout}</p>}
           <button disabled={bezig} className="rounded-full bg-cobalt px-6 py-3 font-bold text-white disabled:opacity-60">{bezig ? "Bezig…" : "Inloggen"}</button>
         </form>
+        <Link href="/wachtwoord-vergeten" className="mt-4 block text-center text-sm font-semibold text-cobalt hover:underline">Wachtwoord vergeten?</Link>
       </div>
     </div>
   );

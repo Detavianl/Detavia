@@ -19,7 +19,9 @@ export default function SiteFooter() {
           <span className="flex flex-wrap gap-x-1.5 gap-y-1">
             <Link href="/algemene-voorwaarden" className="hover:text-cobalt">Algemene voorwaarden</Link>
             <span aria-hidden>·</span>
-            <Link href="/disclaimer-privacy-en-gebruikersvoorwaarden" className="hover:text-cobalt">Disclaimer, privacy &amp; gebruikersvoorwaarden</Link>
+            <Link href="/privacy-statement" className="hover:text-cobalt">Privacy Statement</Link>
+            <span aria-hidden>·</span>
+            <Link href="/disclaimer-privacy-en-gebruikersvoorwaarden" className="hover:text-cobalt">Disclaimer &amp; gebruikersvoorwaarden</Link>
           </span>
         </div>
       </div>
