@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-07-01 - Vacature-samenvatting op het sollicitatieformulier
+- **Wat is gebouwd:**
+  - Op /solliciteren wordt nu, als er via een vacature wordt gesolliciteerd, een korte samenvattingskaart getoond boven het formulier: titel, korte omschrijving, en locatie/salaris/uren (joinuz-stijl). Vacature wordt server-side opgehaald (slug of id). Hero-chip verwijderd (samenvatting vervangt die).
+- **Waarom:**
+  - Duidelijk voor de sollicitant op welke functie hij reageert; wekt vertrouwen, minder afhaken.
+- **Geraakte bestanden:**
+  - app/(public)/solliciteren/page.tsx.
+
 ## 2026-07-01 - Toegangscode-poort eraf (site openbaar)
 - **Wat is gewijzigd:**
   - De pre-launch toegangspoort (code 0492) is uitgezet: de gate in de middleware werkt nu alleen nog als SITE_LOCK=1 in de env staat. Standaard (env niet gezet) is de site volledig openbaar en indexeerbaar. Herlocken kan later door SITE_LOCK=1 in Vercel te zetten.
