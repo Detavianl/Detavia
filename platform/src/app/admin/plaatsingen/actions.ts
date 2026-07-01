@@ -32,9 +32,8 @@ export async function createPlacement(formData: FormData) {
     start_datum: s(formData, "start_datum") || null,
     eind_datum: s(formData, "eind_datum") || null,
     uren_per_week: numOrNull("uren_per_week"),
-    schaal: numOrNull("schaal"),
     trede: numOrNull("trede"),
-    schaal_bruto: numOrNull("schaal_bruto"),
+    trede_maandsalaris: numOrNull("trede_maandsalaris"),
   });
   if (error) throw new Error(error.message);
   revalidatePath("/admin/plaatsingen");

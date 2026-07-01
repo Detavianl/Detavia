@@ -1,22 +1,27 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Schaal } from "@/lib/schalen-util";
+import type { Trede } from "@/lib/schalen-util";
 
-export type { Schaal } from "@/lib/schalen-util";
+export type { Trede } from "@/lib/schalen-util";
 
-// Alle salarisschalen serverside ophalen. Valt terug op een lege lijst als de
+// Alle salaristredes serverside ophalen. Valt terug op een lege lijst als de
 // tabel (nog) niet bestaat, zodat pagina's niet breken.
-export async function loadSchalen(): Promise<Schaal[]> {
+export async function loadTredes(): Promise<Trede[]> {
   try {
     const supabase = await createClient();
     const { data } = await supabase
-      .from("salarisschalen")
-      .select("schaal, trede, bruto_maand")
-      .order("schaal", { ascending: true })
+      .from("salaristredes")
+      .select("trede, maandsalaris, vakantiegeld, eindejaarsuitkering, totaal_bruto, werkgeverslasten, totale_kosten, inkooptarief_uur")
       .order("trede", { ascending: true });
+    const num = (v: unknown) => (v == null ? null : Number(v));
     return (data ?? []).map((r) => ({
-      schaal: Number(r.schaal),
       trede: Number(r.trede),
-      bruto_maand: r.bruto_maand == null ? null : Number(r.bruto_maand),
+      maandsalaris: num(r.maandsalaris),
+      vakantiegeld: num(r.vakantiegeld),
+      eindejaarsuitkering: num(r.eindejaarsuitkering),
+      totaal_bruto: num(r.totaal_bruto),
+      werkgeverslasten: num(r.werkgeverslasten),
+      totale_kosten: num(r.totale_kosten),
+      inkooptarief_uur: num(r.inkooptarief_uur),
     }));
   } catch {
     return [];

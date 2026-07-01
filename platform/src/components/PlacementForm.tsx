@@ -3,18 +3,24 @@ import Link from "next/link";
 import { useState } from "react";
 import { createPlacement } from "@/app/admin/plaatsingen/actions";
 import { berekenMarge, euro2, type MargeConfig } from "@/lib/marge-calc";
-import { brutoVoor, euroMaand, schaalOpties, tredeOpties, type Schaal } from "@/lib/schalen-util";
+import { euroMaand, euroUur, tredeOpties, tredeInfo, type Trede } from "@/lib/schalen-util";
 
 type Opt = { id: string; naam: string };
 type Cand = { id: string; naam: string; eigenaar: string | null };
 
-export default function PlacementForm({ candidates, companies, recruiters, config, schalen = [] }: { candidates: Cand[]; companies: Opt[]; recruiters: Opt[]; config: MargeConfig; schalen?: Schaal[] }) {
+export default function PlacementForm({ candidates, companies, recruiters, config, tredes = [] }: { candidates: Cand[]; companies: Opt[]; recruiters: Opt[]; config: MargeConfig; tredes?: Trede[] }) {
   const [verkoop, setVerkoop] = useState("");
   const [inkoop, setInkoop] = useState("");
   const [uren, setUren] = useState("");
-  const [schaal, setSchaal] = useState("");
   const [trede, setTrede] = useState("");
-  const bruto = brutoVoor(schalen, schaal, trede);
+  const tInfo = tredeInfo(tredes, trede);
+
+  // Bij het kiezen van een trede het inkooptarief automatisch overnemen.
+  function kiesTrede(v: string) {
+    setTrede(v);
+    const info = tredeInfo(tredes, v);
+    if (info?.inkooptarief_uur != null) setInkoop(String(info.inkooptarief_uur));
+  }
   const [candidateId, setCandidateId] = useState(candidates[0]?.id ?? "");
   const eigenaarVan = (cid: string) => candidates.find((c) => c.id === cid)?.eigenaar ?? "";
   const [recruiterId, setRecruiterId] = useState(eigenaarVan(candidates[0]?.id ?? ""));
@@ -65,21 +71,15 @@ export default function PlacementForm({ candidates, companies, recruiters, confi
             <span className="text-xs text-muted">Voor inzicht in part-time of full-time.</span>
           </label>
           <div className="grid min-w-0 content-start gap-1.5">
-            <span className="text-sm font-bold">Schaal &amp; trede</span>
-            <div className="flex gap-2">
-              <select name="schaal" value={schaal} onChange={(e) => { setSchaal(e.target.value); setTrede(""); }} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-3 py-3">
-                <option value="">Schaal…</option>
-                {schaalOpties(schalen).map((s) => <option key={s} value={s}>Schaal {s}</option>)}
-              </select>
-              <select name="trede" value={trede} onChange={(e) => setTrede(e.target.value)} disabled={!schaal} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-3 py-3 disabled:bg-neutral-50">
-                <option value="">Trede…</option>
-                {tredeOpties(schalen, schaal).map((t) => <option key={t} value={t}>Trede {t}</option>)}
-              </select>
-            </div>
-            <input type="hidden" name="schaal_bruto" value={bruto ?? ""} />
+            <span className="text-sm font-bold">Trede</span>
+            <select name="trede" value={trede} onChange={(e) => kiesTrede(e.target.value)} className="w-full rounded-xl border-2 border-neutral-200 bg-white px-4 py-3">
+              <option value="">Kies trede…</option>
+              {tredeOpties(tredes).map((t) => <option key={t} value={t}>Trede {t}</option>)}
+            </select>
+            <input type="hidden" name="trede_maandsalaris" value={tInfo?.maandsalaris ?? ""} />
             <span className="text-xs text-muted">
-              {bruto != null ? <>Bruto: <b>{euroMaand(bruto)}</b> p/m. </> : schalen.length === 0 ? <>Nog geen schalen ingevuld. </> : <>Kies schaal + trede voor het bruto maandbedrag. </>}
-              <Link href="/admin/instellingen/schalen" className="font-semibold text-cobalt hover:underline">Schalen beheren →</Link>
+              {tInfo ? <>Inkoop <b>{tInfo.inkooptarief_uur != null ? euroUur(tInfo.inkooptarief_uur) : "—"}</b>/uur · bruto {tInfo.maandsalaris != null ? euroMaand(tInfo.maandsalaris) : "—"} p/m. </> : tredes.length === 0 ? <>Nog geen tredes ingevuld. </> : <>Kies een trede; inkooptarief wordt automatisch overgenomen. </>}
+              <Link href="/admin/instellingen/schalen" className="font-semibold text-cobalt hover:underline">Tabel beheren →</Link>
             </span>
           </div>
         </div>

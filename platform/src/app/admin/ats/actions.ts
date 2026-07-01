@@ -28,9 +28,8 @@ export type PlaatsVanuitAtsInput = {
   start_datum: string;
   eind_datum: string;
   uren_per_week: string;
-  schaal: string;
   trede: string;
-  schaal_bruto: string;
+  trede_maandsalaris: string;
 };
 
 // Maakt in één keer een plaatsing aan én verplaatst de sollicitatie naar
@@ -59,9 +58,8 @@ export async function plaatsVanuitAts(input: PlaatsVanuitAtsInput) {
     start_datum: input.start_datum?.trim() || null,
     eind_datum: input.eind_datum?.trim() || null,
     uren_per_week: numN(input.uren_per_week),
-    schaal: numN(input.schaal),
     trede: numN(input.trede),
-    schaal_bruto: numN(input.schaal_bruto),
+    trede_maandsalaris: numN(input.trede_maandsalaris),
   });
   if (pErr) throw new Error(pErr.message);
 
