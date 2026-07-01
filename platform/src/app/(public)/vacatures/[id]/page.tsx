@@ -102,19 +102,15 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
             </>
           )}
 
-          {(v.eisen || !takenIsHtml) && (
-            <>
-              <h2 className="display mt-12 text-2xl sm:text-3xl">Wat je meebrengt</h2>
-              <ul className="mt-4 grid gap-3">
-                {(v.eisen ?? meebrengen).map((p) => (
-                  <li key={p} className="flex items-start gap-3">
-                    <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-yellow text-xs font-extrabold">✓</span>
-                    <span>{p}</span>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
+          <h2 className="display mt-12 text-2xl sm:text-3xl">Wat je meebrengt</h2>
+          <ul className="mt-4 grid gap-3">
+            {(v.eisen ?? meebrengen).map((p) => (
+              <li key={p} className="flex items-start gap-3">
+                <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-yellow text-xs font-extrabold">✓</span>
+                <span>{p}</span>
+              </li>
+            ))}
+          </ul>
 
           <h2 className="display mt-12 text-2xl sm:text-3xl">Wat DetaVia jou biedt</h2>
           <ul className="mt-4 grid gap-3">

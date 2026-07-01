@@ -141,9 +141,38 @@ function sectiesVan(html: string): { key: string; label: string; html: string }[
 }
 
 const SCHOON: sanitizeHtml.IOptions = {
-  allowedTags: ["p", "br", "ul", "ol", "li", "strong", "em", "b", "i"],
+  allowedTags: ["p", "br", "ul", "ol", "li", "strong", "em", "b", "i", "h3", "h4"],
   allowedAttributes: {},
 };
+
+// Ruwe HTML -> losse tekstregels (bullets uit <li> en •-tekens blijven behouden).
+function naarRegels(html: string): string[] {
+  const t = html
+    .replace(/<li[^>]*>/gi, "\n• ")
+    .replace(/<\/(p|li|div|h[1-6]|tr)>/gi, "\n")
+    .replace(/<br\s*\/?>/gi, "\n");
+  return stripTags(t).split(/\n+/).map((s) => s.trim()).filter(Boolean);
+}
+
+// Zet een sectie om naar nette <p>'s en <ul><li>-lijsten (geen losse • of geplakte tekst).
+function schoonBlok(html: string): string {
+  let out = "", inLijst = false;
+  for (const regel of naarRegels(html)) {
+    const isBullet = /^[•\-*•▪–·]\s+/.test(regel) || /^\d{1,2}[.)]\s/.test(regel);
+    const tekst = regel.replace(/^[•\-*•▪–·]\s*/, "").replace(/^\d{1,2}[.)]\s*/, "").replace(/;\s*$/, "").trim();
+    if (tekst.length < 2) continue;
+    if (isBullet) { if (!inLijst) { out += "<ul>"; inLijst = true; } out += `<li>${tekst}</li>`; }
+    else { if (inLijst) { out += "</ul>"; inLijst = false; } out += `<p>${tekst}</p>`; }
+  }
+  if (inLijst) out += "</ul>";
+  return out;
+}
+
+// Eerste paar zinnen als korte intro.
+function eersteZinnen(plat: string, max = 3): string {
+  const zinnen = plat.split(/(?<=[.!?])\s+/).filter(Boolean).slice(0, max).join(" ").trim();
+  return zinnen.length > 6 ? zinnen : plat.slice(0, 300).trim();
+}
 
 // Zet vrije-tekst met <br>/nummering om naar losse eisen-regels.
 function eisenVan(html: string): string[] {
@@ -176,17 +205,22 @@ export function opdrachtNaarVacature(o: Opdracht): Vacature {
   const werkdagen = vind("werkdagen");
   const vereisten = vind("vereisten", "knockout", "functieeisen", "minimumeisen");
 
-  // Body ("Wat ga je doen?"): opdracht + eventueel competenties/werkdagen.
-  const delen: string[] = [];
-  if (opdracht) delen.push(opdracht.html);
-  if (competenties) delen.push(`<h4>Competenties</h4>${competenties.html}`);
-  if (werkdagen) delen.push(`<h4>Werkdagen</h4>${werkdagen.html}`);
-  const takenRaw = delen.join("") || o.omschrijving || "";
-  const taken = sanitizeHtml(takenRaw, SCHOON);
+  // Opdracht splitsen: het deel vóór de takenopsomming wordt de intro, de rest
+  // wordt "Wat ga je doen?". Voorkomt dat intro en body identiek zijn.
+  const opdrachtHtml = opdracht?.html ?? o.omschrijving ?? "";
+  const markerRe = /belangrijkste taken|concreet omvat dit|takenpakket|je taken|de werkzaamheden|werkzaamheden\s*:|dit ga je doen/i;
+  const idx = opdrachtHtml.search(markerRe);
+  const introHtml = idx > 40 ? opdrachtHtml.slice(0, idx) : opdrachtHtml;
+  const takenHtml = idx > 40 ? opdrachtHtml.slice(idx) : opdrachtHtml;
 
-  // Intro ("Over deze opdracht"): korte organisatietekst of begin van de opdracht.
-  const introBron = organisatie?.html || opdracht?.html || o.omschrijving || "";
-  const intro = stripTags(introBron).slice(0, 300).replace(/\s+\S*$/, "") + "…";
+  // Intro ("Over deze opdracht"): liefst de organisatietekst, anders het deel vóór de taken.
+  const intro = eersteZinnen(stripTags(organisatie?.html || introHtml));
+
+  // Body ("Wat ga je doen?"): nette taken + eventueel competenties/werkdagen.
+  let takenBlok = schoonBlok(takenHtml);
+  if (competenties) takenBlok += "<h4>Competenties</h4>" + schoonBlok(competenties.html);
+  if (werkdagen) takenBlok += "<h4>Werkdagen</h4>" + schoonBlok(werkdagen.html);
+  const taken = sanitizeHtml(takenBlok, SCHOON);
 
   const eisen = vereisten ? eisenVan(vereisten.html) : [];
 
