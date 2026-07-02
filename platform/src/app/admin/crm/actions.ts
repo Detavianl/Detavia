@@ -36,6 +36,18 @@ export async function updateCompanyFollowup(id: string, eigenaar: string, actie:
   revalidatePath(`/admin/crm/bedrijven/${id}`);
 }
 
+// Status van een opdrachtgever wijzigen (bv. prospect -> klant).
+export async function updateCompanyStatus(id: string, status: string) {
+  const admin = await requireAdmin();
+  if (isDemo()) return;
+  const supabase = await createClient();
+  const { error } = await supabase.from("companies").update({ status }).eq("id", id);
+  if (error) throw new Error(error.message);
+  await logAudit(admin, "company", id, "status gewijzigd", status);
+  revalidatePath(`/admin/crm/bedrijven/${id}`);
+  revalidatePath("/admin/crm/bedrijven");
+}
+
 export async function createCompany(formData: FormData) {
   const admin = await requireAdmin();
   if (isDemo()) redirect("/admin/crm/bedrijven");

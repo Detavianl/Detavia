@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createCompany } from "../../actions";
 import { COMPANY_TYPE, COMPANY_STATUS } from "@/lib/crm";
+import SubmitButton from "@/components/SubmitButton";
 
 export default function NieuwBedrijf() {
   return (
@@ -20,7 +21,7 @@ export default function NieuwBedrijf() {
         <Field label="Website" name="website" placeholder="https://…" />
         <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Notitie</span>
           <textarea name="notitie" rows={3} className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3" /></label>
-        <button className="justify-self-start rounded-full bg-cobalt px-6 py-3 font-bold text-white">Opslaan</button>
+        <SubmitButton className="justify-self-start rounded-full bg-cobalt px-6 py-3 font-bold text-white">Opslaan</SubmitButton>
       </div>
     </form>
   );

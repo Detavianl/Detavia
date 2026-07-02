@@ -7,6 +7,7 @@ import ContactMoments from "@/components/ContactMoments";
 import QuickNotes from "@/components/QuickNotes";
 import AuditLog from "@/components/AuditLog";
 import FollowupForm from "@/components/FollowupForm";
+import CompanyStatusSelect from "@/components/CompanyStatusSelect";
 import { isDemo, DEMO_COMPANIES, DEMO_CONTACTS, DEMO_DEALS, DEMO_VACATURES_ADMIN, DEMO_CONTACT_MOMENTS, DEMO_NOTES, DEMO_AUDIT, DEMO_TEAM } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
@@ -64,6 +65,7 @@ export default async function BedrijfDetail({ params }: { params: Promise<{ id: 
               <h1 className="display text-3xl">{co.naam}</h1>
               <span className="rounded-full bg-neutral-100 px-3 py-1 text-sm font-bold">{COMPANY_TYPE[co.type] ?? co.type}</span>
               <span className={`rounded-full px-3 py-1 text-sm font-bold ${co.status === "klant" ? "bg-green-100 text-green-700" : co.status === "prospect" ? "bg-yellow text-black" : "bg-neutral-100 text-muted"}`}>{COMPANY_STATUS[co.status] ?? co.status}</span>
+              {!demo && <CompanyStatusSelect id={co.id} status={co.status} />}
             </div>
             <p className="mt-1 text-muted">{[co.plaats, co.branche].filter(Boolean).join(" · ") || "—"}{co.website ? " · " : ""}
               {co.website && <a href={co.website} target="_blank" rel="noopener noreferrer" className="text-cobalt">website</a>}</p>
