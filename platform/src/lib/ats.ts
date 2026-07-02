@@ -28,7 +28,7 @@ export const KANDIDAAT_STATUS: Record<string, string> = {
   niet_beschikbaar: "Niet beschikbaar",
 };
 
-export const NIVEAUS = ["medior", "senior", "lead", "interim", "executive"];
+export const NIVEAUS = ["junior", "medior", "senior", "lead", "interim", "executive"];
 
 export type CandidateFull = {
   id: string; naam: string; email: string | null; telefoon: string | null;

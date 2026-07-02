@@ -7,7 +7,7 @@ type Team = { user_id: string; naam: string };
 
 type C = {
   id?: string; naam?: string; email?: string | null; telefoon?: string | null; woonplaats?: string | null;
-  postcode?: string | null; huisnummer?: string | null; straat?: string | null;
+  postcode?: string | null; huisnummer?: string | null; straat?: string | null; geboortedatum?: string | null;
   linkedin?: string | null; niveau?: string | null; vakgebied?: string | null; huidige_functie?: string | null;
   huidige_werkgever?: string | null; opleidingsniveau?: string | null; regio?: string | null; talen?: string | null;
   rijbewijs?: boolean | null; expertise?: string[] | null; beschikbaar_per?: string | null; uren_beschikbaar?: number | null;
@@ -70,6 +70,7 @@ export default function CandidateForm({ candidate, action, isEdit, canEditOwner 
               <Field label="Achternaam" name="achternaam" required defaultValue={n.achternaam} />
             </div>
             <Field label="E-mail" name="email" type="email" defaultValue={v.email} />
+            <Field label="Geboortedatum" name="geboortedatum" type="date" defaultValue={v.geboortedatum} />
             <label className="grid min-w-0 gap-1.5">
               <span className="text-sm font-bold">Telefoon</span>
               <div className="flex gap-2">
