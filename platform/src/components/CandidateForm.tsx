@@ -139,6 +139,10 @@ export default function CandidateForm({ candidate, action, isEdit, canEditOwner 
             )}
           </Grid>
         </Card>
+
+        <div className="flex justify-end">
+          <SubmitButton className="rounded-full bg-cobalt px-6 py-3 font-bold text-white">{isEdit ? "Opslaan" : "Opslaan + in funnel"}</SubmitButton>
+        </div>
       </div>
     </form>
   );
