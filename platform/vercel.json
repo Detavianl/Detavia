@@ -1,5 +1,5 @@
 {
   "crons": [
-    { "path": "/api/sync-flextender", "schedule": "0 6 * * *" }
+    { "path": "/api/sync-flextender", "schedule": "0 */6 * * *" }
   ]
 }
