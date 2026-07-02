@@ -9,7 +9,17 @@ export default function SollicitatieForm({ vacatureId = "", titel = "", backHref
   const [bron, setBron] = useState("");
   const [cvNaam, setCvNaam] = useState("");
   const [sleep, setSleep] = useState(false);
+  const [cvFout, setCvFout] = useState(false);
   const cvRef = useRef<HTMLInputElement>(null);
+
+  // Cv is verplicht: blokkeer verzenden als er geen bestand is gekozen.
+  function onSubmit(e: React.FormEvent) {
+    if (!cvRef.current?.files?.length) {
+      e.preventDefault();
+      setCvFout(true);
+      cvRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
 
   function onDrop(e: React.DragEvent) {
     e.preventDefault(); setSleep(false);
@@ -22,7 +32,7 @@ export default function SollicitatieForm({ vacatureId = "", titel = "", backHref
   }
 
   return (
-    <form action={submitSollicitatie} encType="multipart/form-data" className="rounded-[22px] border border-neutral-200 bg-white p-7 shadow-sm sm:p-9">
+    <form action={submitSollicitatie} onSubmit={onSubmit} encType="multipart/form-data" className="rounded-[22px] border border-neutral-200 bg-white p-7 shadow-sm sm:p-9">
       <input type="hidden" name="vacature_id" value={vacatureId} />
       <input type="hidden" name="vacature_titel" value={titel} />
 
@@ -52,19 +62,20 @@ export default function SollicitatieForm({ vacatureId = "", titel = "", backHref
         )}
 
         <div className="grid min-w-0 gap-1.5">
-          <span className="text-sm font-bold">Cv</span>
+          <span className="text-sm font-bold">Cv <span className="text-cobalt">*</span></span>
           <label
             htmlFor="cv"
             onDragOver={(e) => { e.preventDefault(); setSleep(true); }}
             onDragLeave={() => setSleep(false)}
             onDrop={onDrop}
-            className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-8 text-center transition ${sleep ? "border-cobalt bg-cobalt/[0.06]" : "border-neutral-300 hover:border-cobalt hover:bg-cobalt/[0.03]"}`}
+            className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-8 text-center transition ${sleep ? "border-cobalt bg-cobalt/[0.06]" : cvFout ? "border-red-400 bg-red-50" : "border-neutral-300 hover:border-cobalt hover:bg-cobalt/[0.03]"}`}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7 text-cobalt"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="M7 10l5-5 5 5" /><path d="M12 5v12" /></svg>
             <span className="text-sm font-semibold">{cvNaam ? cvNaam : "Sleep je cv hierheen of klik om te bladeren"}</span>
             <span className="text-xs text-muted">pdf, doc of docx</span>
           </label>
-          <input ref={cvRef} id="cv" name="cv" type="file" accept=".pdf,.doc,.docx" className="hidden" onChange={(e) => setCvNaam(e.target.files?.[0]?.name ?? "")} />
+          <input ref={cvRef} id="cv" name="cv" type="file" accept=".pdf,.doc,.docx" className="hidden" onChange={(e) => { setCvNaam(e.target.files?.[0]?.name ?? ""); setCvFout(false); }} />
+          {cvFout && <span className="text-sm font-semibold text-red-600">Een cv is verplicht om te solliciteren.</span>}
         </div>
 
         <label className="flex items-start gap-2.5 text-sm">

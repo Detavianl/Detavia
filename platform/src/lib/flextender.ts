@@ -1,7 +1,20 @@
 import { createClient } from "@/lib/supabase/server";
 import sanitizeHtml from "sanitize-html";
+import Anthropic from "@anthropic-ai/sdk";
 import { slugify } from "@/lib/blog";
 import type { Vacature } from "@/lib/vacatures-demo";
+
+export type AiStructuur = { intro: string; taken: string[]; eisen: string[]; vakgebied?: string };
+
+// DetaVia-vakgebieden: label (wat Claude kiest) -> interne sleutel.
+const VAKGEBIED_LABELS: Record<string, string> = {
+  Leerplicht: "wmo",
+  Werk: "jeugd",
+  Participatie: "participatie",
+  Schuldhulpverlening: "schuld",
+  Inkomen: "inkomen",
+  Inburgering: "beleid",
+};
 
 // Officiële Flextender-API (gratis, geen key). Bevat alle open inhuuropdrachten.
 const API_URL = "https://api.flextender.nl/v1/getjobs";
@@ -22,6 +35,7 @@ export type Opdracht = {
   verlengingsoptie: string | null;
   kvk: string | null;
   vakgebieden: string[] | null;
+  ai_json?: AiStructuur | null;
 };
 
 type RawJob = {
@@ -85,6 +99,74 @@ export async function loadOpdracht(avnummer: string | number): Promise<Opdracht 
     const supabase = await createClient();
     const { data } = await supabase.from("flextender_opdrachten").select("*").eq("avnummer", Number(avnummer)).single();
     return (data as Opdracht) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+// Eenvoudige, stabiele hash van de bron-omschrijving (djb2) om te bepalen of de
+// AI opnieuw moet draaien.
+export function hashVan(s: string): string {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(16);
+}
+
+// Zet de ruwe tender-omschrijving via Claude Haiku om naar een schone,
+// gestructureerde DetaVia-vacature (intro + taken + eisen). null bij fout/geen key.
+export async function structureerViaAI(titel: string, omschrijving: string): Promise<AiStructuur | null> {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key || !omschrijving || omschrijving.length < 40) return null;
+  const SYSTEM = `Je bent de vacature-redacteur van DetaVia, detacheringspartner in het sociaal domein. Je krijgt de ruwe, rommelige opdrachttekst van een overheids-inhuur (tender). Zet die om naar een heldere, wervende vacaturetekst in de DetaVia tone of voice (empathisch, positief, toegankelijk, mensgericht, professioneel maar laagdrempelig).
+
+Lever je output ALTIJD via het tool structureer_vacature met:
+- intro: 2 a 3 zinnen die samenvatten wat je in deze functie gaat doen (vloeiende tekst, geen opsomming, spreek de lezer aan met "je").
+- taken: concrete taken/werkzaamheden als korte bullets (werkwoord voorop, geen puntkomma's of nummering).
+- eisen: de functie-eisen / must-haves als korte bullets.
+- vakgebied: kies het best passende DetaVia-vakgebied uit exact deze lijst:
+  * "Leerplicht" = leerplicht, RMC, kwalificatieplicht, schoolverzuim jongeren.
+  * "Werk" = toeleiding naar werk, arbeidsmarkt, re-integratie, jobcoaching, werkconsulent, arbeidsparticipatie.
+  * "Participatie" = brede uitvoering sociaal domein: Wmo, Jeugd, welzijn, klantmanager/consulent sociaal domein, zorg en ondersteuning (kies dit als het niet duidelijk in een andere categorie past).
+  * "Schuldhulpverlening" = schulden, budgetbeheer, bewindvoering, financiële hulpverlening.
+  * "Inkomen" = bijstand, uitkeringen, inkomensconsulent, terugvordering, debiteuren, rechtmatigheid.
+  * "Inburgering" = inburgering, statushouders, nieuwkomers, asiel, Wet inburgering.
+
+Negeer en verwerk NIET: uitvoeringsvoorwaarde/Wet DBA-teksten, gunningscriteria en puntenwegingen, fee van Flextender, cv-eisen over de inschrijving, planning/reactietermijn en overige tender- of inschrijfprocedures. Schrijf Nederlands. Gebruik NOOIT em-dashes (gebruik komma's of gewone streepjes). Geen holle marketingtaal. Als taken of eisen echt ontbreken, geef een lege lijst.`;
+  const TOOL: Anthropic.Tool = {
+    name: "structureer_vacature",
+    description: "Levert de gestructureerde vacaturetekst.",
+    input_schema: {
+      type: "object",
+      properties: {
+        intro: { type: "string", description: "2-3 zinnen; wat ga je doen." },
+        taken: { type: "array", items: { type: "string" }, description: "Concrete taken als bullets." },
+        eisen: { type: "array", items: { type: "string" }, description: "Functie-eisen / must-haves als bullets." },
+        vakgebied: { type: "string", enum: ["Leerplicht", "Werk", "Participatie", "Schuldhulpverlening", "Inkomen", "Inburgering"], description: "Best passende DetaVia-vakgebied." },
+      },
+      required: ["intro", "taken", "eisen", "vakgebied"],
+    },
+  };
+  try {
+    const client = new Anthropic({ apiKey: key });
+    const model = process.env.DETAVIA_AI_MODEL_FLEX || "claude-haiku-4-5";
+    const res = await client.messages.create({
+      model,
+      max_tokens: 1500,
+      system: SYSTEM,
+      tools: [TOOL],
+      tool_choice: { type: "tool", name: "structureer_vacature" },
+      messages: [{ role: "user", content: `Functietitel: ${titel}\n\nRuwe opdrachttekst:\n${stripTags(omschrijving).slice(0, 8000)}` }],
+    });
+    const tu = res.content.find((b) => b.type === "tool_use");
+    if (!tu || tu.type !== "tool_use") return null;
+    const a = tu.input as Partial<AiStructuur>;
+    if (typeof a.intro !== "string") return null;
+    return {
+      intro: a.intro.trim(),
+      taken: Array.isArray(a.taken) ? a.taken.map((s) => String(s).trim()).filter(Boolean).slice(0, 15) : [],
+      eisen: Array.isArray(a.eisen) ? a.eisen.map((s) => String(s).trim()).filter(Boolean).slice(0, 15) : [],
+      vakgebied: typeof a.vakgebied === "string" ? (VAKGEBIED_LABELS[a.vakgebied] ?? undefined) : undefined,
+    };
   } catch {
     return null;
   }
@@ -195,40 +277,49 @@ function eisenVan(html: string): string[] {
 // identiek aan onze eigen vacatures wordt getoond (kaart, detailpagina, URL).
 // De lange tender-boilerplate wordt weggelaten: alleen de kandidaat-relevante
 // delen (organisatie, opdracht, competenties, werkdagen, vereisten).
+const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
 export function opdrachtNaarVacature(o: Opdracht): Vacature {
-  const secties = sectiesVan(o.omschrijving ?? "");
-  const vind = (...zoek: string[]) => secties.find((s) => zoek.some((z) => s.key.includes(z)));
+  let intro: string;
+  let taken: string | undefined;
+  let eisen: string[] | undefined;
 
-  const organisatie = vind("organisatie");
-  const opdracht = secties.find((s) => s.key === "opdracht") ?? vind("opdracht", "werkzaamheden");
-  const competenties = vind("competenties");
-  const werkdagen = vind("werkdagen");
-  const vereisten = vind("vereisten", "knockout", "functieeisen", "minimumeisen");
+  const ai = o.ai_json;
+  if (ai && typeof ai.intro === "string" && ai.intro.length > 4) {
+    // Voorkeur: door Claude gestructureerde, schone tekst.
+    intro = ai.intro;
+    taken = ai.taken?.length ? `<ul>${ai.taken.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : undefined;
+    eisen = ai.eisen?.length ? ai.eisen : undefined;
+  } else {
+    // Terugval: ruwe tekst per kop uitsplitsen.
+    const secties = sectiesVan(o.omschrijving ?? "");
+    const vind = (...zoek: string[]) => secties.find((s) => zoek.some((z) => s.key.includes(z)));
+    const organisatie = vind("organisatie");
+    const opdracht = secties.find((s) => s.key === "opdracht") ?? vind("opdracht", "werkzaamheden");
+    const competenties = vind("competenties");
+    const werkdagen = vind("werkdagen");
+    const vereisten = vind("vereisten", "knockout", "functieeisen", "minimumeisen");
 
-  // Opdracht splitsen: het deel vóór de takenopsomming wordt de intro, de rest
-  // wordt "Wat ga je doen?". Voorkomt dat intro en body identiek zijn.
-  const opdrachtHtml = opdracht?.html ?? o.omschrijving ?? "";
-  const markerRe = /belangrijkste taken|concreet omvat dit|takenpakket|je taken|de werkzaamheden|werkzaamheden\s*:|dit ga je doen/i;
-  const idx = opdrachtHtml.search(markerRe);
-  const introHtml = idx > 40 ? opdrachtHtml.slice(0, idx) : opdrachtHtml;
-  const takenHtml = idx > 40 ? opdrachtHtml.slice(idx) : opdrachtHtml;
+    const opdrachtHtml = opdracht?.html ?? o.omschrijving ?? "";
+    const markerRe = /belangrijkste taken|concreet omvat dit|takenpakket|je taken|de werkzaamheden|werkzaamheden\s*:|dit ga je doen/i;
+    const idx = opdrachtHtml.search(markerRe);
+    const introHtml = idx > 40 ? opdrachtHtml.slice(0, idx) : opdrachtHtml;
+    const takenHtml = idx > 40 ? opdrachtHtml.slice(idx) : opdrachtHtml;
 
-  // Intro ("Over deze opdracht"): liefst de organisatietekst, anders het deel vóór de taken.
-  const intro = eersteZinnen(stripTags(organisatie?.html || introHtml));
-
-  // Body ("Wat ga je doen?"): nette taken + eventueel competenties/werkdagen.
-  let takenBlok = schoonBlok(takenHtml);
-  if (competenties) takenBlok += "<h4>Competenties</h4>" + schoonBlok(competenties.html);
-  if (werkdagen) takenBlok += "<h4>Werkdagen</h4>" + schoonBlok(werkdagen.html);
-  const taken = sanitizeHtml(takenBlok, SCHOON);
-
-  const eisen = vereisten ? eisenVan(vereisten.html) : [];
+    intro = eersteZinnen(stripTags(organisatie?.html || introHtml));
+    let takenBlok = schoonBlok(takenHtml);
+    if (competenties) takenBlok += "<h4>Competenties</h4>" + schoonBlok(competenties.html);
+    if (werkdagen) takenBlok += "<h4>Werkdagen</h4>" + schoonBlok(werkdagen.html);
+    taken = sanitizeHtml(takenBlok, SCHOON) || undefined;
+    const e = vereisten ? eisenVan(vereisten.html) : [];
+    eisen = e.length ? e : undefined;
+  }
 
   return {
     id: `fl-${o.avnummer}`,
     slug: slugify(`${o.opdracht}-${o.regio ?? ""}`) || `opdracht-${o.avnummer}`,
     titel: o.opdracht,
-    vakgebied: vakgebiedVan(o.opdracht),
+    vakgebied: o.ai_json?.vakgebied || vakgebiedVan(o.opdracht),
     plaats: o.regio ?? "In overleg",
     uren: parseUren(o.urenperweek),
     salaris: [0, 0],
@@ -237,8 +328,8 @@ export function opdrachtNaarVacature(o: Opdracht): Vacature {
     top: false,
     datum: "",
     omschrijving: intro.length > 2 ? intro : o.opdracht,
-    taken: taken || undefined,
-    eisen: eisen.length ? eisen : undefined,
+    taken,
+    eisen,
     opdrachtgever: o.opdrachtgever ?? undefined,
     startdatum: o.aanvang ?? undefined,
     duur: o.duur ?? undefined,

@@ -13,6 +13,8 @@ export async function submitSollicitatie(formData: FormData) {
   const naam = [g("voornaam"), g("tussenvoegsel"), g("achternaam")].filter(Boolean).join(" ").trim() || g("naam");
   const email = g("email");
   if (!naam || !email) throw new Error("Naam en e-mail zijn verplicht");
+  const cvBestand = formData.get("cv");
+  if (!(cvBestand instanceof File) || cvBestand.size === 0) throw new Error("Cv is verplicht");
   if (isDemo()) redirect("/bedankt");
 
   const supabase = createAdminClient();
@@ -34,7 +36,7 @@ export async function submitSollicitatie(formData: FormData) {
   }).select("id").single();
   if (error) throw new Error(error.message);
 
-  // cv-upload (optioneel)
+  // cv-upload (verplicht; hierboven al gevalideerd)
   const cv = formData.get("cv");
   if (cv && cv instanceof File && cv.size > 0) {
     const ext = cv.name.split(".").pop() ?? "pdf";
