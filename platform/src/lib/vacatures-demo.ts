@@ -21,6 +21,7 @@ export type Vacature = {
   // Optionele, rijke velden voor de detailpagina (per vacature)
   slug?: string;
   taken?: string;
+  takenLijst?: string[]; // taken als losse bullets (voor eigen DetaVia-opmaak)
   eisen?: string[];
   opdrachtgever?: string;
   startdatum?: string;

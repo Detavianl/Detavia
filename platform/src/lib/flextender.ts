@@ -317,6 +317,7 @@ export function opdrachtNaarVacature(o: Opdracht): Vacature {
   // 2) Door Claude gestructureerde versie waar aanwezig, anders de ruwe tekst.
   const ai = o.ai_json;
   const intro = ai?.intro && ai.intro.length > 4 ? ai.intro : regexIntro;
+  const takenLijst = ai?.taken?.length ? ai.taken : undefined; // losse bullets voor eigen opmaak
   const aiTaken = ai?.taken?.length ? `<ul>${ai.taken.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : undefined;
   const taken = aiTaken ?? regexTaken; // "Wat ga je doen?" staat er altijd
   const eisen = ai?.eisen?.length ? ai.eisen : regexEisen.length ? regexEisen : undefined;
@@ -335,6 +336,7 @@ export function opdrachtNaarVacature(o: Opdracht): Vacature {
     datum: "",
     omschrijving: intro.length > 2 ? intro : o.opdracht,
     taken,
+    takenLijst,
     eisen,
     opdrachtgever: o.opdrachtgever ?? undefined,
     startdatum: o.aanvang ?? undefined,

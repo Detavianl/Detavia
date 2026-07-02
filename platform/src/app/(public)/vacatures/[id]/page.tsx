@@ -91,11 +91,20 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
           <h2 className="display text-2xl sm:text-3xl">Over deze opdracht</h2>
           <p className="mt-4 text-lg leading-relaxed text-muted">{v.omschrijving}</p>
 
-          {v.taken && (
+          {(v.takenLijst?.length || v.taken) && (
             <>
               <h2 className="display mt-12 text-2xl sm:text-3xl">Wat ga je doen?</h2>
-              {takenIsHtml ? (
-                <div className="prose-detavia mt-4 text-muted" dangerouslySetInnerHTML={{ __html: v.taken }} />
+              {v.takenLijst?.length ? (
+                <ul className="mt-4 grid gap-3">
+                  {v.takenLijst.map((t) => (
+                    <li key={t} className="flex items-start gap-3">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-cobalt text-xs font-extrabold text-white">›</span>
+                      <span>{t}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : takenIsHtml ? (
+                <div className="prose-detavia mt-4 text-muted" dangerouslySetInnerHTML={{ __html: v.taken ?? "" }} />
               ) : (
                 <p className="mt-4 leading-relaxed text-muted">{v.taken}</p>
               )}
