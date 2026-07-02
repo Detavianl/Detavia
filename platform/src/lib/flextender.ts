@@ -280,40 +280,34 @@ function eisenVan(html: string): string[] {
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 export function opdrachtNaarVacature(o: Opdracht): Vacature {
-  let intro: string;
-  let taken: string | undefined;
-  let eisen: string[] | undefined;
+  // 1) Ruwe tekst per kop uitsplitsen = altijd beschikbare basis/terugval.
+  const secties = sectiesVan(o.omschrijving ?? "");
+  const vind = (...zoek: string[]) => secties.find((s) => zoek.some((z) => s.key.includes(z)));
+  const organisatie = vind("organisatie");
+  const opdracht = secties.find((s) => s.key === "opdracht") ?? vind("opdracht", "werkzaamheden");
+  const competenties = vind("competenties");
+  const werkdagen = vind("werkdagen");
+  const vereisten = vind("vereisten", "knockout", "functieeisen", "minimumeisen");
 
+  const opdrachtHtml = opdracht?.html ?? o.omschrijving ?? "";
+  const markerRe = /belangrijkste taken|concreet omvat dit|takenpakket|je taken|de werkzaamheden|werkzaamheden\s*:|dit ga je doen/i;
+  const idx = opdrachtHtml.search(markerRe);
+  const introHtml = idx > 40 ? opdrachtHtml.slice(0, idx) : opdrachtHtml;
+  const takenHtml = idx > 40 ? opdrachtHtml.slice(idx) : opdrachtHtml;
+
+  const regexIntro = eersteZinnen(stripTags(organisatie?.html || introHtml));
+  let regexTakenBlok = schoonBlok(takenHtml);
+  if (competenties) regexTakenBlok += "<h4>Competenties</h4>" + schoonBlok(competenties.html);
+  if (werkdagen) regexTakenBlok += "<h4>Werkdagen</h4>" + schoonBlok(werkdagen.html);
+  const regexTaken = sanitizeHtml(regexTakenBlok, SCHOON) || undefined;
+  const regexEisen = vereisten ? eisenVan(vereisten.html) : [];
+
+  // 2) Door Claude gestructureerde versie waar aanwezig, anders de ruwe tekst.
   const ai = o.ai_json;
-  if (ai && typeof ai.intro === "string" && ai.intro.length > 4) {
-    // Voorkeur: door Claude gestructureerde, schone tekst.
-    intro = ai.intro;
-    taken = ai.taken?.length ? `<ul>${ai.taken.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : undefined;
-    eisen = ai.eisen?.length ? ai.eisen : undefined;
-  } else {
-    // Terugval: ruwe tekst per kop uitsplitsen.
-    const secties = sectiesVan(o.omschrijving ?? "");
-    const vind = (...zoek: string[]) => secties.find((s) => zoek.some((z) => s.key.includes(z)));
-    const organisatie = vind("organisatie");
-    const opdracht = secties.find((s) => s.key === "opdracht") ?? vind("opdracht", "werkzaamheden");
-    const competenties = vind("competenties");
-    const werkdagen = vind("werkdagen");
-    const vereisten = vind("vereisten", "knockout", "functieeisen", "minimumeisen");
-
-    const opdrachtHtml = opdracht?.html ?? o.omschrijving ?? "";
-    const markerRe = /belangrijkste taken|concreet omvat dit|takenpakket|je taken|de werkzaamheden|werkzaamheden\s*:|dit ga je doen/i;
-    const idx = opdrachtHtml.search(markerRe);
-    const introHtml = idx > 40 ? opdrachtHtml.slice(0, idx) : opdrachtHtml;
-    const takenHtml = idx > 40 ? opdrachtHtml.slice(idx) : opdrachtHtml;
-
-    intro = eersteZinnen(stripTags(organisatie?.html || introHtml));
-    let takenBlok = schoonBlok(takenHtml);
-    if (competenties) takenBlok += "<h4>Competenties</h4>" + schoonBlok(competenties.html);
-    if (werkdagen) takenBlok += "<h4>Werkdagen</h4>" + schoonBlok(werkdagen.html);
-    taken = sanitizeHtml(takenBlok, SCHOON) || undefined;
-    const e = vereisten ? eisenVan(vereisten.html) : [];
-    eisen = e.length ? e : undefined;
-  }
+  const intro = ai?.intro && ai.intro.length > 4 ? ai.intro : regexIntro;
+  const aiTaken = ai?.taken?.length ? `<ul>${ai.taken.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : undefined;
+  const taken = aiTaken ?? regexTaken; // "Wat ga je doen?" staat er altijd
+  const eisen = ai?.eisen?.length ? ai.eisen : regexEisen.length ? regexEisen : undefined;
 
   return {
     id: `fl-${o.avnummer}`,
