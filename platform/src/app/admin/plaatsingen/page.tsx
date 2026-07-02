@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export default async function PlaatsingenPage() {
   const admin = await requireAdmin();
-  const isRecruiter = admin.role === "recruiter";
+  const isRecruiter = admin.role === "recruiter" || admin.role === "jr_recruiter";
   let rows: any[];
   if (isDemo()) {
     const naam = (id: string) => DEMO_CANDIDATES.find((c) => c.id === id)?.naam ?? "—";

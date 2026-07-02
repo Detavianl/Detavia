@@ -29,5 +29,5 @@ export default async function NieuwePlaatsing() {
   }
   const config = await loadMargeConfig();
   const tredes = isDemo() ? [] : await loadTredes();
-  return <PlacementForm candidates={candidates} companies={companies} recruiters={recruiters} config={config} tredes={tredes} currentUserId={admin.user_id} currentUserNaam={admin.naam || admin.email} canEditRecruiter={admin.role === "super_admin"} />;
+  return <PlacementForm candidates={candidates} companies={companies} recruiters={recruiters} config={config} tredes={tredes} currentUserId={admin.user_id} currentUserNaam={admin.naam || admin.email} canEditRecruiter={admin.role === "super_admin"} toonMarge={admin.role !== "jr_recruiter"} />;
 }

@@ -29,7 +29,7 @@ export default async function TeamPage() {
           <input name="email" type="email" required className="rounded-xl border-2 border-neutral-200 px-4 py-2.5" /></label>
         <label className="grid gap-1.5"><span className="text-sm font-bold">Rol</span>
           <select name="role" className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-2.5">
-            <option value="recruiter">Recruiter</option><option value="admin">Admin</option><option value="super_admin">Super-admin</option>
+            <option value="jr_recruiter">Jr. recruiter</option><option value="recruiter">Sr. recruiter</option><option value="admin">Admin</option><option value="super_admin">Super-admin</option>
           </select></label>
         <button className="rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Uitnodigen</button>
       </form>

@@ -12,7 +12,7 @@ import type { Trede } from "@/lib/schalen-util";
 
 type Opt = { id: string; naam: string };
 
-export default function AtsBoard({ initial, companies = [], recruiters = [], config, tredes = [], currentUserId = "", currentUserNaam = "", canEditRecruiter = false }: { initial: AtsCard[]; companies?: Opt[]; recruiters?: Opt[]; config: MargeConfig; tredes?: Trede[]; currentUserId?: string; currentUserNaam?: string; canEditRecruiter?: boolean }) {
+export default function AtsBoard({ initial, companies = [], recruiters = [], config, tredes = [], currentUserId = "", currentUserNaam = "", canEditRecruiter = false, toonMarge = true }: { initial: AtsCard[]; companies?: Opt[]; recruiters?: Opt[]; config: MargeConfig; tredes?: Trede[]; currentUserId?: string; currentUserNaam?: string; canEditRecruiter?: boolean; toonMarge?: boolean }) {
   const [cards, setCards] = useState<AtsCard[]>(initial);
   const [activeId, setActiveId] = useState<string | null>(null);
   // Kaart die naar "Geplaatst" is gesleept en op de plaatsing-popup wacht.
@@ -63,6 +63,7 @@ export default function AtsBoard({ initial, companies = [], recruiters = [], con
           currentUserId={currentUserId}
           currentUserNaam={currentUserNaam}
           canEditRecruiter={canEditRecruiter}
+          toonMarge={toonMarge}
           onDone={() => {
             // Plaatsing is server-side gemaakt én verplaatst: kaart lokaal bijwerken.
             setCards((cs) => cs.map((c) => (c.id === plaatsCard.id ? { ...c, stage: "geplaatst" } : c)));

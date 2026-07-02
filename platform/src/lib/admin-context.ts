@@ -3,10 +3,24 @@ import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { isDemo, DEMO_ADMIN } from "@/lib/demo";
 
-export type AdminRole = "super_admin" | "admin" | "recruiter";
+export type AdminRole = "super_admin" | "admin" | "recruiter" | "jr_recruiter";
 export type AdminUser = { user_id: string; naam: string; role: AdminRole; email: string };
 
 export const DEMO_COOKIE = "detavia_demo";
+
+// Vaste recruitervergoeding voor een jr. recruiter, per gewerkt uur.
+export const JR_RECRUITER_FEE = 3.75;
+
+// Rol-labels. "recruiter" = senior (voor de gebruiker verandert er niks).
+export const ROLE_LABELS: Record<AdminRole, string> = {
+  super_admin: "Super-admin",
+  admin: "Admin",
+  recruiter: "Sr. recruiter",
+  jr_recruiter: "Jr. recruiter",
+};
+
+// Rollen die als recruiter meetellen (verdiensten + plaatsingen).
+export const RECRUITER_ROLES = ["jr_recruiter", "recruiter", "admin", "super_admin"];
 
 /** Haalt de ingelogde admin op, of null. */
 export async function getAdmin(): Promise<AdminUser | null> {
@@ -39,7 +53,7 @@ export async function requireAdmin(): Promise<AdminUser> {
 /** Vereist een specifieke rol (super_admin > admin > recruiter). */
 export async function requireRole(min: AdminRole): Promise<AdminUser> {
   const admin = await requireAdmin();
-  const rank: Record<AdminRole, number> = { recruiter: 1, admin: 2, super_admin: 3 };
+  const rank: Record<AdminRole, number> = { jr_recruiter: 1, recruiter: 2, admin: 3, super_admin: 4 };
   if (rank[admin.role] < rank[min]) redirect("/geen-toegang");
   return admin;
 }

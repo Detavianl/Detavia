@@ -46,7 +46,7 @@ export default async function AtsPage() {
       <h1 className="display text-3xl">ATS</h1>
       <p className="mt-1 text-muted">Sleep kandidaten door de pijplijn.</p>
       <div className="mt-8">
-        <AtsBoard initial={cards} companies={companies} recruiters={recruiters} config={config} tredes={tredes} currentUserId={admin?.user_id ?? ""} currentUserNaam={admin?.naam || admin?.email || ""} canEditRecruiter={admin?.role === "super_admin"} />
+        <AtsBoard initial={cards} companies={companies} recruiters={recruiters} config={config} tredes={tredes} currentUserId={admin?.user_id ?? ""} currentUserNaam={admin?.naam || admin?.email || ""} canEditRecruiter={admin?.role === "super_admin"} toonMarge={admin?.role !== "jr_recruiter"} />
       </div>
     </div>
   );

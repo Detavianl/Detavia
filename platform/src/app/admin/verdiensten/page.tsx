@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { requireAdmin } from "@/lib/admin-context";
+import { requireAdmin, JR_RECRUITER_FEE, RECRUITER_ROLES } from "@/lib/admin-context";
 import { isDemo } from "@/lib/demo";
 import { loadMargeConfig, berekenMarge } from "@/lib/marge";
 import VerdienstenTabel, { type VerdienstRow } from "@/components/VerdienstenTabel";
@@ -15,7 +15,8 @@ type Row = {
 
 export default async function VerdienstenPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const admin = await requireAdmin();
-  const isRecruiter = admin.role === "recruiter";
+  const isRecruiter = admin.role === "recruiter" || admin.role === "jr_recruiter";
+  const isJr = admin.role === "jr_recruiter";
   const isSuper = admin.role === "super_admin";
   const sp = await searchParams;
 
@@ -30,7 +31,8 @@ export default async function VerdienstenPage({ searchParams }: { searchParams: 
     supabase.from("admin_users").select("user_id, naam, role"),
   ]);
   const naam = (uid: string | null) => team?.find((t) => t.user_id === uid)?.naam ?? "—";
-  const recruiters = (team ?? []).filter((t) => ["recruiter", "admin", "super_admin"].includes(t.role));
+  const rolVan = (uid: string | null) => team?.find((t) => t.user_id === uid)?.role;
+  const recruiters = (team ?? []).filter((t) => RECRUITER_ROLES.includes(t.role));
 
   // Afrekenen op de recruiter van de plaatsing (valt terug op de eigenaar van de kandidaat).
   const recOf = (r: Row) => r.recruiter_id ?? r.candidate?.eigenaar ?? null;
@@ -41,13 +43,17 @@ export default async function VerdienstenPage({ searchParams }: { searchParams: 
 
   const tabelRows: VerdienstRow[] = rows.map((r) => {
     const m = berekenMarge(r.uurtarief, r.kostprijs, config);
+    // Jr. recruiter: vaste vergoeding per uur i.p.v. de restmarge.
+    const jrRec = rolVan(recOf(r)) === "jr_recruiter";
     return {
       id: r.id,
       kandidaat: r.candidate?.naam ?? "—",
       recruiterNaam: naam(recOf(r)),
       weggezet: `${r.functie}${r.company?.naam ? ` · ${r.company.naam}` : ""}`,
       verkoop: m.verkoop, inkoop: m.inkoop, brutoMarge: m.brutoMarge,
-      overhead: m.overhead, nettowinst: m.nettowinst, recruiter: m.recruiter, teLaag: m.teLaag,
+      overhead: m.overhead, nettowinst: m.nettowinst,
+      recruiter: jrRec ? JR_RECRUITER_FEE : m.recruiter,
+      teLaag: jrRec ? false : m.teLaag,
     };
   });
 
@@ -56,7 +62,7 @@ export default async function VerdienstenPage({ searchParams }: { searchParams: 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="display text-3xl">{isRecruiter ? "Mijn verdiensten" : "Verdiensten"}</h1>
-          <p className="mt-1 text-muted">{isRecruiter ? "Per kandidaat: wat jij per uur meeverdient." : `Opbouw per plaatsing (per uur). Overhead ${(config.ziekteverzuim_pct + config.administratie_pct + config.juridisch_pct + config.verzekeringen_pct).toLocaleString("nl-NL")}% + nettowinst ${config.nettowinst_pct.toLocaleString("nl-NL")}%; de recruiter krijgt de rest.`}</p>
+          <p className="mt-1 text-muted">{isJr ? `Je verdient een vast bedrag van ${JR_RECRUITER_FEE.toLocaleString("nl-NL", { minimumFractionDigits: 2 })} euro per gewerkt uur per plaatsing. Vul je uren in om je verdienste te zien.` : isRecruiter ? "Per kandidaat: wat jij per uur meeverdient." : `Opbouw per plaatsing (per uur). Overhead ${(config.ziekteverzuim_pct + config.administratie_pct + config.juridisch_pct + config.verzekeringen_pct).toLocaleString("nl-NL")}% + nettowinst ${config.nettowinst_pct.toLocaleString("nl-NL")}%; de recruiter krijgt de rest.`}</p>
         </div>
         <div className="flex items-center gap-3">
           {isSuper && <Link href="/admin/instellingen/marge" className="text-sm font-bold text-cobalt hover:underline">Marge-instellingen</Link>}
@@ -72,7 +78,7 @@ export default async function VerdienstenPage({ searchParams }: { searchParams: 
         </div>
       </div>
 
-      <VerdienstenTabel rows={tabelRows} isRecruiter={isRecruiter} />
+      <VerdienstenTabel rows={tabelRows} isRecruiter={isRecruiter} isJr={isJr} />
     </div>
   );
 }

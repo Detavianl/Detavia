@@ -15,7 +15,7 @@ export async function inviteTeamMember(formData: FormData) {
 
   const admin = createAdminClient();
   // Rol-label voor in de uitnodigingsmail ({{ .Data.rol }} in het Supabase-sjabloon).
-  const rolLabel = role === "super_admin" ? "super-admin" : role === "admin" ? "admin" : "recruiter";
+  const rolLabel = role === "super_admin" ? "super-admin" : role === "admin" ? "admin" : role === "jr_recruiter" ? "jr. recruiter" : "sr. recruiter";
   // nodigt uit (maakt user als die nog niet bestaat) en geeft de rol
   const { data, error } = await admin.auth.admin.inviteUserByEmail(email, { data: { naam, rol: rolLabel } });
   let userId = data?.user?.id;

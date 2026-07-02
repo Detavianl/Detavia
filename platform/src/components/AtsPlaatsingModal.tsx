@@ -11,7 +11,7 @@ type Opt = { id: string; naam: string };
 // Popup die verschijnt zodra een kaart naar "Geplaatst" wordt gesleept: hier
 // wordt de plaatsing direct aangemaakt, met velden voorgevuld uit de vacature
 // en de kandidaat. Zo hoeft de recruiter dit niet los nog eens in te voeren.
-export default function AtsPlaatsingModal({ card, companies, recruiters, config, tredes = [], currentUserId = "", currentUserNaam = "", canEditRecruiter = false, onDone, onCancel }: {
+export default function AtsPlaatsingModal({ card, companies, recruiters, config, tredes = [], currentUserId = "", currentUserNaam = "", canEditRecruiter = false, toonMarge = true, onDone, onCancel }: {
   card: AtsCard;
   companies: Opt[];
   recruiters: Opt[];
@@ -20,6 +20,7 @@ export default function AtsPlaatsingModal({ card, companies, recruiters, config,
   currentUserId?: string;
   currentUserNaam?: string;
   canEditRecruiter?: boolean;
+  toonMarge?: boolean;
   onDone: () => void;
   onCancel: () => void;
 }) {
@@ -83,7 +84,7 @@ export default function AtsPlaatsingModal({ card, companies, recruiters, config,
           {card.vacature?.titel && <p className="relative mt-0.5 text-sm text-white/85">↳ {card.vacature.titel}</p>}
         </div>
 
-        <form onSubmit={opslaan} className="grid gap-6 p-6 lg:grid-cols-[1.25fr_1fr]">
+        <form onSubmit={opslaan} className={`grid gap-6 p-6 ${toonMarge ? "lg:grid-cols-[1.25fr_1fr]" : ""}`}>
           {/* Velden */}
           <div className="grid gap-4">
             <label className="grid min-w-0 gap-1.5"><span className="text-sm font-bold">Functie</span>
@@ -141,7 +142,8 @@ export default function AtsPlaatsingModal({ card, companies, recruiters, config,
             </div>
           </div>
 
-          {/* Live marge-calculator */}
+          {/* Live marge-calculator (verborgen voor jr. recruiter) */}
+          {toonMarge && (
           <aside className="lg:sticky lg:top-0 lg:self-start">
             <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white">
               <div className="border-b border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm font-bold">Marge-calculator (per uur)</div>
@@ -168,6 +170,7 @@ export default function AtsPlaatsingModal({ card, companies, recruiters, config,
               </div>
             </div>
           </aside>
+          )}
 
           {/* Acties (volle breedte) */}
           <div className="lg:col-span-2">

@@ -8,7 +8,7 @@ import { euroMaand, euroUur, tredeOpties, tredeInfo, type Trede } from "@/lib/sc
 type Opt = { id: string; naam: string };
 type Cand = { id: string; naam: string; eigenaar: string | null };
 
-export default function PlacementForm({ candidates, companies, recruiters, config, tredes = [], currentUserId = "", currentUserNaam = "", canEditRecruiter = false }: { candidates: Cand[]; companies: Opt[]; recruiters: Opt[]; config: MargeConfig; tredes?: Trede[]; currentUserId?: string; currentUserNaam?: string; canEditRecruiter?: boolean }) {
+export default function PlacementForm({ candidates, companies, recruiters, config, tredes = [], currentUserId = "", currentUserNaam = "", canEditRecruiter = false, toonMarge = true }: { candidates: Cand[]; companies: Opt[]; recruiters: Opt[]; config: MargeConfig; tredes?: Trede[]; currentUserId?: string; currentUserNaam?: string; canEditRecruiter?: boolean; toonMarge?: boolean }) {
   const [verkoop, setVerkoop] = useState("");
   const [inkoop, setInkoop] = useState("");
   const [uren, setUren] = useState("");
@@ -31,7 +31,7 @@ export default function PlacementForm({ candidates, companies, recruiters, confi
   const recruiterOnbekend = !!recruiterId && !recruiters.some((r) => r.id === recruiterId);
 
   return (
-    <div className="mx-auto grid max-w-5xl gap-8 p-8 lg:grid-cols-[1.3fr_1fr]">
+    <div className={`mx-auto grid gap-8 p-8 ${toonMarge ? "max-w-5xl lg:grid-cols-[1.3fr_1fr]" : "max-w-2xl"}`}>
       <form action={createPlacement} className="grid gap-5">
         <div>
           <Link href="/admin/plaatsingen" className="text-sm font-semibold text-cobalt">← Plaatsingen</Link>
@@ -93,7 +93,8 @@ export default function PlacementForm({ candidates, companies, recruiters, confi
         <button className="justify-self-start rounded-full bg-cobalt px-6 py-3 font-bold text-white">Opslaan</button>
       </form>
 
-      {/* LIVE CALCULATOR */}
+      {/* LIVE CALCULATOR (verborgen voor jr. recruiter) */}
+      {toonMarge && (
       <aside className="lg:sticky lg:top-6 lg:self-start">
         <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white">
           <div className="border-b border-neutral-200 bg-neutral-50 px-5 py-3 font-bold">Marge-calculator (per uur)</div>
@@ -129,6 +130,7 @@ export default function PlacementForm({ candidates, companies, recruiters, confi
           </div>
         </div>
       </aside>
+      )}
     </div>
   );
 }

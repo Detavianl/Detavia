@@ -27,7 +27,7 @@ export default async function PlaatsingDetail({ params }: { params: Promise<{ id
     if (!data) notFound();
     const recruiterId = data.recruiter_id ?? data.candidate?.eigenaar ?? null;
     // Recruiter mag alleen z'n eigen plaatsing zien (verdiensten privé).
-    if (admin?.role === "recruiter" && recruiterId !== admin.user_id) redirect("/geen-toegang");
+    if ((admin?.role === "recruiter" || admin?.role === "jr_recruiter") && recruiterId !== admin.user_id) redirect("/geen-toegang");
     p = { ...data, company_naam: data.company?.naam ?? "" };
     kandidaat = data.candidate?.naam ?? "—";
     if (recruiterId) {
@@ -37,7 +37,7 @@ export default async function PlaatsingDetail({ params }: { params: Promise<{ id
   }
 
   const notes = demo ? [] : await loadNotes("placement", id);
-  const isRecruiter = admin?.role === "recruiter";
+  const isRecruiter = admin?.role === "recruiter" || admin?.role === "jr_recruiter";
 
   return (
     <div className="p-8">
