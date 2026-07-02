@@ -220,6 +220,17 @@ export function maxTariefVan(html: string): number | null {
   return null;
 }
 
+// Haalt de functieschaal uit de omschrijving ("ingedeeld in functieschaal 9",
+// ook "6/7"). null als er geen geldige schaal (1-18) staat.
+export function functieschaalVan(html: string): string | null {
+  const t = stripTags(html);
+  const m = t.match(/functieschaal\s*:?\s*([0-9]{1,2}(?:\s*\/\s*[0-9]{1,2})?)\b/i);
+  if (!m) return null;
+  const s = m[1].replace(/\s+/g, "");
+  const eerste = Number(s.split("/")[0]);
+  return eerste >= 1 && eerste <= 18 ? s : null;
+}
+
 // Best-effort indeling in DetaVia-vakgebieden op basis van de titel.
 function vakgebiedVan(titel: string): string {
   const t = titel.toLowerCase();
@@ -357,6 +368,7 @@ export function opdrachtNaarVacature(o: Opdracht): Vacature {
     opdrachtgever: o.opdrachtgever ?? undefined,
     startdatum: o.aanvang ?? undefined,
     duur: o.duur ?? undefined,
+    schaal: functieschaalVan(o.omschrijving ?? "") ?? undefined,
     inactief_op: o.sluiting_inschrijving,
   };
 }

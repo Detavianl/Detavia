@@ -26,6 +26,7 @@ export type Vacature = {
   opdrachtgever?: string;
   startdatum?: string;
   duur?: string;
+  schaal?: string; // functieschaal (bv. "9" of "6/7"), indien vermeld
   salaris_periode?: string; // 'uur' | 'week' | '4weken' | 'maand'
   inactief_op?: string | null;
 };

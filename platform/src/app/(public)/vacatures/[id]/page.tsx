@@ -151,6 +151,7 @@ export default async function VacatureDetail({ params }: { params: Promise<{ id:
               <Row k="Plaats" v={v.plaats} />
               <Row k="Uren per week" v={urenLabel(v.uren)} />
               <Row k="Salarisindicatie" v={salarisLabel(v.salaris, v.salaris_periode)} />
+              {v.schaal && <Row k="Functieschaal" v={`Schaal ${v.schaal}`} />}
               <Row k="Dienstverband" v={v.type} />
               {v.startdatum && <Row k="Startdatum" v={v.startdatum} />}
               {v.duur && <Row k="Duur" v={v.duur} />}
