@@ -61,7 +61,12 @@ export const PERIODE_LABEL: Record<string, string> = {
 export const urenLabel = (u: [number, number]) => (u[0] === u[1] ? `${u[0]} uur` : `${u[0]}-${u[1]} uur`);
 
 // Salaris met de juiste periode, of "Tarief in overleg" als er geen bedrag is.
-export const salarisLabel = (s: [number, number], periode = "maand") =>
-  s[0] > 0 ? `${euro(s[0])} - ${euro(s[1])} ${PERIODE_LABEL[periode] ?? "per maand"}` : "Tarief in overleg";
+export const salarisLabel = (s: [number, number], periode = "maand") => {
+  const p = PERIODE_LABEL[periode] ?? "per maand";
+  if (s[0] > 0 && s[1] > 0 && s[1] !== s[0]) return `${euro(s[0])} - ${euro(s[1])} ${p}`;
+  if (s[0] > 0) return `${euro(s[0])} ${p}`;
+  if (s[1] > 0) return `tot ${euro(s[1])} ${p}`; // alleen een maximum bekend
+  return "Tarief in overleg";
+};
 
 export const fmtSalaris = (s: [number, number]) => salarisLabel(s, "maand");

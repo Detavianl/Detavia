@@ -204,6 +204,22 @@ function parseUren(s: string | null): [number, number] {
   return [32, 36];
 }
 
+// Haalt een maximum uurtarief uit de omschrijving (tenders noemen vaak
+// "uurtarief maximaal € 105,- exclusief btw"). null als er niets bruikbaars staat.
+export function maxTariefVan(html: string): number | null {
+  const t = stripTags(html);
+  const segmenten = t.match(/[^.]*\b(?:uur)?tarief\b[^.]*/gi) ?? [];
+  for (const seg of segmenten) {
+    if (!/maxim|max\.?/i.test(seg)) continue; // alleen echte maximumtarieven
+    const m = seg.match(/€\s?(\d{2,3})(?:[.,]\d{2}|,-)?/);
+    if (m) {
+      const n = Number(m[1]);
+      if (n >= 40 && n <= 250) return n; // realistisch uurtarief-bereik
+    }
+  }
+  return null;
+}
+
 // Best-effort indeling in DetaVia-vakgebieden op basis van de titel.
 function vakgebiedVan(titel: string): string {
   const t = titel.toLowerCase();
@@ -329,8 +345,8 @@ export function opdrachtNaarVacature(o: Opdracht): Vacature {
     vakgebied: o.ai_json?.vakgebied || vakgebiedVan(o.opdracht),
     plaats: o.regio ?? "In overleg",
     uren: parseUren(o.urenperweek),
-    salaris: [0, 0],
-    salaris_periode: "maand",
+    salaris: (() => { const mx = maxTariefVan(o.omschrijving ?? ""); return mx ? [0, mx] : [0, 0]; })(),
+    salaris_periode: "uur",
     type: "Detachering",
     top: false,
     datum: "",
