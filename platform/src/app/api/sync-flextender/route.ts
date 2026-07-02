@@ -24,7 +24,7 @@ async function sync() {
   const oud = new Map((bestaand ?? []).map((b) => [b.avnummer, b]));
 
   // Eerst bestaande AI hergebruiken waar de bron niet wijzigde.
-  const items = rows.map((r) => ({ r, hash: hashVan("v2|" + (r.opdracht ?? "") + "|" + (r.omschrijving ?? "")) }));
+  const items = rows.map((r) => ({ r, hash: hashVan("v3|" + (r.opdracht ?? "") + "|" + (r.omschrijving ?? "")) }));
   for (const { r, hash } of items) {
     const prev = oud.get(r.avnummer);
     if (prev?.ai_json && prev.bron_hash === hash) r.ai_json = prev.ai_json;

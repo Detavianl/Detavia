@@ -117,12 +117,12 @@ export function hashVan(s: string): string {
 export async function structureerViaAI(titel: string, omschrijving: string): Promise<AiStructuur | null> {
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key || !omschrijving || omschrijving.length < 40) return null;
-  const SYSTEM = `Je bent de vacature-redacteur van DetaVia, detacheringspartner in het sociaal domein. Je krijgt de ruwe, rommelige opdrachttekst van een overheids-inhuur (tender). Zet die om naar een heldere, wervende vacaturetekst in de DetaVia tone of voice (empathisch, positief, toegankelijk, mensgericht, professioneel maar laagdrempelig).
+  const SYSTEM = `Je bent de vacature-redacteur van DetaVia, detacheringspartner in het sociaal domein. Je krijgt de ruwe, rommelige en ambtelijke opdrachttekst van een overheids-inhuur (tender). Jouw taak: HERSCHRIJF dit naar een aantrekkelijke, wervende vacaturetekst in de DetaVia tone of voice (empathisch, positief, toegankelijk, mensgericht, professioneel maar laagdrempelig). Neem de brontekst NIET letterlijk over: haal de kern eruit, schrap ambtelijk jargon en tender-taal, en maak er prettig leesbare, bondige tekst van.
 
-Lever je output ALTIJD via het tool structureer_vacature met:
-- intro: 2 a 3 zinnen die samenvatten wat je in deze functie gaat doen (vloeiende tekst, geen opsomming, spreek de lezer aan met "je").
-- taken: concrete taken/werkzaamheden als korte bullets (werkwoord voorop, geen puntkomma's of nummering).
-- eisen: de functie-eisen / must-haves als korte bullets.
+Lever je output ALTIJD via het tool structureer_vacature:
+- intro: 1 a 2 korte, wervende zinnen over de kern van de functie, gericht tot de lezer met "je". Geen opsomming, geen organisatiegeschiedenis, geen herhaling van de taken.
+- taken: 4 tot 8 concrete werkzaamheden als korte, HERSCHREVEN bullets (werkwoord voorop, geen puntkomma's of nummering). Laat dit NIET leeg als de brontekst werkzaamheden bevat, ook niet bij advies- of beleidsfuncties.
+- eisen: de functie-eisen / must-haves als korte, HERSCHREVEN bullets. Laat dit NIET leeg als de brontekst eisen of vereisten bevat.
 - vakgebied: kies het best passende DetaVia-vakgebied uit exact deze lijst:
   * "Leerplicht" = leerplicht, RMC, kwalificatieplicht, schoolverzuim jongeren.
   * "Werk" = toeleiding naar werk, arbeidsmarkt, re-integratie, jobcoaching, werkconsulent, arbeidsparticipatie.
@@ -151,11 +151,11 @@ Negeer en verwerk NIET: uitvoeringsvoorwaarde/Wet DBA-teksten, gunningscriteria 
     const model = process.env.DETAVIA_AI_MODEL_FLEX || "claude-haiku-4-5";
     const res = await client.messages.create({
       model,
-      max_tokens: 1500,
+      max_tokens: 2000,
       system: SYSTEM,
       tools: [TOOL],
       tool_choice: { type: "tool", name: "structureer_vacature" },
-      messages: [{ role: "user", content: `Functietitel: ${titel}\n\nRuwe opdrachttekst:\n${stripTags(omschrijving).slice(0, 8000)}` }],
+      messages: [{ role: "user", content: `Functietitel: ${titel}\n\nRuwe opdrachttekst (met regel-/bulletstructuur):\n${platTekst(omschrijving).slice(0, 9000)}` }],
     });
     const tu = res.content.find((b) => b.type === "tool_use");
     if (!tu || tu.type !== "tool_use") return null;
@@ -182,6 +182,18 @@ export function sluitingLabel(iso: string | null): string {
 
 function stripTags(s: string) {
   return s.replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
+}
+
+// Platte tekst met behoud van regel-/bulletstructuur (voor de AI-input).
+function platTekst(html: string): string {
+  let t = html
+    .replace(/<li[^>]*>/gi, "\n- ")
+    .replace(/<\/(p|li|div|h[1-6]|tr|ul|ol)>/gi, "\n")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&");
+  return t.split("\n").map((l) => l.replace(/[ \t]+/g, " ").trim()).filter(Boolean).join("\n");
 }
 
 // "28 tot 32" / "36" / "16-24" -> [min, max].
