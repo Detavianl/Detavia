@@ -68,7 +68,8 @@ export default function VacatureForm({ vacature, companies = [], recruiters = []
       <Link href="/admin/vacatures" className="text-sm font-semibold text-cobalt">← Vacatures</Link>
       <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
         <h1 className="display text-3xl">{v.id ? "Vacature bewerken" : "Nieuwe vacature"}</h1>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <button form="vacatureform" className="rounded-full bg-cobalt px-6 py-2 font-bold text-white">Opslaan</button>
           {status === "gesloten" && <span className="rounded-full bg-neutral-200 px-3 py-1 text-xs font-bold text-neutral-600">Inactief</span>}
           {v.id && (
             <form action={cloneVacature.bind(null, v.id)}>
@@ -87,7 +88,7 @@ export default function VacatureForm({ vacature, companies = [], recruiters = []
 
       <div className="mt-8 grid items-start gap-8 xl:grid-cols-2">
         {/* LINKS: formulier */}
-        <form action={saveVacature} onInput={(e) => readForm(e.currentTarget)} onChange={(e) => readForm(e.currentTarget)} className="grid gap-5">
+        <form id="vacatureform" action={saveVacature} onInput={(e) => readForm(e.currentTarget)} onChange={(e) => readForm(e.currentTarget)} className="grid gap-5">
           {v.id && <input type="hidden" name="id" value={v.id} />}
           <Field label="Titel" name="titel" defaultValue={v.titel} required />
           <div className="grid gap-5 sm:grid-cols-2">
