@@ -16,8 +16,8 @@ export default async function BedrijvenPage() {
         <div><h1 className="display text-3xl">Opdrachtgevers</h1><p className="mt-1 text-muted">{companies.length} opdrachtgevers</p></div>
         <Link href="/admin/crm/bedrijven/nieuw" className="rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Nieuwe opdrachtgever</Link>
       </div>
-      <div className="mt-8 overflow-hidden rounded-2xl border border-neutral-200 bg-white">
-        <table className="w-full text-left text-sm">
+      <div className="mt-8 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
+        <table className="w-full min-w-[760px] text-left text-sm">
           <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-muted">
             <tr><th className="px-5 py-3">Naam</th><th className="px-5 py-3">Type</th><th className="px-5 py-3">Plaats</th><th className="px-5 py-3">Status</th></tr>
           </thead>

@@ -30,8 +30,8 @@ export default async function PlaatsingenPage() {
         <div><h1 className="display text-3xl">Plaatsingen</h1><p className="mt-1 text-muted">Detacheringen met tarief, kostprijs en marge.</p></div>
         <Link href="/admin/plaatsingen/nieuw" className="rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Nieuwe plaatsing</Link>
       </div>
-      <div className="mt-8 overflow-hidden rounded-2xl border border-neutral-200 bg-white">
-        <table className="w-full text-left text-sm">
+      <div className="mt-8 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
+        <table className="w-full min-w-[760px] text-left text-sm">
           <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-muted">
             <tr><th className="px-5 py-3">Professional</th><th className="px-5 py-3">Functie</th><th className="px-5 py-3">Opdrachtgever</th><th className="px-5 py-3">Tarief</th><th className="px-5 py-3">Kostprijs</th><th className="px-5 py-3">Marge</th></tr>
           </thead>

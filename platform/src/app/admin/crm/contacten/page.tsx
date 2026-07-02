@@ -21,8 +21,8 @@ export default async function ContactenPage() {
         <div><h1 className="display text-3xl">Contactpersonen</h1><p className="mt-1 text-muted">{contacten.length} contacten</p></div>
         <Link href="/admin/crm/contacten/nieuw" className="rounded-full bg-cobalt px-5 py-2.5 font-bold text-white">Nieuw contact</Link>
       </div>
-      <div className="mt-8 overflow-hidden rounded-2xl border border-neutral-200 bg-white">
-        <table className="w-full text-left text-sm">
+      <div className="mt-8 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
+        <table className="w-full min-w-[760px] text-left text-sm">
           <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-muted">
             <tr><th className="px-5 py-3">Naam</th><th className="px-5 py-3">Functie</th><th className="px-5 py-3">Opdrachtgever</th><th className="px-5 py-3">Contact</th></tr>
           </thead>
