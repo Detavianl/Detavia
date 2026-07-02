@@ -1,17 +1,25 @@
 import { createClient } from "@/lib/supabase/server";
 import { isDemo } from "@/lib/demo";
 import { DEMO_VACATURES, type Vacature } from "@/lib/vacatures-demo";
-import { loadOpdrachtenAlsVacatures } from "@/lib/flextender";
 
 type Row = {
   id: string; titel: string; slug: string | null; vakgebied: string; plaats: string;
   uren_min: number; uren_max: number; salaris_min: number | string | null; salaris_max: number | string | null;
   type: string; top: boolean; created_at: string | null; omschrijving: string;
   taken?: string; eisen?: string[]; opdrachtgever?: string; startdatum?: string; duur?: string;
-  salaris_periode?: string; inactief_op?: string | null;
+  salaris_periode?: string; inactief_op?: string | null; schaal?: string | null;
 };
 
 const num = (v: number | string | null) => (v == null ? 0 : Number(v));
+
+// Zet een opgeslagen <ul><li>-takenlijst om naar losse bullets (eigen opmaak).
+function takenLijstVan(html?: string): string[] | undefined {
+  if (!html || !/<li/i.test(html)) return undefined;
+  const items = [...html.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)]
+    .map((m) => m[1].replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").trim())
+    .filter(Boolean);
+  return items.length ? items : undefined;
+}
 
 export function mapVacatureRow(v: Row): Vacature {
   return {
@@ -28,16 +36,18 @@ export function mapVacatureRow(v: Row): Vacature {
     datum: (v.created_at ?? "").slice(0, 10),
     omschrijving: v.omschrijving,
     taken: v.taken || undefined,
+    takenLijst: takenLijstVan(v.taken),
     eisen: v.eisen && v.eisen.length ? v.eisen : undefined,
     opdrachtgever: v.opdrachtgever || undefined,
     startdatum: v.startdatum || undefined,
     duur: v.duur || undefined,
+    schaal: v.schaal || undefined,
     inactief_op: v.inactief_op ?? null,
   };
 }
 
-// Open vacatures. In demo-modus de voorbeelden, anders uitsluitend de database.
-// Vacatures met een verstreken inactief-datum worden automatisch verborgen.
+// Open vacatures uit de database (incl. gesyncte Flextender-opdrachten, die als
+// echte vacatures in de tabel staan). Verstreken vacatures worden verborgen.
 export async function loadVacatures(): Promise<Vacature[]> {
   if (isDemo()) return DEMO_VACATURES;
   try {
@@ -49,11 +59,7 @@ export async function loadVacatures(): Promise<Vacature[]> {
       .eq("status", "open")
       .or(`inactief_op.is.null,inactief_op.gte.${vandaag}`)
       .order("created_at", { ascending: false });
-    const eigen = (data ?? []).map(mapVacatureRow);
-    // Flextender-inhuuropdrachten (sociaal domein) meenemen als vacatures.
-    let flex: Vacature[] = [];
-    try { flex = await loadOpdrachtenAlsVacatures(); } catch { flex = []; }
-    return [...eigen, ...flex];
+    return (data ?? []).map(mapVacatureRow);
   } catch {
     return [];
   }

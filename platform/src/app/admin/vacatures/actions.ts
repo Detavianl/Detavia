@@ -56,7 +56,8 @@ export async function saveVacature(formData: FormData) {
   };
 
   if (id) {
-    const { error } = await supabase.from("vacatures").update(fields).eq("id", id);
+    // Handmatige bewerking: markeren zodat de Flextender-sync dit niet overschrijft.
+    const { error } = await supabase.from("vacatures").update({ ...fields, handmatig_bewerkt: true }).eq("id", id);
     if (error) throw new Error(error.message);
   } else {
     const slug = `${slugify(titel)}-${Math.random().toString(36).slice(2, 6)}`;

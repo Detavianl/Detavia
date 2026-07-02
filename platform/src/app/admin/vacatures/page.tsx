@@ -13,7 +13,7 @@ export default async function VacaturesAdmin() {
     vacatures = DEMO_VACATURES_ADMIN;
   } else {
     const supabase = await createClient();
-    const { data } = await supabase.from("vacatures").select("id, titel, vakgebied, plaats, status, top").order("created_at", { ascending: false });
+    const { data } = await supabase.from("vacatures").select("id, titel, vakgebied, plaats, status, top, bron").order("created_at", { ascending: false });
     vacatures = data ?? [];
   }
 
@@ -34,7 +34,7 @@ export default async function VacaturesAdmin() {
           <tbody>
             {vacatures.map((v) => (
               <tr key={v.id} className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50">
-                <td className="px-5 py-3"><Link href={`/admin/vacatures/${v.id}`} className="font-bold text-cobalt">{v.titel}</Link>{v.top && <span className="ml-2 rounded-full bg-yellow px-2 py-0.5 text-xs font-bold">Top</span>}</td>
+                <td className="px-5 py-3"><Link href={`/admin/vacatures/${v.id}`} className="font-bold text-cobalt">{v.titel}</Link>{v.top && <span className="ml-2 rounded-full bg-yellow px-2 py-0.5 text-xs font-bold">Top</span>}{v.bron === "flextender" && <span className="ml-2 rounded-full bg-arctic px-2 py-0.5 text-xs font-bold">Flextender</span>}</td>
                 <td className="px-5 py-3">{VAKGEBIEDEN[v.vakgebied] ?? v.vakgebied}</td>
                 <td className="px-5 py-3">{v.plaats || "—"}</td>
                 <td className="px-5 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${v.status === "open" ? "bg-green-100 text-green-700" : "bg-neutral-100 text-muted"}`}>{v.status}</span></td>

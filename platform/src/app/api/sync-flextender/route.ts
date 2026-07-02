@@ -1,5 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin";
-import { fetchFlextenderRows, structureerViaAI, hashVan, type AiStructuur } from "@/lib/flextender";
+import { fetchFlextenderRows, structureerViaAI, hashVan, opdrachtNaarVacature, type AiStructuur } from "@/lib/flextender";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -58,14 +58,48 @@ async function sync() {
     gesynct = data?.length ?? 0;
   }
 
-  // Opruimen: alles wat niet meer in de feed staat (gesloten/vervallen).
+  // Opruimen cache: alles wat niet meer in de feed staat (gesloten/vervallen).
   const huidige = rows.map((r) => r.avnummer);
   const q = supabase.from("flextender_opdrachten").delete();
   const { data: verwijderd } = huidige.length
     ? await q.not("avnummer", "in", `(${huidige.join(",")})`).select("avnummer")
     : await q.gte("avnummer", 0).select("avnummer");
 
-  return { gevonden: rows.length, gesynct, aiNieuw, resterend, verwijderd: verwijderd?.length ?? 0 };
+  // Projecteren naar de vacatures-tabel: als echte, bewerkbare vacatures.
+  // Handmatig bewerkte vacatures worden NIET overschreven; opdrachten die uit
+  // de feed verdwijnen worden verwijderd (weg uit API = weg van de site).
+  const { data: bestVac } = await supabase.from("vacatures").select("id, extern_id, handmatig_bewerkt").eq("bron", "flextender");
+  const vacMap = new Map((bestVac ?? []).map((x) => [String(x.extern_id), x as { id: string; extern_id: string; handmatig_bewerkt: boolean }]));
+  const feedIds = new Set(rows.map((r) => String(r.avnummer)));
+
+  const naarRij = (o: (typeof items)[number]["r"]) => {
+    const v = opdrachtNaarVacature(o);
+    return {
+      titel: v.titel, slug: v.slug ?? null, vakgebied: v.vakgebied, plaats: v.plaats,
+      uren_min: v.uren[0], uren_max: v.uren[1],
+      salaris_min: v.salaris[0] || null, salaris_max: v.salaris[1] || null, salaris_periode: v.salaris_periode ?? "uur",
+      type: v.type, top: false, status: "open",
+      omschrijving: v.omschrijving, taken: v.taken ?? null, eisen: v.eisen ?? null,
+      opdrachtgever: v.opdrachtgever ?? null, startdatum: v.startdatum ?? null, duur: v.duur ?? null,
+      schaal: v.schaal ?? null, inactief_op: v.inactief_op ?? null,
+      bron: "flextender", extern_id: String(o.avnummer),
+    };
+  };
+
+  let vacNieuw = 0, vacUpdate = 0;
+  for (let i = 0; i < items.length; i += 10) {
+    await Promise.all(items.slice(i, i + 10).map(async ({ r }) => {
+      const ex = vacMap.get(String(r.avnummer));
+      if (ex?.handmatig_bewerkt) return; // handmatige wijziging behouden
+      const rij = naarRij(r);
+      if (ex) { await supabase.from("vacatures").update(rij).eq("id", ex.id); vacUpdate++; }
+      else { await supabase.from("vacatures").insert(rij); vacNieuw++; }
+    }));
+  }
+  const wegVac = (bestVac ?? []).filter((x) => !feedIds.has(String(x.extern_id))).map((x) => x.id);
+  if (wegVac.length) await supabase.from("vacatures").delete().in("id", wegVac);
+
+  return { gevonden: rows.length, gesynct, aiNieuw, resterend, verwijderd: verwijderd?.length ?? 0, vacNieuw, vacUpdate, vacVerwijderd: wegVac.length };
 }
 
 export async function POST(req: Request) {
