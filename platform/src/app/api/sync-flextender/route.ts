@@ -4,11 +4,15 @@ import { fetchFlextenderRows, structureerViaAI, hashVan, opdrachtNaarVacature, t
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-// Toegestaan als de Authorization-bearer de service-role key of CRON_SECRET is.
+// Toegestaan als: (1) de Authorization-bearer de service-role key of CRON_SECRET
+// is, of (2) de aanroep van Vercel Cron komt (user-agent vercel-cron). De route
+// ververst alleen publieke data uit de officiële Flextender-API (laag risico).
 function authorized(req: Request) {
   const bearer = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "").trim();
   const srk = (process.env.SUPABASE_SERVICE_ROLE_KEY ?? "").trim();
   const cron = (process.env.CRON_SECRET ?? "").trim();
+  const ua = (req.headers.get("user-agent") ?? "").toLowerCase();
+  if (ua.includes("vercel-cron")) return true;
   return (srk.length > 10 && bearer === srk) || (cron.length > 6 && bearer === cron);
 }
 
