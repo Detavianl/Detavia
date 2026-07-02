@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { SITE_URL, SITE_NAME, SITE_TAGLINE, SITE_DESCRIPTION } from "@/lib/site";
+
+const GA_ID = "G-N56P50WXYL";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -66,6 +69,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
+
+        {/* Google tag (gtag.js) — GA4 */}
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`}
+        </Script>
       </body>
     </html>
   );
