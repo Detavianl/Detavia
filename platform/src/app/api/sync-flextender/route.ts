@@ -23,21 +23,28 @@ async function sync() {
     : { data: [] as { avnummer: number; bron_hash: string | null; ai_json: AiStructuur | null }[] };
   const oud = new Map((bestaand ?? []).map((b) => [b.avnummer, b]));
 
-  // Per opdracht: hergebruik AI als de bron niet wijzigde, anders opnieuw genereren.
+  // Eerst bestaande AI hergebruiken waar de bron niet wijzigde.
   const items = rows.map((r) => ({ r, hash: hashVan("v2|" + (r.opdracht ?? "") + "|" + (r.omschrijving ?? "")) }));
+  for (const { r, hash } of items) {
+    const prev = oud.get(r.avnummer);
+    if (prev?.ai_json && prev.bron_hash === hash) r.ai_json = prev.ai_json;
+  }
+
+  // De rest via Haiku, maar met een limiet per aanroep zodat we binnen de
+  // serverless-tijdslimiet blijven (herhaald aanroepen vult de rest).
+  const teDoen = items.filter(({ r }) => !r.ai_json);
+  const LIMIET = 8, CONC = 4;
+  const nu_verwerken = teDoen.slice(0, LIMIET);
   let aiNieuw = 0;
-  const CONC = 6;
-  for (let i = 0; i < items.length; i += CONC) {
+  for (let i = 0; i < nu_verwerken.length; i += CONC) {
     await Promise.all(
-      items.slice(i, i + CONC).map(async ({ r, hash }) => {
-        const prev = oud.get(r.avnummer);
-        if (prev?.ai_json && prev.bron_hash === hash) { r.ai_json = prev.ai_json; return; }
+      nu_verwerken.slice(i, i + CONC).map(async ({ r }) => {
         const ai = await structureerViaAI(r.opdracht, r.omschrijving ?? "");
         if (ai) { r.ai_json = ai; aiNieuw++; }
-        else if (prev?.ai_json) { r.ai_json = prev.ai_json; }
       }),
     );
   }
+  const resterend = items.filter(({ r }) => !r.ai_json).length;
 
   let gesynct = 0;
   if (rows.length) {
@@ -58,7 +65,7 @@ async function sync() {
     ? await q.not("avnummer", "in", `(${huidige.join(",")})`).select("avnummer")
     : await q.gte("avnummer", 0).select("avnummer");
 
-  return { gevonden: rows.length, gesynct, aiNieuw, verwijderd: verwijderd?.length ?? 0 };
+  return { gevonden: rows.length, gesynct, aiNieuw, resterend, verwijderd: verwijderd?.length ?? 0 };
 }
 
 export async function POST(req: Request) {
